@@ -1,5 +1,7 @@
 'use strict';
 
+var DecodeWebPImage = require('./webp').DecodeWebPImage;
+
 exports.getJSON = function(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -51,6 +53,16 @@ function sameOrigin(url) {
 exports.getImage = function(url, callback) {
     return exports.getArrayBuffer(url, function(err, imgData) {
         if (err) return callback(err);
+        console.log(url);
+        if (url.match(/webp/)) {
+            var arr = [];
+            var uarr = new Uint8Array(imgData);
+            for (var i = 0; i < uarr.byteLength; i++) {
+                arr.push(uarr[i] & 255);
+            }
+            var decoded = DecodeWebPImage(arr);
+            console.log('tried to decode', imgData, arr, decoded);
+        }
         var img = new Image();
         img.onload = function() {
             callback(null, img);

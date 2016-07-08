@@ -56,7 +56,7 @@
 var map = window.map = new mapboxgl.Map({
     container: 'map',
     zoom: 12.5,
-    center: [-77.01866, 38.888],
+    center: [-87.7,41.8],
     style: 'mapbox://styles/mapbox/streets-v9',
     hash: true
 });
@@ -69,6 +69,19 @@ map.on('load', function() {
         "type": "geojson",
         "data": "route.json"
     });
+    map.addSource('chicago', {
+        "type": "raster",
+        "url": "mapbox://tmcw.3ig8khpf"
+    });
+
+    map.addLayer({
+        "id": "chi",
+        "type": "raster",
+        "source": "chicago",
+        "layout": { "visibility": "visible" },
+        "paint": {
+        }
+    }, 'country-label-lg');
 
     map.addLayer({
         "id": "route",

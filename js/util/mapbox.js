@@ -100,7 +100,7 @@ module.exports.normalizeTileURL = function(tileURL, sourceURL, tileSize) {
     // a Mapbox raster source force the @2x suffix even if a non hidpi
     // device.
 
-    var extension = browser.supportsWebp ? '.webp' : '$1';
+    var extension = '.webp';
     var resolution = (browser.devicePixelRatio >= 2 || tileSize === 512) ? '@2x' : '';
 
     return URL.format({

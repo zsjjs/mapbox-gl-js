@@ -82,11 +82,11 @@ Object.defineProperty(exports, 'devicePixelRatio', {
     get: function() { return window.devicePixelRatio; }
 });
 
-exports.supportsWebp = false;
+exports.nativeSupportsWebp = false;
 
 var webpImgTest = document.createElement('img');
 webpImgTest.onload = function() {
-    exports.supportsWebp = true;
+    exports.nativeSupportsWebp = true;
 };
 webpImgTest.src = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=';
 
