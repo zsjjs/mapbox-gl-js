@@ -113,12 +113,70 @@ map.on('load', function() {
     });
 });
 
+map.on('data', function(e) {
+    console.log('DATA ' + e.source.id);
+});
+
+map.on('dataend', function(e) {
+    console.log('DATAEND');
+});
+
 map.on('click', function(e) {
-    if (e.originalEvent.shiftKey) return;
-    (new mapboxgl.Popup())
-        .setLngLat(map.unproject(e.point))
-        .setHTML("<h1>Hello World!</h1>")
-        .addTo(map);
+    map.addSource('geojson-2', {
+        "type": "geojson",
+        "data": {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -77.11990356445312,
+            38.97355651901338
+          ],
+          [
+            -76.91116333007812,
+            38.835696270951814
+          ],
+          [
+            -77.05329895019531,
+            38.90038499190383
+          ],
+          [
+            -76.94549560546874,
+            38.973022693840456
+          ]
+        ]
+      }
+    }
+  ]
+}
+    });
+
+    map.addLayer({
+        "id": "route-2",
+        "type": "line",
+        "source": "geojson-2",
+        "paint": {
+            "line-color": "#EC8D8D",
+            "line-width": {
+                "base": 1.5,
+                "stops": [
+                    [
+                        5,
+                        0.75
+                    ],
+                    [
+                        18,
+                        32
+                    ]
+                ]
+            }
+        }
+    }, 'country-label-lg-2');
 });
 
 document.getElementById('show-tile-boundaries-checkbox').onclick = function() {

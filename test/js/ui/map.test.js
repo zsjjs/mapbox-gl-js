@@ -108,6 +108,77 @@ test('Map', function(t) {
         function pass() { t.end(); }
     });
 
+    t.test('emits data/dataend events after each source is loaded', function(t) {
+        var map = createMap({
+            style: {
+                "version": 8,
+                "sources": {
+                    "geojson": {
+                        type: "geojson",
+                        data: {
+                            "type": "FeatureCollection",
+                            "features": [
+                                {
+                                    "type": "Feature",
+                                    "properties": {},
+                                    "geometry": {
+                                        "type": "LineString",
+                                        "coordinates": [
+                                            [ -77.11990356445312, 38.97355651901338 ],
+                                            [ -76.91116333007812, 38.835696270951814 ],
+                                            [ -77.05329895019531, 38.90038499190383 ],
+                                            [ -76.94549560546874, 38.973022693840456 ]
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "layers": []
+            }
+        });
+
+
+
+        map.on('data', function(e) {
+            console.log('map emited data event!');
+            console.log(e);
+            t.end();
+        });
+
+        // map.on('style.load', function () {
+        //     map.setLayoutProperty('image', 'visibility', 'visible');
+        //     t.deepEqual(map.getLayoutProperty('image', 'visibility'), 'visible');
+        //     t.end();
+        // });
+        // var map = createMap(),
+        //     style = new Style({
+        //         version: 8,
+        //         sources: {},
+        //         layers: []
+        //     });
+
+        // var events = [];
+
+        // function checkEvent(e) {
+        //     t.equal(e.style, style);
+        //     events.push(e.type);
+        // }
+        // var map = createMap();
+
+        // map.on('load', fail)
+
+        // setTimeout(function() {
+        //     map.off('load', fail);
+        //     map.on('load', pass);
+        //     map.setStyle(createStyle());
+        // }, 1);
+
+        // function fail() { t.ok(false); }
+        // function pass() { t.end(); }
+    });
+
     t.test('#setStyle', function(t) {
         t.test('returns self', function(t) {
             var map = createMap(),
@@ -253,6 +324,17 @@ test('Map', function(t) {
             var map = createMap({style: style});
 
             map.on('load', function () {
+                t.deepEqual(map.getStyle(), style);
+                t.end();
+            });
+        });
+
+        t.test('data', function(t) {
+            var style = createStyle();
+            var map = createMap({style: style});
+
+            map.on('data', function (e) {
+                console.log(e);
                 t.deepEqual(map.getStyle(), style);
                 t.end();
             });

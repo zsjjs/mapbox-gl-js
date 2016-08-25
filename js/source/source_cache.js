@@ -51,11 +51,6 @@ function SourceCache(id, options, dispatcher) {
             this.update(this.transform, this.map && this.map.style.rasterFadeDuration);
         }
         this.fire('change');
-    }.bind(this))
-    .on('tile.load', function(e) {
-        var shouldWeFireDataEnd = true;
-        if (this.loaded()) this.map.fire('data', {source: this});
-        if (this.allSourcesLoaded()) this.map.fire('dataend');
     }.bind(this));
 
     this._tiles = {};
@@ -89,19 +84,6 @@ SourceCache.prototype = util.inherit(Evented, {
             var tile = this._tiles[t];
             if (tile.state !== 'loaded' && tile.state !== 'errored')
                 return false;
-        }
-        return true;
-    },
-
-    /**
-     * Return true if all sources tiles are not pending, and have loaded.
-     * @returns {boolean}
-     * @private
-     */
-    allSourcesLoaded: function() {
-        var sources = this.map.style.sources;
-        for (var s in sources) {
-            if (!sources[s].loaded()) { return false };
         }
         return true;
     },
@@ -183,6 +165,10 @@ SourceCache.prototype = util.inherit(Evented, {
         tile.timeAdded = new Date().getTime();
         this.fire('tile.load', {tile: tile});
         this._source.fire('tile.load', {tile: tile});
+
+        // fire if all tiles have loaded
+        // console.log(this)
+        if (this.loaded()) this.map.fire('data', {source: this});
     },
 
     /**

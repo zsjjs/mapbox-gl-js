@@ -171,6 +171,12 @@ var Map = module.exports = function(options) {
         this._rerender();
     }.bind(this));
 
+    this.on('data', function(e) {
+        console.log(e.source);
+        console.log('the map has received a data event');
+        if (this._allSourcesLoaded()) this.fire('dataend');
+    }.bind(this));
+
     if (typeof window !== 'undefined') {
         window.addEventListener('online', this._onWindowOnline, false);
         window.addEventListener('resize', this._onWindowResize, false);
@@ -1053,6 +1059,19 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         }
 
         return this;
+    },
+
+    /**
+     * Return true if all sources tiles are not pending, and have loaded.
+     * @returns {boolean}
+     * @private
+     */
+    _allSourcesLoaded: function() {
+        var sources = this.style.sources;
+        for (var s in sources) {
+            if (!sources[s].loaded()) { return false; }
+        }
+        return true;
     },
 
     /**
