@@ -1,5 +1,5 @@
 url: https://www.mapbox.cn
-api: https://www.mapbox.cn/core
+api: https://www.mapbox.com/core
 tileApi: https://api.mapbox.cn
 source: docs
 permalink: /:categories/:title/
