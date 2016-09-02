@@ -1,0 +1,9 @@
+url: https://www.mapbox.cn
+api: https://www.mapbox.cn/core
+tileApi: https://api.mapbox.cn
+source: docs
+permalink: /:categories/:title/
+baseurl: https://www.mapbox.cn/mapbox-gl-js
+excerpt_separator: ""
+exclude: [dist]
+future: true
