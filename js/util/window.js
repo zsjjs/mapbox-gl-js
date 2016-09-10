@@ -4,6 +4,7 @@ var jsdom = require('jsdom');
 var gl = require('gl');
 var sinon = require('sinon');
 var util = require('./util');
+var Worker = require('webworker-threads').Worker;
 
 function restore() {
 
@@ -44,6 +45,8 @@ function restore() {
     };
 
     window.URL.revokeObjectURL = function () {};
+
+    window.Worker = Worker;
 
     window.restore = restore;
 
