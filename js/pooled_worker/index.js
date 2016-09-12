@@ -1,23 +1,28 @@
 var webworkify = require('webworkify');
 var Evented = require('../util/evented');
 
-var workers = [];
-function createWorker() {
-    var worker = webworkify(require('./worker_index.js'));
-    worker.addEventListener('message', function(event) {
-        var message = event.data;
-        Evented.fire.call(
-            pooledWorkers[message.pooledWorkerId],
-            message.type,
-            message.data
-        );
-    })
-    return worker;
+var nativeWorkerIndex = 0;
+var nativeWorkers = [];
+function createNativeWorkers() {
+    var workerCount = require('../mapbox-gl').workerCount || 3;
+    for (var i = 0; i < workerCount; i++) {
+        nativeWorkers[i] = webworkify(require('./worker_index.js'));
+        nativeWorkers[i].addEventListener('message', function(event) {
+            var message = event.data;
+            Evented.fire.call(
+                pooledWorkers[message.pooledWorkerId],
+                message.type,
+                message.data
+            );
+        });
+    }
 }
 
 var pooledWorkers = [];
 function createPooledWorker(body, options) {
-    var worker = createWorker();
+    if (!nativeWorkers.length) createNativeWorkers();
+    var worker = nativeWorkers[nativeWorkerIndex];
+    nativeWorkerIndex = (nativeWorkerIndex + 1) % nativeWorkers.length;
     var pooledWorkerId = pooledWorkers.length;
 
     worker.postMessage({
