@@ -1,8 +1,8 @@
 'use strict';
 
-var createPooledWorker = require('./util/worker2');
+var createPooledWorker = require('./pooled_worker');
 
-var worker = createPooledWorker(require('../js/util/worker2/marco_polo_worker'), {animal: 'chicken'});
+var worker = createPooledWorker(require('../js/pooled_worker/marco_polo_worker'), {animal: 'chicken'});
 worker.once('polo', function(options) {
     console.log('polo', options.animal);
 });
