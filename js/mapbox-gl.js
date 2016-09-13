@@ -1,5 +1,7 @@
 'use strict';
 
+debugger;
+
 var createPooledWorker = require('./pooled_worker');
 
 var worker = createPooledWorker(require('../js/pooled_worker/marco_polo_worker'), {animal: 'chicken'});

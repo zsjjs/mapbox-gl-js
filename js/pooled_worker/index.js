@@ -1,7 +1,7 @@
 var webworkify = require('webworkify');
 var Evented = require('../util/evented');
+var window = require('../util/window');
 
-var nativeWorkerIndex = 0;
 var nativeWorkers = [];
 function createNativeWorkers() {
     var workerCount = require('../mapbox-gl').workerCount || 3;
@@ -18,14 +18,20 @@ function createNativeWorkers() {
     }
 }
 
+var nextNativeWorkerIndex = 0;
+function allocateNativeWorker() {
+    if (!nativeWorkers.length) createNativeWorkers();
+    var nativeWorker = nativeWorkers[nextNativeWorkerIndex];
+    nextNativeWorkerIndex = (nextNativeWorkerIndex + 1) % nativeWorkers.length;
+    return nativeWorker;
+}
+
 var pooledWorkers = [];
 function createPooledWorker(body, options) {
-    if (!nativeWorkers.length) createNativeWorkers();
-    var worker = nativeWorkers[nativeWorkerIndex];
-    nativeWorkerIndex = (nativeWorkerIndex + 1) % nativeWorkers.length;
     var pooledWorkerId = pooledWorkers.length;
+    var nativeWorker = allocateNativeWorker();
 
-    worker.postMessage({
+    nativeWorker.postMessage({
         type: 'createPooledWorker',
         data: {
             pooledWorkerId: pooledWorkerId,
@@ -40,7 +46,7 @@ function createPooledWorker(body, options) {
         once: Evented.once,
         listens: Evented.listens,
         send: function(type, data) {
-            worker.postMessage({
+            nativeWorker.postMessage({
                 pooledWorkerId: pooledWorkerId,
                 type: type,
                 data: data

@@ -4,6 +4,7 @@
 var Evented = require('../util/evented');
 
 module.exports = function() {
+
     var pooledWorkers = {};
     function createPooledWorker(data) {
         var pooledWorkerId = data.pooledWorkerId;
@@ -41,4 +42,5 @@ module.exports = function() {
             );
         }
     });
+
 };
