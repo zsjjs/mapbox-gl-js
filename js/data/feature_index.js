@@ -152,7 +152,7 @@ FeatureIndex.prototype.query = function(args, styleLayers) {
     matching.sort(topDownFeatureComparator);
     this.filterMatching(result, matching, this.featureIndexArray, queryGeometry, filter, params.layers, styleLayers, args.bearing, pixelsToTileUnits);
 
-    var matchingSymbols = this.collisionTile.queryRenderedSymbols(minX, minY, maxX, maxY, args.scale);
+    var matchingSymbols = this.collisionTile.queryRenderedSymbols(queryGeometry, args.scale);
     matchingSymbols.sort();
     this.filterMatching(result, matchingSymbols, this.collisionTile.collisionBoxArray, queryGeometry, filter, params.layers, styleLayers, args.bearing, pixelsToTileUnits);
 

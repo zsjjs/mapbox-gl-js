@@ -178,17 +178,31 @@ CollisionTile.prototype.placeCollisionFeature = function(collisionFeature, allow
     return minPlacementScale;
 };
 
-CollisionTile.prototype.queryRenderedSymbols = function(minX, minY, maxX, maxY, scale) {
+CollisionTile.prototype.queryRenderedSymbols = function(queryGeometry, scale) {
     var sourceLayerFeatures = {};
     var result = [];
 
     var collisionBoxArray = this.collisionBoxArray;
     var rotationMatrix = this.rotationMatrix;
-    var anchorPoint = new Point(minX, minY)._matMult(rotationMatrix);
+
+    var minX = Infinity;
+    var minY = Infinity;
+    var maxX = -Infinity;
+    var maxY = -Infinity;
+    for (var j = 0; j < queryGeometry.length; j++) {
+        var ring = queryGeometry[j];
+        for (var l = 0; l < ring.length; l++) {
+            var p = ring[l]._matMult(rotationMatrix);
+            minX = Math.min(minX, p.x);
+            minY = Math.min(minY, p.y);
+            maxX = Math.max(maxX, p.x);
+            maxY = Math.max(maxY, p.y);
+        }
+    }
 
     var queryBox = this.tempCollisionBox;
-    queryBox.anchorX = anchorPoint.x;
-    queryBox.anchorY = anchorPoint.y;
+    queryBox.anchorX = minX;
+    queryBox.anchorY = minY;
     queryBox.x1 = 0;
     queryBox.y1 = 0;
     queryBox.x2 = maxX - minX;
@@ -199,10 +213,10 @@ CollisionTile.prototype.queryRenderedSymbols = function(minX, minY, maxX, maxY, 
     scale = queryBox.maxScale;
 
     var searchBox = [
-        anchorPoint.x + queryBox.x1 / scale,
-        anchorPoint.y + queryBox.y1 / scale * this.yStretch,
-        anchorPoint.x + queryBox.x2 / scale,
-        anchorPoint.y + queryBox.y2 / scale * this.yStretch
+        queryBox.anchorX + queryBox.x1 / scale,
+        queryBox.anchorY + queryBox.y1 / scale * this.yStretch,
+        queryBox.anchorX + queryBox.x2 / scale,
+        queryBox.anchorY + queryBox.y2 / scale * this.yStretch
     ];
 
     var blockingBoxKeys = this.grid.query(searchBox[0], searchBox[1], searchBox[2], searchBox[3]);
@@ -222,7 +236,7 @@ CollisionTile.prototype.queryRenderedSymbols = function(minX, minY, maxX, maxY, 
 
         if (!sourceLayerFeatures[sourceLayer][featureIndex]) {
             var blockingAnchorPoint = blocking.anchorPoint.matMult(rotationMatrix);
-            var minPlacementScale = this.getPlacementScale(this.minScale, anchorPoint, queryBox, blockingAnchorPoint, blocking);
+            var minPlacementScale = this.getPlacementScale(this.minScale, new Point(minX, minY), queryBox, blockingAnchorPoint, blocking);
             if (minPlacementScale >= scale) {
                 sourceLayerFeatures[sourceLayer][featureIndex] = true;
                 result.push(blockingBoxKeys[i]);
