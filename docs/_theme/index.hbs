@@ -142,9 +142,10 @@ options: full
           {% capture getting_started_html %}
 <div id='map' style='width: 400px; height: 300px;'></div>
 <script>
+mapboxgl.config.API_BASE_URL = 'https://api.mapbox.cn';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v9'
+    style: 'mapbox://styles/mapbox/streets-cn-v9'
 });
 </script>
           {% endcapture %}
@@ -164,10 +165,11 @@ npm install --save mapbox-gl
 <div class='js-replace-token'>
 {% highlight javascript %}
 var mapboxgl = require('mapbox-gl');
+mapboxgl.config.API_BASE_URL = 'https://api.mapbox.cn';
 mapboxgl.accessToken = '<your access token here>';
 var map = new mapboxgl.Map({
     container: '<your HTML element id>',
-    style: 'mapbox://styles/mapbox/streets-v9'
+    style: 'mapbox://styles/mapbox/streets-cn-v9'
 });
 {% endhighlight %}
 </div>
