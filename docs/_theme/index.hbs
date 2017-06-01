@@ -78,9 +78,9 @@ options: full
       </div>
       <div class='col9 dark tabs mobile-cols pad1'><!--
         --><a href='{{site.baseurl}}/api' class='col3 truncate{% if page.category == "api" %} active{% endif %}'>API</a><!--
-        --><a href='{{site.url}}/mapbox-gl-style-spec' class='col3 truncate'>Style Reference</a><!--
-        --><a href='{{site.baseurl}}/examples' class='col3 truncate{% if page.category == "example" %} active{% endif %}'>Examples</a><!--
-        --><a href='{{site.baseurl}}/plugins' class='col3 truncate{% if page.url contains "plugins" %} active{% endif %}'>Plugins</a>
+        --><a href='{{site.url}}/mapbox-gl-style-spec' class='col3 truncate'>样式参考手册</a><!--
+        --><a href='{{site.baseurl}}/examples' class='col3 truncate{% if page.category == "example" %} active{% endif %}'>示例</a><!--
+        --><a href='{{site.baseurl}}/plugins' class='col3 truncate{% if page.url contains "plugins" %} active{% endif %}'>插件</a>
       </div>
     </nav>
   </div>
@@ -88,37 +88,37 @@ options: full
     <div class='round doc clip space-bottom4 fill-white'>
       <section class='pad4 contain'>
       <h1 class=''>Mapbox GL JS</h1>
-      <div class='pad1y quiet small'>Current version: <span class='round fill-light pad0'><a class='' href='https://github.com/mapbox/mapbox-gl-js/releases'>mapbox-gl.js v{{site.data.package.version}}</a></span></div>
+      <div class='pad1y quiet small'>当前版本： <span class='round fill-light pad0'><a class='' href='https://github.com/mapbox/mapbox-gl-js/releases'>mapbox-gl.js v{{site.data.package.version}}</a></span></div>
       <div class='prose space-bottom2'>
-        <p class='space-bottom2 pad1y'>Mapbox GL JS is a JavaScript library that uses WebGL to render interactive maps from <a href='{{site.url}}/help/define-vector-tiles'>vector tiles</a> and <a href='{{site.url}}/mapbox-gl-style-spec'>Mapbox styles</a>.
-        It is part of the <a href='https://github.com/mapbox/mapbox-gl'>Mapbox GL ecosystem</a>, which includes <a href='{{site.url}}/mobile/'>Mapbox Mobile</a>, a compatible renderer written in C++ with bindings for desktop and mobile platforms.</p>
+        <p class='space-bottom2 pad1y'>Mapbox GL JS 是一个 JavaScript 库，使用 WebGL 对 <a href='{{site.url}}/help/define-vector-tiles'>矢量切片（vector tiles）</a> 和 <a href='{{site.url}}/mapbox-gl-style-spec'>Mapbox样式（styles）</a>。
+        构成的交互式地图进行渲染。它是 <a href='https://github.com/mapbox/mapbox-gl'>Mapbox GL 生态系统</a>的一部分，该系统还包括一个使用 C++ 编写的、可兼容的渲染器  <a href='{{site.url}}/mobile/'>Mapbox Mobile</a>，可绑定到电脑和手机平台。</p>
         <div class='col12 fill-light round pad2 clearfix space-top2'>
         <div class='space-bottom2 space-left1 space-top1 contain'>
           <div class='icon inline dark pad0 round fill-green space-bottom1 github space-right1'></div>
           <div class='pin-left pad0x space-left4'>
-            <a class='block line-height15' href='https://github.com/mapbox/mapbox-gl-js'>Project on Github</a>
-            <span class='quiet small'>View source code and contribute</span>
+            <a class='block line-height15' href='https://github.com/mapbox/mapbox-gl-js'>Github中的项目</a>
+            <span class='quiet small'>查看源代码和资源分享</span>
           </div>
         </div>
          <div class='space-bottom2 space-left1 contain'>
           <div class='icon inline dark pad0 round fill-blue space-bottom1 document space-right1'></div>
           <div class='pin-left pad0x space-left4'>
-            <a class='block line-height15' href='https://www.mapbox.com/help/mapbox-gl-js-fundamentals/'>GL JS Fundamentals</a>
-            <span class='quiet small'>Essential functions and common patterns</span>
+            <a class='block line-height15' href='https://www.mapbox.com/help/mapbox-gl-js-fundamentals/'>GL JS 基本原理</a>
+            <span class='quiet small'>基本功能和常见模式（common patterns）</span>
           </div>
         </div>
          <div class='contain space-left1'>
           <div class='icon inline dark pad0 round fill-red space-bottom1 globe space-right1'></div>
           <div class='pin-left pad0x space-left4'>
             <a class='block line-height15' href='https://www.mapbox.com/gallery/'>Gallery</a>
-            <span class='quiet small'>Project showcase</span>
+            <span class='quiet small'>项目展示</span>
           </div>
         </div>
 
         </div>
-           <h2 class='strong'>Quickstart</h2>
-           <div class='space-bottom1'>To get started, you need to obtain an <a href='https://www.mapbox.com/help/create-api-access-token/'>access token</a> and a <a href='https://www.mapbox.com/help/define-style-url/'>style URL</a>.
-             You can choose from one of our <a href='https://www.mapbox.com/api-documentation/#styles'>professionally designed styles</a> or create your own using <a href="https://www.mapbox.com/studio">Mapbox Studio</a>.
+           <h2 class='strong'>快速入门</h2>
+           <div class='space-bottom1'>开始之前需要有一个 <a href='https://www.mapbox.com/help/create-api-access-token/'>访问令牌（access token）</a> 和一个 <a href='https://www.mapbox.com/help/define-style-url/'>style URL</a>.
+             你可以从 <a href='https://www.mapbox.com/api-documentation/#styles'>专业设计样式</a> 中选取样式或者用 <a href="https://www.mapbox.com/studio">Mapbox Studio</a>创建自己的样式。
            </div>
            <div class='rounded-toggle space-bottom2 inline' id='method-toggle'>
              <a class='method-toggle active' data-target='script-example' href='#'>&lt;script&gt; tag</a>
@@ -126,7 +126,7 @@ options: full
            </div>
            <div id='script-example'>
         <div class='space-top2 space-bottom2'>
-          To use Mapbox GL JS with a <code>&lt;script&gt;</code> tag, include the JavaScript and CSS files in the <code>&lt;head&gt;</code> of your HTML file.
+          使用Mapbox GL JS 需要添加一个 <code>&lt;script&gt;</code> 标签， 在你的HTML文件的<code>&lt;head&gt;</code>中添加的包括avaScript 和 CSS 文件。
         </div>
         <div class='contain ' id='head-code'>
           {% highlight html %}
@@ -136,7 +136,7 @@ options: full
           <a class='icon clipboard pin-bottom space-bottom1 text-right quiet js-clipboard space-right1' href='#' data-clipboard-target='head-code'></a>
         </div>
         <div class='space-top2 space-bottom2'>
-          Then include this code in the <code>&lt;body&gt;</code> of your HTML file to initialize a map on the page.
+          接下来在HTML文件的 <code>&lt;body&gt;</code> 初始化Map地图。
         </div>
         <div class='js-replace-token contain' id='body-code'>
           {% capture getting_started_html %}
@@ -154,13 +154,13 @@ var map = new mapboxgl.Map({
         </div>
         </div>
         <div id='browserify-example' class='hidden'>
-<p>Install the mapbox-gl npm package.</p>
+<p>安装mapbox-gl npm包。</p>
 
 <pre>
 npm install --save mapbox-gl
 </pre>
 
-<p>Require mapbox-gl and create a map.</p>
+<p>装载（Require） mapbox-gl并创建一个地图。</p>
 
 <div class='js-replace-token'>
 {% highlight javascript %}
