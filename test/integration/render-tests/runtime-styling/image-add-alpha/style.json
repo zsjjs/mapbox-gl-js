@@ -1,0 +1,43 @@
+{
+  "version": 8,
+  "metadata": {
+    "test": {
+      "ignored": {
+        "native" : "https://github.com/mapbox/mapbox-gl-native/issues/8839"
+      },
+      "width": 64,
+      "height": 64,
+      "operations": [
+        [
+          "addImage",
+          "rocket",
+          "./image/rocket.png"
+        ],
+        [
+          "addLayer",
+          {
+            "id": "geometry",
+            "type": "symbol",
+            "source": "geometry",
+            "layout": {
+              "icon-image": "rocket"
+            }
+          }
+        ],
+        [
+          "wait"
+        ]
+      ]
+    }
+  },
+  "sources": {
+    "geometry": {
+      "type": "geojson",
+      "data": {
+        "type": "Point",
+        "coordinates": [0, 0]
+      }
+    }
+  },
+  "layers": []
+}

@@ -13,6 +13,10 @@ Install [node.js](https://nodejs.org/) version 4 or greater
 ```bash
 brew install node
 ```
+Install [yarn](https://yarnpkg.com/en/)
+```bash
+brew install yarn
+```
 
 Clone the repository
 ```bash
@@ -22,15 +26,15 @@ git clone git@github.com:mapbox/mapbox-gl-js.git
 Install node module dependencies
 ```bash
 cd mapbox-gl-js &&
-npm install
+yarn install
 ```
 
 ### Linux
 
-Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 4 or greater), [GNU Make](http://www.gnu.org/software/make/), and libglew-dev
+Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 4 or greater), [yarn](https://yarnpkg.com/en/docs/install#linux-tab), [GNU Make](http://www.gnu.org/software/make/), and libglew-dev
 ```bash
 sudo apt-get update &&
-sudo apt-get install build-essential git nodejs libglew-dev libxi-dev
+sudo apt-get install build-essential git nodejs yarn libglew-dev libxi-dev
 ```
 
 Clone the repository
@@ -41,22 +45,23 @@ git clone git@github.com:mapbox/mapbox-gl-js.git
 Install node module dependencies
 ```bash
 cd mapbox-gl-js &&
-npm install
+yarn install
 ```
 
 ### Windows
 
-Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 4 or greater), [npm and node-gyp](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules).
+Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 4 or greater), [yarn](https://yarnpkg.com/en/docs/install#windows-tab), [npm and node-gyp](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules).
 
 Clone the repository
 ```bash
 git clone git@github.com:mapbox/mapbox-gl-js.git
 ```
 
+
 Install node module dependencies
 ```bash
 cd mapbox-gl-js
-npm install
+yarn install
 ```
 
 Install headless-gl dependencies https://github.com/stackgl/headless-gl#windows
@@ -69,7 +74,7 @@ copy node_modules/headless-gl/deps/windows/dll/x64/*.dll c:\windows\system32
 Start the debug server
 
 ```bash
-MAPBOX_ACCESS_TOKEN={YOUR MAPBOX ACCESS TOKEN} npm run start-debug
+MAPBOX_ACCESS_TOKEN={YOUR MAPBOX ACCESS TOKEN} yarn run start-debug
 ```
 
 Open the debug page at [http://localhost:9966/debug](http://localhost:9966/debug)
@@ -80,19 +85,16 @@ A standalone build allows you to turn the contents of this repository into `mapb
 
 To create a standalone build, run
 ```bash
-npm run build-min
+yarn run build-min
 ```
 
 Once that command finishes, you will have a standalone build at `dist/mapbox-gl.js` and `dist/mapbox-gl.css`
 
-## Running Tests
+## Writing & Running Tests
 
-There are two test suites associated with Mapbox GL JS
+See [`test/README.md`](https://github.com/mapbox/mapbox-gl-js/blob/master/test/README.md).
 
- - `npm test` runs quick unit tests
- - `npm run test-suite` runs integration tests from the [mapbox-gl-test-suite](https://github.com/mapbox/mapbox-gl-test-suite) repository
-
-## Running Benchmarks
+## Writing & Running Benchmarks
 
 See [`bench/README.md`](https://github.com/mapbox/mapbox-gl-js/blob/master/bench/README.md).
 
@@ -100,27 +102,29 @@ See [`bench/README.md`](https://github.com/mapbox/mapbox-gl-js/blob/master/bench
 
 * We use [`error` events](https://www.mapbox.com/mapbox-gl-js/api/#Map.event:error) to report user errors.
 * We use [`assert`](https://nodejs.org/api/assert.html) to check invariants that are not likely to be caused by user error. These `assert` statements are stripped out of production builds.
+* We use the following ES6 features:
+  * `let`/`const`
+  * `for...of` loops (for arraylike iteration only, i.e. what is supported by [Bublé's `dangerousForOf` transform](https://buble.surge.sh/guide/#dangerous-transforms))
+  * Arrow functions
+  * Classes
+  * Template strings
+  * Computed and shorthand object properties
+* The following ES6 features are not to be used, in order to maintain support for Node 4.x, IE 11, and older mobile browsers. This may change in the future.
+  * Default parameters
+  * Rest parameters
+  * Spread (`...`) operator
+  * Destructuring
+  * Iterators and generators
+  * "Library" features such as `Map`, `Set`, `array.find`, etc.
+  * Modules
 
 ### Version Control Conventions
 
-* We use [rebase merging](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (as opposed to [basic merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#Basic-Merging)) to merge branches 
+* We use [rebase merging](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (as opposed to [basic merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging#Basic-Merging)) to merge branches
 
 ## Documentation Conventions
 
 See [`docs/README.md`](https://github.com/mapbox/mapbox-gl-js/blob/master/docs/README.md).
-
-## Sprint Planning
-
-* We use Github milestones to schedule tasks into two week sprints
-* We end each sprint and publish a release every other Wednesday unless there is an outstanding “release blocker” issue.
-    * If there is a "release blocker" issue, we fix it as soon as possible and do the release
-* We will prioritize feature work as follows:
-    1. “release blocker” bugs
-    3. in-progress things
-    2. things needed by customers
-    4. new things
-* We try to include one "testing and release process", one "refactoring", and one "bug" issue in each release.
-* We name releases alphabetically after [cities](https://en.wikipedia.org/wiki/List_of_towns_and_cities_with_100,000_or_more_inhabitants/cityname:_A). (Fun facts are encouraged!)
 
 ### Github Issue Labels
 
