@@ -87,21 +87,21 @@ navigation:
   <div class='contain margin3 col9'>
     <div class='prose'>
       <h1>{{ page.title }}</h1>
-      <p>A Mapbox style is a document that defines the visual appearance of a map: what data to draw, the order to draw it in, and how to style the data when drawing it. A style document is a <a href="http://www.json.org/">JSON</a> object with specific root level and nested properties. This specification defines and describes these properties.</p>
-      <p>The intended audience of this specification includes:
+      <p>Mapbox 样式文件是用来定义地图外观的文件：绘制什么数据、绘制顺序是什么以及绘制时给数据添加什么样式都是样式文件要处理的问题。样式文件是一个带有特定根级和嵌套属性的 <a href="http://www.json.org/">JSON</a> 对象。 本样式规范将定义和描述这些属性。</p>
+      <p>本样式规范的用户对象包括：
       <ul>
-      <li>Advanced designers and cartographers who want to write styles by hand rather than use <a href='https://www.mapbox.com/studio'>Mapbox Studio</a></li>
-      <li>Developers using style-related features of <a href='https://www.mapbox.com/mapbox-gl-js/'>Mapbox GL JS</a> or the <a href='https://www.mapbox.com/android-sdk/'>Mapbox Android SDK</a></li>
-      <li>Authors of software that generates or processes Mapbox styles.</li>
+      <li>想手动编写样式，而非用 <a href='https://www.mapbox.com/studio'>Mapbox Studio</a></li> 的高级设计师和地图绘制人员。
+      <li>要使用<a href='https://www.mapbox.com/mapbox-gl-js/'>Mapbox GL JS</a> 或 <a href='https://www.mapbox.com/android-sdk/'>Mapbox Android SDK</a></li> 相关功能的开发人员
+      <li>开发生成或处理 Mapbox 样式软件的作者。</li>
       </ul>
       </p>
-      <p>Developers using the <a href='https://www.mapbox.com/ios-sdk/'>Mapbox iOS SDK</a> or <a href='https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/'>Mapbox macOS SDK</a> should consult the iOS SDK API reference for platform-appropriate documentation of style-related features.</p>
+      <p>使用 <a href='https://www.mapbox.com/ios-sdk/'>Mapbox iOS SDK</a> 或 <a href='https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/'>Mapbox macOS SDK</a> 的开发人员应参考与样式功能相关的 iOS SDK API 平台适用参考文档。</p>
     </div>
 
     <div class='prose'>
       <a id='root' class='anchor'></a>
       <h2><a href='#root' title='link to root'>Root Properties</a></h2>
-      <p>Root level properties of a Mapbox style specify the map's layers, tile sources and other resources, and default values for the initial camera position when not specified elsewhere.</p>
+      <p>Mapbox 样式根级属性指定地图的图层、切片数据源等，以及未指定 camera 位置时 camera 的初始位置。</p>
       <div class='space-bottom1 clearfix'>
 {% highlight json%}
 {
@@ -126,7 +126,7 @@ navigation:
       <a id='light' class='anchor'></a>
       <h2><a href='#light' title='link to light'>Light</a></h2>
       <p>
-        A style's <code>light</code> property provides global light source for that style.
+        样式的 <code>light</code> 属性为给定样式提供全局光源。
         <% if (ref.$root.light.example) { %>
         <div class='space-bottom1 pad2x clearfix'>
 {% highlight json %}
@@ -149,23 +149,17 @@ navigation:
       <a id='sources' class='anchor'></a>
       <h2><a href='#sources' title='link to sources'>Sources</a></h2>
       <p>
-        Sources supply data to be shown on the map. The type of source is specified by the <code>"type"</code> property,
-        and must be one of <var><%= source_types.join('</var>, <var>') %></var>. Adding a source
-        won't immediately make data appear on the map because sources don't contain
-        styling details like color or width. Layers refer
-        to a source and give it a visual representation. This makes it possible
-        to style the same source in different ways, like differentiating between
-        types of roads in a highways layer.
+        数据源（Sources）提供显示在地图上的数据。 数据源的类型由 <code>"type"</code> 属性指定，
+        并且必须是 <var><%= source_types.join('</var>, <var>') %></var>的形式。 添加数据源并不会立即在地图上显示，因为数据源不包括像颜色或宽度这样的细节。不同图层可涉及同一个数据源并为其添加视觉效果。这就让我们可以用不同的方法为同一个数据源添加样式，如在道路图层中区分不同类型的路。
       </p>
       <p>
-        Tiled sources (vector and raster) must specify
-        their details in terms of the <a href="https://github.com/mapbox/tilejson-spec">TileJSON specification</a>.
-        This can be done in several ways:
+        切片数据源（矢量和栅格）必须就 <a href="https://github.com/mapbox/tilejson-spec">TileJSON specification</a>指定出细节。
+        有几种方法可以实现：
       </p>
       <ul>
         <li>
-          By supplying TileJSON properties such as <code>"tiles"</code>, <code>"minzoom"</code>, and
-          <code>"maxzoom"</code> directly in the source:
+          直接在数据源中使用 TileJSON 属性，如： <code>"tiles"</code>, <code>"minzoom"</code>, 和
+          <code>"maxzoom"</code>
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
 "mapbox-streets": {
@@ -180,7 +174,7 @@ navigation:
           </div>
         </li>
         <li>
-          By providing a <code>"url"</code> to a TileJSON resource:
+          给 TileJSON 源添加一个 <code>"url"</code>：
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
 "mapbox-streets": {
@@ -191,10 +185,10 @@ navigation:
           </div>
         </li>
         <li>
-          By providing a url to a WMS server that supports
-          EPSG:3857 (or EPSG:900913) as a source of tiled data.
-          The server url should contain a <code>"{bbox-epsg-3857}"</code>
-          replacement token to supply the <code>bbox</code> parameter.
+          给 WMS 服务器添加一个支持
+          EPSG:3857 (or EPSG:900913) 的 url 作为切片数据的数据源。
+          服务器 url 应包含一个 <code>"{bbox-epsg-3857}"</code>
+          替换令牌（replacement token）以提供 <code>bbox</code> 参数。
 {% highlight json%}
 "wms-imagery": {
   "type": "raster",
@@ -212,10 +206,9 @@ navigation:
         <div id='sources-vector' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-vector' title='link to vector'>vector</a></h3>
           <p>
-            A vector tile source. Tiles must be in <a href="https://www.mapbox.com/developers/vector-tiles/">Mapbox
-            Vector Tile format</a>. All geometric coordinates in vector tiles must be between <code>-1 * extent</code> and <code>(extent * 2) - 1</code> inclusive. All layers that use a vector source must specify a <code>"source-layer"</code> value.
-            For vector tiles hosted by Mapbox, the <code>"url"</code> value should be of the
-            form <code>mapbox://<var>mapid</var></code>.
+           矢量切片数据源。切片必须是 <a href="https://www.mapbox.com/developers/vector-tiles/">Mapbox
+            Vector Tile 格式</a>。 所有矢量切片的地理坐标必须在 <code>-1 * extent</code> 和 <code>(extent * 2) - 1</code>（含范围边界值）之间。 所有使用矢量数据源的图层必须指定 <code>"source-layer"</code> 值。
+            对于由 Mapbox 托管的矢量切片，the <code>"url"</code> 值应以 <code>mapbox://<var>mapid</var></code>的形式表示。
           </p>
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -259,8 +252,8 @@ navigation:
         <div id='sources-raster' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-raster' title='link to raster'>raster</a></h3>
           <p>
-            A raster tile source. For raster tiles hosted by Mapbox, the <code>"url"</code> value should be of the
-            form <code>mapbox://<var>mapid</var></code>.
+            栅格切片数据源。由 Mapbox 托管的数据源，the <code>"url"</code> 值应以
+            <code>mapbox://<var>mapid</var></code>形式表示。
           </p>
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -301,8 +294,8 @@ navigation:
         <div id='sources-geojson' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-geojson' title='link to geojson'>geojson</a></h3>
           <p>
-            A <a href="http://geojson.org/">GeoJSON</a> source. Data must be provided via a <code>"data"</code>
-            property, whose value can be a URL or inline GeoJSON.
+            <a href="http://geojson.org/">GeoJSON</a> 数据源。 数据必须通过 <code>"data"</code>
+            属性提供，其值可以是一个 URL 或内联（inline）GeoJSON。
           </p>
   <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -323,9 +316,7 @@ navigation:
 {% endhighlight %}
           </div>
         <p>
-          This example of a GeoJSON source refers to an external GeoJSON document via its URL. The
-          GeoJSON document must be on the same domain or accessible using
-          <a href='http://enable-cors.org/'>CORS</a>.
+          该 GeoJSON 数据源示例通过 URL 参考外部 GeoJSON 文件。 GeoJSON 文件必须在同一个域中，或者可使用 <a href='http://enable-cors.org/'>CORS</a> 访问。
         </p>
   <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -372,11 +363,10 @@ navigation:
         <div id='sources-image' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-image' title='link to image'>image</a></h3>
           <p>
-            An image source. The <code>"url"</code> value contains the image location.
+            图像数据源。 <code>"url"</code> 值包含图像的位置。
           </p>
           <p>
-            The <code>"coordinates"</code> array contains <code>[longitude, latitude]</code> pairs for the image
-            corners listed in clockwise order: top left, top right, bottom right, bottom left.
+            <code>"coordinates"</code> 数组包含以顺时针方向列出的图像顶点的 <code>[longitude, latitude]</code> 数对：左上、左下、右上和右下。
           </p>
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -422,13 +412,10 @@ navigation:
         <div id='sources-video' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-video' title='link to video'>video</a></h3>
           <p>
-            A video source. The <code>"urls"</code> value is an array. For each URL in the array,
-            a video element <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source">source</a> will
-            be created, in order to support same media in multiple formats supported by different browsers.
+            视频数据源。 <code>"urls"</code> 值是一个数组。 针对数组中的每一个 url 都会生成一个视频元素 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source">source</a>，以支持同一媒体在不同浏览器支持下的多种格式。
           </p>
           <p>
-            The <code>"coordinates"</code> array contains <code>[longitude, latitude]</code> pairs for the video
-            corners listed in clockwise order: top left, top right, bottom right, bottom left.
+            <code>"coordinates"</code> 数组包含以顺时针方向列出的视频顶点的 <code>[longitude, latitude]</code> 数对：左上、右上、左下和右下。
           </p>
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
@@ -467,9 +454,9 @@ navigation:
             <tr>
               <td>basic functionality</td>
               <td>&gt;= 0.10.0</td>
-              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">Not yet supported</a></td>
-              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">Not yet supported</a></td>
-              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">Not yet supported</a></td>
+              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">尚未支持</a></td>
+              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">尚未支持</a></td>
+              <td><a href="https://github.com/mapbox/mapbox-gl-native/issues/601">尚未支持</a></td>
             </tr>
             </tbody>
           </table>
@@ -477,14 +464,13 @@ navigation:
         <div id='sources-canvas' class='pad2 keyline-bottom'>
           <h3 class='space-bottom1'><a href='#sources-canvas' title='link to canvas'>canvas</a></h3>
           <p>
-            A canvas source. The <code>"canvas"</code> value is the ID of the canvas element in the document.
+            Canvas 数据源。 <code>"canvas"</code> 值是文件里画布（canvas）元素的 ID。
           </p>
           <p>
-            The <code>"coordinates"</code> array contains <code>[longitude, latitude]</code> pairs for the video
-            corners listed in clockwise order: top left, top right, bottom right, bottom left.
+            <code>"coordinates"</code> 数组包含以顺时针方向列出的 canvas 顶点的 <code>[longitude, latitude]</code> 数对：左上、右上、左下和右下。
           </p>
           <p>
-            If an HTML document contains a canvas such as this:
+            如果一个 HTML 文件包含如下的画布：
           </p>
           <div class='space-bottom1 clearfix'>
 {% highlight html%}
@@ -492,7 +478,7 @@ navigation:
 {% endhighlight %}
           </div>
           <p>
-            the corresponding canvas source would be specified as follows:
+            对应的 canvas 数据源将以下列方式给出：
           </p>
           <div>
 {% highlight json %}
@@ -543,9 +529,8 @@ navigation:
       <a id='sprite' class='anchor'></a>
       <h2><a href='#sprite' title='link to sprite'>Sprite</a></h2>
       <p>
-        A style's <code>sprite</code> property supplies a URL template for loading small images to use in
-        rendering <code>background-pattern</code>, <code>fill-pattern</code>, <code>line-pattern</code>,
-        and <code>icon-image</code> style properties.
+        样式的 <code>sprite</code> 属性将在渲染 <code>background-pattern</code>, <code>fill-pattern</code>, <code>line-pattern</code>,
+        和 <code>icon-image</code> 样式属性时为加载的小图提供 URL 模板。
         <% if (ref.$root.sprite.example) { %>
         <div class='space-bottom1 pad2x clearfix'>
 {% highlight json %}
@@ -556,16 +541,12 @@ navigation:
       </p>
 
       <p>
-        A valid sprite source must supply two types of files:
+        有效的 sprite 数据源必须提供两种文件类型：
       </p>
       <ul>
         <li>
-          An <em>index file</em>, which is a JSON document containing a description of each image contained in the sprite. The
-          content of this file must be a JSON object whose keys form identifiers to be used as the values of the above
-          style properties, and whose values are objects describing the dimensions (<code>width</code> and
-          <code>height</code> properties) and pixel ratio (<code>pixelRatio</code>) of the image and its location within
-          the sprite (<code>x</code> and <code>y</code>). For example, a sprite containing a single image might have the
-          following index file contents:
+          <em>index 文件</em>，即对 sprite 中每一个图像都有描述的 JSON 文件。 该文件的内容必须为一个 JSON 对象且其 key 值构成该文件的标识符，这些标识符将被用作上述样式属性的值且这些值是用来描述图像尺寸 (<code>width</code> 和
+          <code>height</code> 属性)、像素比 (<code>pixelRatio</code>) 和在 sprite (<code>x</code> 和 <code>y</code>) 中的位置。 例如，包含单个图像的 Sprite 可能具有以下索引文件内容：
           <div class='space-bottom1 clearfix'>
 {% highlight json%}
 {
@@ -579,28 +560,20 @@ navigation:
 }
 {% endhighlight %}
           </div>
-          Then the style could refer to this sprite image by creating a symbol layer with the layout property
-          <code>"icon-image": "poi"</code>, or with the tokenized value <code>"icon-image": "{icon}"</code> and vector
-          tile features with a <code>icon</code> property with the value <code>poi</code>.
+          然后样式就可以通过 layout 属性 <code>"icon-image": "poi"</code>，或符号化的值 <code>"icon-image": "{icon}"</code> 和带 <code>icon</code> 属性、<code>poi</code> 值的切片要素，创建一个符号图层来参考这个 sprite 图像。
         </li>
         <li>
-          <em>Image files</em>, which are PNG images containing the sprite data.
+          <em>图像文件</em>，即包含 sprite 数据的 PNG 图像。
         </li>
       </ul>
       <p>
-        Mapbox SDKs will use the value of the <code>sprite</code> property in the style to generate the URLs for
-        loading both files. First, for both file types, it will append <code>@2x</code> to the URL on high-DPI devices.
-        Second, it will append a file extension: <code>.json</code> for the index file, and <code>.png</code> for the
-        image file. For example, if you specified <code>"sprite": "https://example.com/sprite"</code>, renderers would
-        load <code>https://example.com/sprite.json</code> and <code>https://example.com/sprite.png</code>, or
-        <code>https://example.com/sprite@2x.json</code> and <code>https://example.com/sprite@2x.png</code>.
+        Mapbox SDKs 将使用样式中 <code>sprite</code> 属性的值生成 URLs 以加载这两个文件。 首先，对两种文件类型它都将在高-DPI 设备的 URL 后添加 <code>@2x</code>。
+        其次，它将给索引文件添加文件扩展名： <code>.json</code>，为图像文件添加扩展名 <code>.png</code>。 例如，如果你指定了 <code>"sprite": "https://example.com/sprite"</code>，渲染器将加载 <code>https://example.com/sprite.json</code> 和 <code>https://example.com/sprite.png</code>，或
+        <code>https://example.com/sprite@2x.json</code> 和 <code>https://example.com/sprite@2x.png</code>。
       </p>
       <p>
-        If you are using Mapbox Studio, you will use prebuilt sprites provided by Mapbox, or you can upload custom SVG
-        images to build your own sprite. In either case, the sprite will be built automatically and supplied by Mapbox
-        APIs. If you want to build a sprite by hand and self-host the files, you can use
-        <a href="https://github.com/mapbox/spritezero-cli">spritezero-cli</a>, a command line utility that builds Mapbox
-        GL compatible sprite PNGs and index files from a directory of SVGs.
+        如果你正使用 Mapbox Studio，你将使用 Mapbox 提供的预构建 sprite，或者你可以上传自定义 SVG 图像以构建你自己的 sprite。 无论哪种情形，Mapbox API 将自动构建并提供 sprite。 如果你想手动创建 sprite 并由自己来托管文件，可以用
+        <a href="https://github.com/mapbox/spritezero-cli">spritezero-cli</a>，该命令行实用程序会在 SVG 目录建立与 Mapbox GL 兼容的 sprite PNG 和索引文件。
       </p>
     </div>
 
@@ -609,7 +582,7 @@ navigation:
       <a id='glyphs' class='anchor'></a>
       <h2><a href='#glyphs' title='link to glyphs'>Glyphs</a></h2>
       <p>
-        A style's <code>glyphs</code> property provides a URL template for loading signed-distance-field glyph sets in PBF format.
+        样式的 <code>glyphs</code> 属性为加载 PBF 格式的 signed-distance-field 字形符号（glyph）集提供 URL 模板。
         <% if (ref.$root.glyphs.example) { %>
         <div class='space-bottom1 pad2x clearfix'>
 {% highlight json %}
@@ -617,18 +590,14 @@ navigation:
 {% endhighlight %}
         </div>
         <% } %>
-        This URL template should include two tokens:
+        该 URL 模板应包含两个令牌（token）：
         <ul>
             <li><code>{fontstack}</code>
-                When requesting glyphs, this token is replaced with a comma separated list of fonts from a font
-                stack specified in the <a href="#layout-symbol-text-font"><code>text-font</code></a> property of
-                a symbol layer.
+                在请求获取字形时，由某个符号图层 <a href="#layout-symbol-text-font"><code>text-font</code></a> 属性指定的字体堆栈中， 用逗号分隔的字体列表将替换该令牌。
             </li>
             <li><code>{range}</code>
-                When requesting glyphs, this token is replaced with a range of 256 Unicode code points. For example,
-                to load glyphs for the <a href="https://en.wikipedia.org/wiki/Unicode_block">Unicode Basic Latin and
-                    Basic Latin-1 Supplement blocks</a>, the range would be <code>0-255</code>. The actual ranges that
-                are loaded are determined at runtime based on what text needs to be displayed.
+                在请求获取字形时，该令牌将被 256 个 Unicode 代码点范围内的点替换。例如，要为 <a href="https://en.wikipedia.org/wiki/Unicode_block">Unicode Basic Latin 和
+                    Basic Latin-1 Supplement blocks</a>加载字形，范围将为 <code>0-255</code>。 实际的加载范围是在运行时根据需要呈现的文本内容而定的。
             </li>
         </ul>
       </p>
@@ -639,7 +608,7 @@ navigation:
       <a id='transition' class='anchor'></a>
       <h2><a href='#transition' title='link to transition'>Transition</a></h2>
       <p>
-        A style's <code>transition</code> property provides global transition defaults for that style.
+        样式的 <code>transition</code> 属性为该样式提供全局的默认变换设置。
         <% if (ref.$root.transition.example) { %>
         <div class='space-bottom1 pad2x clearfix'>
 {% highlight json %}
@@ -662,14 +631,10 @@ navigation:
       <a id='layers' class='anchor'></a>
       <h2><a href='#layers' title='link to layers'>Layers</a></h2>
       <p>
-        A style's <code>layers</code> property lists all of the layers available in that style. The type of
-        layer is specified by the <code>"type"</code> property, and must be one of <var><%= layer_types.join(', ') %></var>.
+        样式的 <code>layers</code> 属性将列出该样式中所有可用的图层。 图层的类型由 <code>"type"</code> 属性规定，且指定方式必须为 <var><%= layer_types.join(', ') %></var>。
       </p>
       <p>
-        Except for layers of the <var>background</var> type, each layer needs
-        to refer to a source. Layers take the data that they get from a source,
-        optionally filter features, and then define how those features are
-        styled.
+        除了 <var>background</var> 类型的图层，其它每一个图层都需要参考一个数据源。 图层从数据源获取数据，选择性地筛选要素，然后定义为这些要素添加样式的方式。
       </p>
         <% if (ref.$root.layers.example) { %>
         <div class='space-bottom1 pad2x clearfix'>
@@ -689,18 +654,14 @@ navigation:
 
     <div class='pad2 prose'>
       <p>
-        Layers have two sub-properties that determine how data from that layer is rendered: <code>layout</code> and
-        <code>paint</code> properties.
+        图层有两个子属性用来定义如何渲染该图层的数据，即 <code>layout</code> 和
+        <code>paint</code> 属性。
       </p>
       <p>
-        <em>Layout properties</em> appear in the layer's <code>"layout"</code> object. They are applied early in the rendering process and
-        define how data for that layer is passed to the GPU. For efficiency, a layer can share layout properties with
-        another layer via the <code>"ref"</code> layer property, and should do so where possible. This will decrease
-        processing time and allow the two layers will share GPU memory and other resources associated with the layer.
+        <em>Layout 属性</em> 位于图层的 <code>"layout"</code> 对象中。 在渲染过程之初，这两个属性将被用来定义如何将该图层的数据传递给 GPU。 为了提高效率，图层可以通过 <code>"ref"</code> 与另一图层共享 layout 属性，并在需要的时候尽可能共享。 这样可以减少处理时间并使两个图层可以共享 GPU 内存和其它与图层关联的数据源。
       </p>
       <p>
-        <em>Paint properties</em> are applied later in the rendering process. A layer that shares layout properties with another
-        layer can have independent paint properties. Paint properties appear in the layer's <code>"paint"</code> object.
+        <em>Paint 属性</em> 将在之后的渲染过程中使用。 和另一个图层共享 layout 属性的图层可以有独立的 paint 属性。 Paint 属性位于图层的 <code>"paint"</code> 对象中。
       </p>
       <p class='space-bottom4 quiet small'>Key:
         <a class='icon smooth-ramp quiet micro space-right inline' href='#types-function' title='Supports interpolated functions'>supports interpolated functions</a>
@@ -740,14 +701,14 @@ navigation:
     <div class='pad2 prose'>
       <a id='types' class='anchor'></a>
       <h2><a href='#types' title='link to types'>Types</a></h2>
-      <p>A Mapbox style contains values of various types, most commonly as values for the style properties of a layer.</p>
+      <p>Mapbox 样式包含不同类型的值，最常见的是图层的样式属性值。</p>
 
       <div class='keyline-all fill-white'>
         <div class='pad2 keyline-bottom'>
           <a id='types-color' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-color' title='link to color'>Color</a></h3>
           <p>
-            Colors are written as JSON strings in a variety of permitted formats: HTML-style hex values, rgb, rgba, hsl, and hsla. Predefined HTML colors names, like <code>yellow</code> and <code>blue</code>, are also permitted.
+            颜色可以多种可用的格式写为 JSON 字符串： HTML-style hex values, rgb, rgba, hsl, 和 hsla。 同时允许预定义 HTML 颜色名称，如 <code>yellow</code> 和 <code>blue</code>。
           </p>
 {% highlight json %}
 {
@@ -761,13 +722,13 @@ navigation:
 }
 {% endhighlight %}
 
-          <p>Especially of note is the support for hsl, which can be <a href='http://mothereffinghsl.com/'>easier to reason about than rgb()</a>.</p>
+          <p>尤其值得注意的是对 hsl 的支持，它比 <a href='http://mothereffinghsl.com/'>rgb() 更易推论</a>。</p>
         </div>
 
         <div class='pad2 keyline-bottom'>
           <a id='types-enum' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-enum' title='link to enum'>Enum</a></h3>
-          <p>One of a fixed list of string values. Use quotes around values.</p>
+          <p>字符串值的固定列表之一。 对值使用引号。</p>
 {% highlight json %}
 {
   "text-transform": "uppercase"
@@ -778,7 +739,7 @@ navigation:
         <div class='pad2 keyline-bottom'>
           <a id='types-string' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-string' title='link to string'>String</a></h3>
-          <p>A string is basically just text. In Mapbox styles, you're going to put it in quotes. Strings can be anything, though pay attention to the case of <code>text-field</code> - it actually will refer to features, which you refer to by putting them in curly braces, as seen in the example below.</p>
+          <p>字符串基本上只是文本。 在 Mapbox 样式中，你需要将字符串放在引号里。 字符串可以是任何东西，但需要注意 <code>text-field</code> - 实际上它将参照要素，你需要将要素放在花括号里，如下列示例所示。</p>
 {% highlight json %}
 {
   "text-field": "{MY_FIELD}"
@@ -789,7 +750,7 @@ navigation:
         <div class='pad2 keyline-bottom'>
           <a id='types-boolean' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-boolean' title='link to boolean'>Boolean</a></h3>
-          <p>Boolean means yes or no, so it accepts the values <code>true</code> or <code>false</code>.</p>
+          <p>布尔值（Boolean）表示是或否，因此它接收的值为 <code>true</code> 或 <code>false</code>。</p>
 {% highlight json %}
 {
   "fill-enabled": true
@@ -800,7 +761,7 @@ navigation:
         <div class='pad2 keyline-bottom'>
           <a id='types-number' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-number' title='link to number'>Number</a></h3>
-          <p>A number value, often an integer or floating point (decimal number). Written without quotes.</p>
+          <p>为数字值，通常为整数或浮点数（十进制数）。书写时不用引号。</p>
 {% highlight json %}
 {
   "text-size": 24
@@ -811,8 +772,7 @@ navigation:
         <div class='pad2 keyline-bottom'>
           <a id='types-array' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-array' title='link to array'>Array</a></h3>
-          <p>Arrays are comma-separated lists of one or more numbers in a specific
-          order. For example, they're used in line dash arrays, in which the numbers specify intervals of line, break, and line again.</p>
+          <p>数组（Arrays）是以特定顺序列出的由一个或多个数字组成的逗号分隔列表。例如，它们在 line dash 数组中使用，其中的数字将指定线的间距、间隔和线。</p>
 {% highlight json %}
 {
   "line-dasharray": [2, 4]
@@ -824,60 +784,60 @@ navigation:
           <a id='types-function' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-function' title='link to function'>Function</a></h3>
 
-          <p>The value for any layout or paint property may be specified as a <em>function</em>. Functions allow you to make the appearance of a map feature change with the current zoom level and/or the feature's properties.</p>
+          <p>Layout 或 paint 属性的任何值都可以指定为 <em>function</em>。 函数（Functions）可以帮助你根据当前的缩放级别和/或要素的属性来改变地图要素的外观。</p>
 
           <div class='col12 pad1x'>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-stops" href="#function-stops">stops</a></span></div>
-              <div><em class='quiet'>Required (except for <var>identity</var> functions) <a href='#types-array'>array</a>.</em></div>
-              <div>Functions are defined in terms of input and output values. A set of one input value and one output value is known as a "stop."</div>
+              <div><em class='quiet'>需要的（除了 <var>identity</var> 函数）<a href='#types-array'>数组</a>。</em></div>
+              <div>函数根据输入和输出值进行定义。 一组由一个输入值和一个输出值组成的数组称作一个"stop。"</div>
             </div>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-property" href="#function-property">property</a></span></div>
-              <div><em class='quiet'>Optional <a href='#types-string'>string</a>.</em></div>
-              <div>If specified, the function will take the specified feature property as an input. See <a href="#types-function-zoom-property">Zoom Functions and Property Functions</a> for more information.</div>
+              <div><em class='quiet'>也可为 <a href='#types-string'>string</a>。</em></div>
+              <div>如果指定了，函数将把指定的要素属性作为一个输入值。 查看 <a href="#types-function-zoom-property">Zoom Functions 和 Property Functions</a> 以获取更多信息。</div>
             </div>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-base" href="#function-base">base</a></span></div>
-              <div><em class='quiet'>Optional <a href='#types-number'>number</a>. Default is <%= ref.function.base.default %>.</em></div>
-              <div>The exponential base of the interpolation curve. It controls the rate at which the function output increases. Higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.</div>
+              <div><em class='quiet'>也可为 <a href='#types-number'>number</a>。 默认是 <%= ref.function.base.default %>。</em></div>
+              <div>插值曲线的指数函数的底。它控制函数输出值增加的速率。值越高，输出值就越接近范围的最高值。当值越接近 1，输出值就呈线性上涨。</div>
             </div>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-type" href="#function-type">type</a></span></div>
-              <div><em class='quiet'>Optional <a href='#types-string'>enum</a>. One of <var>identity</var>, <var>exponential</var>, <var>interval</var>, <var>categorical</var>.</em></div>
+              <div><em class='quiet'>也可为 <a href='#types-string'>enum</a>。 One of <var>identity</var>, <var>exponential</var>, <var>interval</var>, <var>categorical</var>.</em></div>
               <dl>
                 <dt><var>identity</var></dt>
-                <dd>functions return their input as their output.</dd>
+                <dd>函数返回它们的输入值作为输出值。</dd>
                 <dt><var>exponential</var></dt>
-                <dd>functions generate an output by interpolating between stops just less than and just greater than the function input. The domain must be numeric. This is the default for properties marked with <span class='icon smooth-ramp quiet micro space-right indivne' title='continuous'></span>, the "exponential" symbol.</dd>
+                <dd>函数通过在 stop 之间插值生成一个输出值，该值仅刚好小于或大于函数输入值。 域必须是数字。 对于标记为 <span class='icon smooth-ramp quiet micro space-right indivne' title='continuous'></span>"exponential" 符号的属性这是默认的。</dd>
                 <dt><var>interval</var></dt>
-                <dd>functions return the output value of the stop just less than the function input. The domain must be numeric. This is the default for properties marked with <span class='icon step-ramp quiet micro space-right indivne' title='discrete'></span>, the "interval" symbol.</dd>
+                <dd>函数返回 stop 的输出值，该值仅刚好小于或大于函数输入值。 域必须是数字。 对于标记为 <span class='icon step-ramp quiet micro space-right indivne' title='discrete'></span> "interval" 符号的属性这是默认的。</dd>
                 <dt><var>categorical</var></dt>
-                <dd>functions return the output value of the stop equal to the function input.</dd>
+                <dd>函数返回的 stop 输出值等于函数输入值。</dd>
               </dl>
             </div>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-default" href="#function-default">default</a></span></div>
-              <div>A value to serve as a fallback function result when a value isn't otherwise available. It is used in the following circumstances:</div>
+              <div>当值不可用时，该值将作为回退函数的值产生。 该值在以下情况下使用：</div>
               <ul>
-                <li>In categorical functions, when the feature value does not match any of the stop domain values.</li>
-                <li>In property and zoom-and-property functions, when a feature does not contain a value for the specified property.</li>
-                <li>In identity functions, when the feature value is not valid for the style property (for example, if the function is being used for a <var>circle-color</var> property but the feature property value is not a string or not a valid color).</li>
-                <li>In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.</li>
+                <li>在 categorical 函数中，当要素的值和 stop 域中的所有值均不匹配时。</li>
+                <li>在 property 和 zoom-and-property 函数中，当一个要素不含特定属性值时。</li>
+                <li>在 identity 函数中，当要素值对样式属性无效时（例如，如果函数被用于 <var>circle-color</var> 属性但要素属性值不是字符串或不是有效的颜色值）。</li>
+                <li>在 interval 或 exponential property 和 zoom-and-property 函数中，当要素值不是数字时。</li>
               </ul>
-              <div>If no default is provided, the style property's default is used in these circumstances.</div>
+              <div>如果未提供默认值，样式属性的默认值将被用于这些请求。</div>
             </div>
             <div class="col12 clearfix pad0y pad2x space-bottom2">
               <div><span class='code'><a id="function-colorSpace" href="#function-colorSpace">colorSpace</a></span></div>
-              <div><em class='quiet'>Optional <a href='#types-string'>enum</a>. One of <var>rgb</var>, <var>lab</var>, <var>hcl</var>.</em></div>
-              <div class=' space-bottom1'>The color space in which colors interpolated. Interpolating colors in perceptual color spaces like LAB and HCL tend to produce color ramps that look more consistent and produce colors that can be differentiated more easily than those interpolated in RGB space.</div>
+              <div><em class='quiet'>也可为 <a href='#types-string'>enum</a>。 <var>rgb</var>，<var>lab</var>，<var>hcl</var>之一。</em></div>
+              <div class=' space-bottom1'>插入颜色值的颜色空间。在如 LAB 和 HCL 的感知颜色空间中插入颜色产生的颜色过渡表会比 RGB 空间中插入的颜色更协调、颜色更易于区分。</div>
               <dl class="space-bottom">
                 <dt><var>rgb</var></dt>
-                <dd>Use the RGB color space to interpolate color values</dd>
+                <dd>用 RGB 颜色空间插入颜色值</dd>
                 <dt><var>lab</var></dt>
-                <dd>Use the LAB color space to interpolate color values.</dd>
+                <dd>用 LAB 颜色空间插入颜色值。</dd>
                 <dt><var>hcl</var></dt>
-                <dd>Use the HCL color space to interpolate color values, interpolating the Hue, Chroma, and Luminance channels individually.</dd>
+                <dd>用 HCL 颜色空间插入颜色值，分别插入色彩（Hue）、 色度（Chroma）和亮度（Luminance）通道。</dd>
               </dl>
             </div>
           </div>
@@ -952,14 +912,14 @@ navigation:
             <tr>
               <td><code>colorSpace</code></td>
               <td class='center'>&gt;= 0.26.0</td>
-              <td class='center'>Not yet supported</td>
-              <td class='center'>Not yet supported</td>
-              <td class='center'>Not yet supported</td>
+              <td class='center'>尚未支持</td>
+              <td class='center'>尚未支持</td>
+              <td class='center'>尚未支持</td>
             </tr>
             </tbody>
           </table>
 
-          <p><strong>Zoom functions</strong> allow the appearance of a map feature to change with map’s zoom level. Zoom functions can be used to create the illusion of depth and control data density. Each stop is an array with two elements: the first is a zoom level and the second is a function output value.</p>
+          <p><strong>Zoom functions</strong> 允许地图要素的外观随着地图的缩放级别而改变。 Zoom functions 可以用来创建景深的视觉效果并控制数据的密度。 每一个 stop 都是有两个元素的数组： 第一个是缩放级别，第二个是一个函数输出值。</p>
 
           <div class='col12 space-bottom'>
               {% highlight js %}
@@ -979,11 +939,11 @@ navigation:
               {% endhighlight %}
           </div>
 
-          <p>The rendered values of <a href='#types-color'>color</a>, <a href='#types-number'>number</a>, and <a href='#types-array'>array</a> properties are intepolated between stops. <a href='#types-enum'>Enum</a>, <a href='#types-boolean'>boolean</a>, and <a href='#types-string'>string</a> property values cannot be intepolated, so their rendered values only change at the specified stops.</p>
+          <p> <a href='#types-color'>color</a>，<a href='#types-number'>number</a> 和 <a href='#types-array'>array</a> 属性的渲染值都被插入在了不同的 stop 之间。 <a href='#types-enum'>Enum</a>，<a href='#types-boolean'>boolean</a> 和 <a href='#types-string'>string</a> 属性值无法插入，因此它们的渲染值只有在指定的 stop 中被改变。</p>
 
-          <p>There is an important difference between the way that zoom functions render for <em>layout</em> and <em>paint</em> properties. Paint properties are continuously re-evaluated whenever the zoom level changes, even fractionally. The rendered value of a paint property will change, for example, as the map moves between zoom levels <code>4.1</code> and <code>4.6</code>. Layout properties, on the other hand, are evaluated only once for each integer zoom level. To continue the prior example: the rendering of a layout property will <em>not</em> change between zoom levels <code>4.1</code> and <code>4.6</code>, no matter what stops are specified; but at zoom level <code>5</code>, the function will be re-evaluated according to the function, and the property's rendered value will change. (You can include fractional zoom levels in a layout property zoom function, and it will affect the generated values; but, still, the rendering will only change at integer zoom levels.)</p>
+          <p>Zoom functions 在渲染 <em>layout</em> 和 <em>paint</em> 属性时有重要的区别。 任何时候缩放级别发生改变, 即使是分数大小的变化，Paint 属性都会持续重新求值。 Paint 属性的渲染值将发生变化，例如，当地图在缩放级别 <code>4.1</code> 和 <code>4.6</code> 之间进行变化时。 而另一方面 Layout 属性仅在每一个整数缩放级别时求值。 接着上一个例子，layout 属性的渲染将 <em>不会</em> 在缩放级别位于 <code>4.1</code> 和 <code>4.6</code> 之间时改变，无论指定的是哪些 stop； 但缩放级别为 <code>5</code>时，该函数将重新求值，且属性的渲染值将会改变。（你可以在 layout 属性缩放函数中加入分数缩放级别，这会影响生成的值；但是渲染仍然只会在整数缩放级别时发生改变。）</p>
 
-          <p><strong>Property functions</strong> allow the appearance of a map feature to change with its properties. Property functions can be used to visually differentate types of features within the same layer or create data visualizations. Each stop is an array with two elements, the first is a property input value and the second is a function output value. Note that support for property functions is not available across all properties and platforms at this time.</p>
+          <p><strong>Property functions</strong> 允许地图元素的外观随着其属性而改变。 Property functions 可以被用来在同一图层从视觉上区分要素类型或创建可视化。 每一个 stop 都是由两个元素组成的数组，一个属性输入值和一个函数输出值。 注意此时在所有属性和平台上都不能获取对属性函数的支持。</p>
 
           <div class='col12 space-bottom'>
               {% highlight js %}
@@ -1004,7 +964,7 @@ navigation:
               {% endhighlight %}
           </div>
 
-          <p><a id='types-function-zoom-property' class='anchor'></a><strong>Zoom-and-property functions</strong> allow the appearance of a map feature to change with both its properties <em>and</em> zoom. Each stop is an array with two elements, the first is an object with a property input value and a zoom, and the second is a function output value. Note that support for property functions is not yet complete.</p>
+          <p><a id='types-function-zoom-property' class='anchor'></a><strong>Zoom-and-property functions</strong> 允许地图要素的外观跟随其属性 <em>和</em> 缩放级别而改变。 每一个 stop 都是由两个元素组成的数组，带一个属性输入值和一个缩放值的对象，和一个函数输出值。 注意对属性函数的支持尚未完成。</p>
 
           <div class='col12 space-bottom'>
               {% highlight js %}
@@ -1036,38 +996,38 @@ navigation:
         <div class='pad2'>
           <a id='types-filter' class='anchor'></a>
           <h3 class='space-bottom1'><a href='#types-filter' title='link to filter'>Filter</a></h3>
-          <p>A filter selects specific features from a layer. A filter is an array of one of the following forms:</p>
+          <p>筛选器（filter）从图层选择特点的要素。 筛选器是以下形式之一：</p>
 
           <div class='col12 clearfix space-bottom2'>
 
             <h4>Existential Filters</h4>
 
             <div class='space-bottom1'>
-              <code>["has", <var>key</var>]</code> <span class='quiet pad1x strong small'><var>feature[key]</var> exists</span>
+              <code>["has", <var>key</var>]</code> <span class='quiet pad1x strong small'><var>feature[key]</var> 存在</span>
             </div>
             <div class='space-bottom1'>
-              <code>["!has", <var>key</var>]</code> <span class='quiet pad1x strong small'><var>feature[key]</var> does not exist</span>
+              <code>["!has", <var>key</var>]</code> <span class='quiet pad1x strong small'><var>feature[key]</var> 不存在</span>
             </div>
 
             <h4>Comparison Filters</h4>
 
             <div class='space-bottom1'>
-              <code>["==", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>equality: <var>feature[key]</var> = <var>value</var></span>
+              <code>["==", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>相等： <var>feature[key]</var> = <var>value</var></span>
             </div>
             <div class='space-bottom1'>
-              <code>["!=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>inequality: <var>feature[key]</var> ≠ <var>value</var></span>
+              <code>["!=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>不相等： <var>feature[key]</var> ≠ <var>value</var></span>
             </div>
             <div class='space-bottom1'>
-              <code>["&gt;", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>greater than: <var>feature[key]</var> > <var>value</var></span>
+              <code>["&gt;", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>大于： <var>feature[key]</var> > <var>value</var></span>
             </div>
             <div class='space-bottom1'>
-              <code>["&gt;=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>greater than or equal: <var>feature[key]</var> ≥ <var>value</var></span>
+              <code>["&gt;=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>大于或等于： <var>feature[key]</var> ≥ <var>value</var></span>
             </div>
             <div class='space-bottom1'>
-              <code>["&lt;", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>less than: <var>feature[key]</var> < <var>value</var></span>
+              <code>["&lt;", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>小于： <var>feature[key]</var> < <var>value</var></span>
             </div>
             <div class='space-bottom1'>
-              <code>["&lt;=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>less than or equal: <var>feature[key]</var> ≤ <var>value</var></span>
+              <code>["&lt;=", <var>key</var>, <var>value</var>]</code> <span class='quiet pad1x strong small'>小于等于： <var>feature[key]</var> ≤ <var>value</var></span>
             </div>
 
             <h4>Set Membership Filters</h4>
@@ -1093,36 +1053,31 @@ navigation:
           </div>
 
           <p>
-            A <var>key</var> must be a string that identifies a feature property, or one of the following special keys:
+            <var>key</var> 必须是识别要素属性的字符串，或是以下特殊 key 之一：
           </p>
           <ul>
-            <li><code>"$type"</code>: the feature type. This key may be used with the <code>"=="</code>,
-                <code>"!="</code>, <code>"in"</code>, and <code>"!in"</code> operators. Possible values are
-                <code>"Point"</code>, <code>"LineString"</code>, and <code>"Polygon"</code>.</li>
-            <li><code>"$id"</code>: the feature identifier. This key may be used with the <code>"=="</code>,
-                <code>"!="</code>, <code>"has"</code>, <code>"!has"</code>, <code>"in"</code>,
-                and <code>"!in"</code> operators.</li>
+            <li><code>"$type"</code>： 要素类型。 该 key 可以和 <code>"=="</code>,
+                <code>"!="</code>、 <code>"in"</code> 和 <code>"!in"</code> 运算符。 可能的值为
+                <code>"Point"</code>、 <code>"LineString"</code>、 和 <code>"Polygon"</code>。</li>
+            <li><code>"$id"</code>： 要素的识别标记（identifier）。 该值可以和 <code>"=="</code>、
+                <code>"!="</code>、 <code>"has"</code>、 <code>"!has"</code>、 <code>"in"</code>、
+                和 <code>"!in"</code> 运算符使用。</li>
           </ul>
           <p>
-            A <var>value</var> (and <var>v0</var>, ..., <var>vn</var> for set operators) must be a
-              <a href="#string">string</a>, <a href="#number">number</a>, or <a href="#boolean">boolean</a> to compare
-              the property value against.
+            <var>value</var>（和 <var>v0</var>, ..., <var>vn</var> 集合算符） 必须是
+              <a href="#string">string</a>、 <a href="#number">number</a> 或 <a href="#boolean">boolean</a> 之一用以比较属性值。
           </p>
 
           <p>
-            Set membership filters are a compact and efficient way to test whether a
-            field matches any of multiple values.
+            Set membership filters 是测试某个字段是否与多个值中的任何一个匹配的紧凑且有效的方法。
           </p>
 
           <p>
-            The comparison and set membership filters implement strictly-typed comparisons; for example, all of the
-            following evaluate to false: <code>0 < "1"</code>, <code>2 == "2"</code>, <code>"true" in [true, false]</code>.
+            Comparasion 和 set membership filters 执行强类型（strictly-typed）的对比； 例如，所有以下值均为 false： <code>0 < "1"</code>, <code>2 == "2"</code>, <code>"true" in [true, false]</code>.
           </p>
 
           <p>
-            The <code>"all"</code>, <code>"any"</code>, and <code>"none"</code> filter operators are
-            used to create compound filters. The values <var>f0</var>, ..., <var>fn</var> must be
-            filter expressions themselves.
+            <code>"all"</code>、<code>"any"</code> 和 <code>"none"</code> 过滤器运算符用来创建 compound 过滤器。 <var>f0</var>, ..., <var>fn</var> 必须是过滤器表达式。
           </p>
 
           <div class='space-bottom1 clearfix'>
@@ -1132,9 +1087,8 @@ navigation:
           </div>
 
           <p>
-            This filter requires that the <code>class</code> property of
-            each feature is equal to either "street_major", "street_minor",
-            or "street_limited".
+            该过滤器要求每个要素的 <code>class</code> 属性等于 "street_major"、 "street_minor"、
+            或 "street_limited"。
           </p>
 
           <div class='space-bottom1 clearfix'>
@@ -1144,14 +1098,7 @@ navigation:
           </div>
 
           <p>
-            The combining filter "all" takes the three other filters that
-            follow it and requires all of them to be true for a feature
-            to be included: a feature must have a <code>class</code> equal
-            to "street_limited", its <code>admin_level</code> must be greater
-            than or equal to 3, and its type cannot be Polygon. You could
-            change the combining filter to "any" to allow features matching
-            any of those criteria to be included - features that are Polygons,
-            but have a different <code>class</code> value, and so on.
+            组合过滤器（combining filter）"all" 使用跟随它的其它三个过滤器并要求它们对某个将被包括的要素全部为 true： 此要素必须有一个 <code>class</code> 等于 "street_limited"，其 <code>admin_level</code> 必须大于等于 3，且其类型不能为多边形（Polygon）。 你可以把组合过滤器改为 "any" 以允许要素匹配即将包含的任意标准 —— 要素为多边形（Polygons），但是有不同的 <code>class</code> 值等等。 
           </p>
 
           <div class='space-bottom1 clearfix'>
