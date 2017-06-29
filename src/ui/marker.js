@@ -6,15 +6,15 @@ const Point = require('point-geometry');
 const smartWrap = require('../util/smart_wrap');
 
 /**
- * Creates a marker component
- * @param {HTMLElement=} element DOM element to use as a marker (creates a div element by default)
+ * 创建标记组件
+ * @param {HTMLElement=} element 用作标记的 DOM 元素（默认创建一个 div 元素）
  * @param {Object=} options
- * @param {PointLike=} options.offset The offset in pixels as a {@link PointLink} object to apply relative to the element's top left corner. Negatives indicate left and up.
+ * @param {PointLike=} options.offset 作为 {@link PointLink} 对象对于元素左上角的像素偏移。负数表示左和上。
  * @example
  * var marker = new mapboxgl.Marker()
  *   .setLngLat([30.5, 50.5])
  *   .addTo(map);
- * @see [Add custom icons with Markers](https://www.mapbox.com/mapbox-gl-js/example/custom-marker-icons/)
+ * @see [使用标记组件添加自定义图标](https://www.mapbox.com/mapbox-gl-js/example/custom-marker-icons/)
  */
 class Marker {
 
@@ -32,7 +32,7 @@ class Marker {
     }
 
     /**
-     * Attaches the marker to a map
+     * 将标记添加到地图上
      * @param {Map} map
      * @returns {Marker} `this`
      */
@@ -53,7 +53,7 @@ class Marker {
     }
 
     /**
-     * Removes the marker from a map
+     * 将标记从地图上移除
      * @example
      * var marker = new mapboxgl.Marker().addTo(map);
      * marker.remove();
@@ -72,7 +72,7 @@ class Marker {
     }
 
     /**
-     * Get the marker's geographical location.
+     * 获取标记的地理位置
      *
      * The longitude of the result may differ by a multiple of 360 degrees from the longitude previously
      * set by `setLngLat` because `Marker` wraps the anchor longitude across copies of the world to keep
@@ -85,7 +85,7 @@ class Marker {
     }
 
     /**
-     * Set the marker's geographical position and move it.
+     * 设置标记的地理位置并移动它。
      * @param {LngLat} lnglat
      * @returns {Marker} `this`
      */
@@ -102,7 +102,7 @@ class Marker {
     }
 
     /**
-     * Binds a Popup to the Marker
+     * 为标记绑定弹窗
      * @param {Popup=} popup an instance of the `Popup` class. If undefined or null, any popup
      * set on this `Marker` instance is unset
      * @returns {Marker} `this`
@@ -132,7 +132,7 @@ class Marker {
     }
 
     /**
-     * Returns the Popup instance that is bound to the Marker
+     * 返回与 Marker 绑定的 Popup 实例
      * @returns {Popup} popup
      */
     getPopup() {
@@ -140,7 +140,7 @@ class Marker {
     }
 
     /**
-     * Opens or closes the bound popup, depending on the current state
+     * 根据当前状态开启或关闭绑定的弹窗
      * @returns {Marker} `this`
      */
     togglePopup() {

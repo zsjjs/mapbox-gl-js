@@ -17,19 +17,19 @@ function _removeEventListener(type, listener, listenerList) {
 }
 
 /**
- * Methods mixed in to other classes for event capabilities.
+ * 根据事件功能被混合到其他类的方法。
  *
  * @mixin Evented
  */
 class Evented {
 
     /**
-     * Adds a listener to a specified event type.
+     * 为指定事件类型添加监听器。
      *
-     * @param {string} type The event type to add a listen for.
-     * @param {Function} listener The function to be called when the event is fired.
-     *   The listener function is called with the data object passed to `fire`,
-     *   extended with `target` and `type` properties.
+     * @param {string} type 添加监听的事件类型。
+     * @param {Function} listener 事件触发后（fired）要调用的函数。
+     *   通过传递给 `fire` 的数据对象来调用监听功能，
+     *   并使用`target` 和 `type` 属性进行扩展。
      * @returns {Object} `this`
      */
     on(type, listener) {
@@ -40,10 +40,10 @@ class Evented {
     }
 
     /**
-     * Removes a previously registered event listener.
+     * 移除先前注册的事件监听器。
      *
-     * @param {string} type The event type to remove listeners for.
-     * @param {Function} listener The listener function to remove.
+     * @param {string} type  需要移除监听器的事件类型。
+     * @param {Function} listener 需要移除的监听器函数。
      * @returns {Object} `this`
      */
     off(type, listener) {
@@ -54,12 +54,12 @@ class Evented {
     }
 
     /**
-     * Adds a listener that will be called only once to a specified event type.
+     * 为指定事件类型添加一个一次性调用的监听器。
      *
-     * The listener will be called first time the event fires after the listener is registered.
+     * 注册之后，该监听器会在事件第一次触发的时候被调用。
      *
-     * @param {string} type The event type to listen for.
-     * @param {Function} listener The function to be called when the event is fired the first time.
+     * @param {string} type 需要监听的事件类型。
+     * @param {Function} listener 事件第一次启动时要调用的函数。
      * @returns {Object} `this`
      */
     once(type, listener) {
@@ -70,10 +70,10 @@ class Evented {
     }
 
     /**
-     * Fires an event of the specified type.
+     * 触发特定类型的事件。
      *
-     * @param {string} type The type of event to fire.
-     * @param {Object} [data] Data to be passed to any listeners.
+     * @param {string} type 需要触发的事件类型。
+     * @param {Object} [data] 传递给任意监听器的数据。
      * @returns {Object} `this`
      */
     fire(type, data) {
@@ -108,10 +108,10 @@ class Evented {
     }
 
     /**
-     * Returns a true if this instance of Evented or any forwardeed instances of Evented have a listener for the specified type.
+     * 当这个 Evented 实例或任何转递（forwarded）的 Evented 实例有特定类型的监听器时，返回一个 true。
      *
-     * @param {string} type The event type
-     * @returns {boolean} `true` if there is at least one registered listener for specified event type, `false` otherwise
+     * @param {string} type 事件类型
+     * @returns {boolean} 当指定事件类型拥有至少一个注册过的监听器时，为`true` ，否则为`false`。
      */
     listens(type) {
         return (

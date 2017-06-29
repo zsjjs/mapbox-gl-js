@@ -4,22 +4,22 @@
 const wrap = require('../util/util').wrap;
 
 /**
- * A `LngLat` object represents a given longitude and latitude coordinate, measured in degrees.
+ * `LngLat` 对象代表指定的经纬度坐标，单位为度。
  *
- * Mapbox GL uses longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON.
+ * 为了和 GeoJSON 匹配，Mapbox GL 使用经度、纬度的坐标顺序。
  *
- * Note that any Mapbox GL method that accepts a `LngLat` object as an argument or option
- * can also accept an `Array` of two numbers and will perform an implicit conversion.
- * This flexible type is documented as {@link LngLatLike}.
+ * 注意，任何接受 `LngLat` 对象作为参数或选项的 Mapbox GL 方法，
+ * 同样也可接受两个数字的 `Array` ，并且会进行隐式转换（implicit conversion）。
+ * 这个灵活的类型被记录为 {@link LngLatLike}。
  *
- * @param {number} lng Longitude, measured in degrees.
- * @param {number} lat Latitude, measured in degrees.
+ * @param {number} lng 经度，单位为度。
+ * @param {number} lat 纬度，单位为度。
  * @example
  * var ll = new mapboxgl.LngLat(-73.9749, 40.7736);
- * @see [Get coordinates of the mouse pointer](https://www.mapbox.com/mapbox-gl-js/example/mouse-position/)
- * @see [Display a popup](https://www.mapbox.com/mapbox-gl-js/example/popup/)
- * @see [Highlight features within a bounding box](https://www.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/)
- * @see [Create a timeline animation](https://www.mapbox.com/mapbox-gl-js/example/timeline-animation/)
+ * @see [获取鼠标指针的坐标](https://www.mapbox.com/mapbox-gl-js/example/mouse-position/)
+ * @see [显示弹窗](https://www.mapbox.com/mapbox-gl-js/example/popup/)
+ * @see [在限位框中突出显示要素](https://www.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/)
+ * @see [创建时间轴动画（timeline animation）](https://www.mapbox.com/mapbox-gl-js/example/timeline-animation/)
  */
 class LngLat {
     lng: number;
@@ -36,9 +36,9 @@ class LngLat {
     }
 
     /**
-     * Returns a new `LngLat` object whose longitude is wrapped to the range (-180, 180).
+     * 返回一个经度位于（-180, 180）范围内的新 `LngLat` 对象。
      *
-     * @returns {LngLat} The wrapped `LngLat` object.
+     * @returns {LngLat} 范围内的 `LngLat` 对象。
      * @example
      * var ll = new mapboxgl.LngLat(286.0251, 40.7736);
      * var wrapped = ll.wrap();
@@ -49,9 +49,9 @@ class LngLat {
     }
 
     /**
-     * Returns the coordinates represented as an array of two numbers.
+     * 返回以两个数字的数组代表的坐标。
      *
-     * @returns {Array<number>} The coordinates represeted as an array of longitude and latitude.
+     * @returns {Array<number>} 以经纬度数组代表的坐标。
      * @example
      * var ll = new mapboxgl.LngLat(-73.9749, 40.7736);
      * ll.toArray(); // = [-73.9749, 40.7736]
@@ -61,9 +61,10 @@ class LngLat {
     }
 
     /**
-     * Returns the coordinates represent as a string.
+     * 返回以字符串代表的坐标。
      *
-     * @returns {string} The coordinates represented as a string of the format `'LngLat(lng, lat)'`.
+     * @returns {string} 以 `'LngLat(lng, lat)'`格式的字符串代表的坐标。
+
      * @example
      * var ll = new mapboxgl.LngLat(-73.9749, 40.7736);
      * ll.toString(); // = "LngLat(-73.9749, 40.7736)"
@@ -73,12 +74,12 @@ class LngLat {
     }
 
     /**
-     * Converts an array of two numbers to a `LngLat` object.
+     * 将两个数字的数组转化成一个 `LngLat` 对象。
      *
-     * If a `LngLat` object is passed in, the function returns it unchanged.
+     * 如果传递的是一个 `LngLat` 对象，该函数将原样将其返回。
      *
-     * @param {LngLatLike} input An array of two numbers to convert, or a `LngLat` object to return.
-     * @returns {LngLat} A new `LngLat` object, if a conversion occurred, or the original `LngLat` object.
+     * @param {LngLatLike} input 转化的由两个数字组成的数组，或是待返回的 `LngLat` 对象。
+     * @returns {LngLat} 转化之后得到的新 `LngLat`对象，或是原来的 `LngLat` 对象。
      * @example
      * var arr = [-73.9749, 40.7736];
      * var ll = mapboxgl.LngLat.convert(arr);

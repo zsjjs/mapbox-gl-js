@@ -4,8 +4,8 @@ const ImageSource = require('./image_source');
 const window = require('../util/window');
 
 /**
- * A data source containing the contents of an HTML canvas.
- * (See the [Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-canvas) for detailed documentation of options.)
+ * 包含 HTML 画布内容的数据源。
+ * （点击 [样式规范Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-canvas) 查看更详细的选项文档。）
  * @interface CanvasSource
  * @example
  * // add to map
@@ -61,9 +61,9 @@ class CanvasSource extends ImageSource {
     }
 
     /**
-     * Returns the HTML `canvas` element.
+     * 返回 HTML `canvas` 元素。
      *
-     * @returns {HTMLCanvasElement} The HTML `canvas` element.
+     * @returns {HTMLCanvasElement} HTML `canvas` 元素。
      */
     getCanvas() {
         return this.canvas;
@@ -79,13 +79,13 @@ class CanvasSource extends ImageSource {
     }
 
     /**
-     * Sets the canvas's coordinates and re-renders the map.
+     * 设置画布坐标并重新渲染地图。
      *
      * @method setCoordinates
-     * @param {Array<Array<number>>} coordinates Four geographical coordinates,
-     *   represented as arrays of longitude and latitude numbers, which define the corners of the canvas.
-     *   The coordinates start at the top left corner of the canvas and proceed in clockwise order.
-     *   They do not have to represent a rectangle.
+     * @param {Array<Array<number>>} 以经纬度数组表示的四个地理坐标，
+     *   用于定义画布的四角。
+     *   四个坐标从画布左上角开始，顺时针进行。
+     *   不一定代表矩形。
      * @returns {CanvasSource} this
      */
     // setCoordinates inherited from ImageSource

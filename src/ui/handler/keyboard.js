@@ -5,20 +5,20 @@ const panStep = 100,
     pitchStep = 10;
 
 /**
- * The `KeyboardHandler` allows the user to zoom, rotate, and pan the map using
- * the following keyboard shortcuts:
+ * `KeyboardHandler` 允许用户使用以下键盘快捷键
+ * 进行缩放、旋转和平移操作：
  *
- * - `=` / `+`: Increase the zoom level by 1.
- * - `Shift-=` / `Shift-+`: Increase the zoom level by 2.
- * - `-`: Decrease the zoom level by 1.
- * - `Shift--`: Decrease the zoom level by 2.
- * - Arrow keys: Pan by 100 pixels.
- * - `Shift+⇢`: Increase the rotation by 15 degrees.
- * - `Shift+⇠`: Decrease the rotation by 15 degrees.
- * - `Shift+⇡`: Increase the pitch by 10 degrees.
- * - `Shift+⇣`: Decrease the pitch by 10 degrees.
+ * - `=` / `+`: 缩放级别增加 1 级。
+ * - `Shift-=` / `Shift-+`: 缩放级别增加 2 级。
+ * - `-`: 缩放级别减小 1 级。
+ * - `Shift--`: 缩放级别减小 2 级。
+ * - Arrow keys: 平移（pan） 100 像素。
+ * - `Shift+⇢`: 增加 15 度旋转（rotation）。
+ * - `Shift+⇠`: 减少 15 度旋转。
+ * - `Shift+⇡`: 增加 10 度倾斜角。
+ * - `Shift+⇣`: 减少 10 度倾斜角。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class KeyboardHandler {
     constructor(map) {
@@ -29,16 +29,16 @@ class KeyboardHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether keyboard interaction is enabled.
+     * 返回一个指示键盘交互功能是否激活的布尔值。
      *
-     * @returns {boolean} `true` if keyboard interaction is enabled.
+     * @returns {boolean} 如果键盘交互功能已激活，为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Enables keyboard interaction.
+     * 激活键盘交互功能。
      *
      * @example
      * map.keyboard.enable();
@@ -50,7 +50,7 @@ class KeyboardHandler {
     }
 
     /**
-     * Disables keyboard interaction.
+     * 禁用键盘交互功能。
      *
      * @example
      * map.keyboard.disable();

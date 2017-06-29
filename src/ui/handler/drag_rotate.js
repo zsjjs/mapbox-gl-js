@@ -10,14 +10,14 @@ const inertiaLinearity = 0.25,
     inertiaDeceleration = 720; // deg/s^2
 
 /**
- * The `DragRotateHandler` allows the user to rotate the map by clicking and
- * dragging the cursor while holding the right mouse button or `ctrl` key.
+ * `DragRotateHandler` 允许用户在按住拖动光标的同时长按鼠标右键
+ * 或 `ctrl` 键的情况下旋转地图。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  * @param {Object} [options]
- * @param {number} [options.bearingSnap] The threshold, measured in degrees, that determines when the map's
- *   bearing (rotation) will snap to north.
- * @param {bool} [options.pitchWithRotate=true] Control the map pitch in addition to the bearing
+ * @param {number} [options.bearingSnap] 该阙值决定地图方向角（bearing）
+ *   何时对齐正北方，以度计量。
+ * @param {bool} [options.pitchWithRotate=true] 控制地图的倾斜度及方位角。
  */
 class DragRotateHandler {
     constructor(map, options) {
@@ -35,25 +35,25 @@ class DragRotateHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "drag to rotate" interaction is enabled.
+     * 返回一个指示“拖动旋转”交互是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "drag to rotate" interaction is enabled.
+     * @returns {boolean} 如果“拖动旋转”交互已激活，为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Returns a Boolean indicating whether the "drag to rotate" interaction is active, i.e. currently being used.
+     * 返回一个指示“拖动旋转”功能是否正在运行（也就是说用户是否正在使用）的布尔值。
      *
-     * @returns {boolean} `true` if the "drag to rotate" interaction is active.
+     * @returns {boolean} 如果“拖动旋转”交互正在运行，为`true` 。
      */
     isActive() {
         return !!this._active;
     }
 
     /**
-     * Enables the "drag to rotate" interaction.
+     * 激活“拖动旋转”交互功能。
      *
      * @example
      * map.dragRotate.enable();
@@ -65,7 +65,7 @@ class DragRotateHandler {
     }
 
     /**
-     * Disables the "drag to rotate" interaction.
+     * 禁用“拖动旋转”交互功能。
      *
      * @example
      * map.dragRotate.disable();
@@ -237,7 +237,7 @@ class DragRotateHandler {
 module.exports = DragRotateHandler;
 
 /**
- * Fired when a "drag to rotate" interaction starts. See {@link DragRotateHandler}.
+ * “拖动旋转”开始时触发。请查看 {@link DragRotateHandler}。
  *
  * @event rotatestart
  * @memberof Map
@@ -246,7 +246,7 @@ module.exports = DragRotateHandler;
  */
 
 /**
- * Fired repeatedly during a "drag to rotate" interaction. See {@link DragRotateHandler}.
+ * “拖动旋转”期间重复触发。请查看 {@link DragRotateHandler}。
  *
  * @event rotate
  * @memberof Map
@@ -255,7 +255,7 @@ module.exports = DragRotateHandler;
  */
 
 /**
- * Fired when a "drag to rotate" interaction ends. See {@link DragRotateHandler}.
+ * “拖动旋转”结束时触发。请查看 {@link DragRotateHandler}。
  *
  * @event rotateend
  * @memberof Map

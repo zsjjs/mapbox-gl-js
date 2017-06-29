@@ -7,14 +7,14 @@ const util = require('../../util/util');
 const className = 'mapboxgl-ctrl';
 
 /**
- * A `NavigationControl` control contains zoom buttons and a compass.
+ * `NavigationControl` 控件包括缩放按钮和一个指南针。
  *
  * @implements {IControl}
  * @example
  * var nav = new mapboxgl.NavigationControl();
  * map.addControl(nav, 'top-left');
- * @see [Display map navigation controls](https://www.mapbox.com/mapbox-gl-js/example/navigation/)
- * @see [Add a third party vector tile source](https://www.mapbox.com/mapbox-gl-js/example/third-party/)
+ * @see [显示地图导航控件](https://www.mapbox.com/mapbox-gl-js/example/navigation/)
+ * @see [添加第三方矢量切片数据源](https://www.mapbox.com/mapbox-gl-js/example/third-party/)
  */
 class NavigationControl {
 

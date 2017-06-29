@@ -9,41 +9,41 @@ const Point = require('point-geometry');
 const Evented = require('../util/evented');
 
 /**
- * Options common to {@link Map#jumpTo}, {@link Map#easeTo}, and {@link Map#flyTo},
- * controlling the destination's location, zoom level, bearing, and pitch.
- * All properties are optional. Unspecified
- * options will default to the map's current value for that property.
+ * {@link Map#jumpTo}, {@link Map#easeTo}，和 {@link Map#flyTo} 共有的选项，
+ * 控制目的地的位置、缩放级别、方位角和倾斜度。
+ * 所有属性均可选。
+ * 未指定的选项将默认设为当前地图该属性的值。
  *
  * @typedef {Object} CameraOptions
- * @property {LngLatLike} center The destination's center.
- * @property {number} zoom The destination's zoom level.
- * @property {number} bearing The destination's bearing (rotation), measured in degrees counter-clockwise from north.
- * @property {number} pitch The destination's pitch (tilt), measured in degrees.
- * @property {LngLatLike} around If a `zoom` is specified, `around` determines the zoom center (defaults to the center of the map).
+ * @property {LngLatLike} center 目的地中心。
+ * @property {number} zoom 目的地的缩放级别。
+ * @property {number} bearing 目的地的方位角（bearing，rotation），按照逆时针偏离正北方的度数计算。
+ * @property {number} pitch 目的地的倾斜度（pitch，tilt），单位为度。
+ * @property {LngLatLike} around  `zoom` 指定之后， `around` 将决定缩放中心（默认为地图中心）。
  */
 
 /**
- * Options common to map movement methods that involve animation, such as {@link Map#panBy} and
- * {@link Map#easeTo}, controlling the duration and easing function of the animation. All properties
- * are optional.
+ * 地图移动方法（包括动态转换，例如 {@link Map#panBy} 和
+ * {@link Map#easeTo}）所共有的选项，能够控制动态转换的持续时间和缓动函数。
+ * 所有属性均可选。
  *
  * @typedef {Object} AnimationOptions
- * @property {number} duration The animation's duration, measured in milliseconds.
- * @property {Function} easing A function taking a time in the range 0..1 and returning a number where 0 is
- *   the initial state and 1 is the final state.
- * @property {PointLike} offset of the target center relative to real map container center at the end of animation.
- * @property {boolean} animate If `false`, no animation will occur.
+ * @property {number} duration 动态转换的持续时间，按毫秒计算。
+ * @property {Function} easing 该函数花费的时间在 0..1 之间，
+ *   当初始状态为 0，最终状态为 1 时，返回一个数字。
+ * @property {PointLike} offset 动态转换结束后，目标中心与实际地图容器中心间的偏差。
+ * @property {boolean} animate 如果为 `false`，将不进行动态转换。
  */
 
 /**
- * Options for setting padding on a call to {@link Map#fitBounds}. All properties of this object must be
- * non-negative integers.
+ * 调用 {@link Map#fitBounds}时设置内边距（padding）的选项。
+ * 该对象的所有性能都必须是非负整数。
  *
  * @typedef {Object} PaddingOptions
- * @property {number} top Padding in pixels from the top of the map canvas.
- * @property {number} bottom Padding in pixels from the bottom of the map canvas.
- * @property {number} left Padding in pixels from the left of the map canvas.
- * @property {number} right Padding in pixels from the right of the map canvas.
+ * @property {number} top 距地图画布上方的内边距，以像素为单位。
+ * @property {number} bottom 距地图画布下方的内边距，以像素为单位。
+ * @property {number} left 距地图画布左方的内边距，以像素为单位。
+ * @property {number} right 距地图画布右方的内边距，以像素为单位。
  */
 
 class Camera extends Evented {
@@ -56,41 +56,41 @@ class Camera extends Evented {
     }
 
     /**
-     * Returns the map's geographical centerpoint.
+     * 返回地图的地理中心点。
      *
      * @memberof Map#
-     * @returns {LngLat} The map's geographical centerpoint.
+     * @returns {LngLat} 地图的地理中心点。
      */
     getCenter() { return this.transform.center; }
 
     /**
-     * Sets the map's geographical centerpoint. Equivalent to `jumpTo({center: center})`.
+     * 设置地图的地理中心点。同 `jumpTo({center: center})`。
      *
      * @memberof Map#
-     * @param {LngLatLike} center The centerpoint to set.
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {LngLatLike} center 需要设置的中心点。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
      * @example
      * map.setCenter([-74, 38]);
-     * @see [Move symbol with the keyboard](https://www.mapbox.com/mapbox-gl-js/example/rotating-controllable-marker/)
+     * @see [使用键盘移动符号](https://www.mapbox.com/mapbox-gl-js/example/rotating-controllable-marker/)
      */
     setCenter(center, eventData) {
         return this.jumpTo({center: center}, eventData);
     }
 
     /**
-     * Pans the map by the specified offest.
+     * 按指定偏移值平移地图。
      *
      * @memberof Map#
-     * @param {Array<number>} offset `x` and `y` coordinates by which to pan the map.
+     * @param {Array<number>} 平移地图的 `x` 和 `y` 坐标。
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
-     * @see [Navigate the map with game-like controls](https://www.mapbox.com/mapbox-gl-js/example/game-controls/)
+     * @see [用类似游戏的控件控制地图](https://www.mapbox.com/mapbox-gl-js/example/game-controls/)
      */
     panBy(offset, options, eventData) {
         offset = Point.convert(offset).mult(-1);
@@ -98,12 +98,12 @@ class Camera extends Evented {
     }
 
     /**
-     * Pans the map to the specified location, with an animated transition.
+     * 用类似游戏的控件控制地图
      *
      * @memberof Map#
-     * @param {LngLatLike} lnglat The location to pan the map to.
+     * @param {LngLatLike} 需要将地图移动到的位置。
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -115,19 +115,19 @@ class Camera extends Evented {
     }
 
     /**
-     * Returns the map's current zoom level.
+     * 返回地图当前的缩放级别。
      *
      * @memberof Map#
-     * @returns {number} The map's current zoom level.
+     * @returns {number} 地图的当前缩放级别。
      */
     getZoom() { return this.transform.zoom; }
 
     /**
-     * Sets the map's zoom level. Equivalent to `jumpTo({zoom: zoom})`.
+     * 设置地图的缩放级别。同 `jumpTo({zoom: zoom})`。
      *
      * @memberof Map#
-     * @param {number} zoom The zoom level to set (0-20).
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {number} 要设置的缩放级别（0-20）。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires move
@@ -145,12 +145,12 @@ class Camera extends Evented {
     }
 
     /**
-     * Zooms the map to the specified zoom level, with an animated transition.
+     * 以动态转换的方式将地图缩放到指定级别。
      *
      * @memberof Map#
-     * @param {number} zoom The zoom level to transition to.
+     * @param {number} zoom 需要转换到的目标缩放级别。
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires move
@@ -166,11 +166,11 @@ class Camera extends Evented {
     }
 
     /**
-     * Increases the map's zoom level by 1.
+     * 将地图的缩放级别增加 1 级。
      *
      * @memberof Map#
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires move
@@ -185,11 +185,11 @@ class Camera extends Evented {
     }
 
     /**
-     * Decreases the map's zoom level by 1.
+     * 将地图的缩放级别降低 1 级。
      *
      * @memberof Map#
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires move
@@ -204,20 +204,20 @@ class Camera extends Evented {
     }
 
     /**
-     * Returns the map's current bearing (rotation).
+     * 返回地图当前的方位角（旋转度）。
      *
      * @memberof Map#
-     * @returns {number} The map's current bearing, measured in degrees counter-clockwise from north.
+     * @returns {number} 地图当前的方位角（bearing），按照逆时针偏离正北方的度数计算。
      * @see [Navigate the map with game-like controls](https://www.mapbox.com/mapbox-gl-js/example/game-controls/)
      */
     getBearing() { return this.transform.bearing; }
 
     /**
-     * Sets the maps' bearing (rotation). Equivalent to `jumpTo({bearing: bearing})`.
+     * 设置地图的方位角（旋转度）。同 `jumpTo({bearing: bearing})`。
      *
      * @memberof Map#
-     * @param {number} bearing The bearing to set, measured in degrees counter-clockwise from north.
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {number} 需要设置的方位角，按偏离正北方的照逆时针方向度数计算。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -231,12 +231,12 @@ class Camera extends Evented {
     }
 
     /**
-     * Rotates the map to the specified bearing, with an animated transition.
+     * 以动态转换的方式将地图旋转到指定方位角。
      *
      * @memberof Map#
-     * @param {number} bearing The bearing to rotate the map to, measured in degrees counter-clockwise from north.
+     * @param {number} bearing 需要将地图旋转到的方位角，按偏离正北方的逆时针方向度数计算。
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -248,11 +248,11 @@ class Camera extends Evented {
     }
 
     /**
-     * Rotates the map to a bearing of 0 (due north), with an animated transition.
+     * 以动态转换的方式将地图旋转到 0 度方位角（正北方）。
      *
      * @memberof Map#
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -263,11 +263,11 @@ class Camera extends Evented {
     }
 
     /**
-     * Snaps the map's bearing to 0 (due north), if the current bearing is close enough to it (i.e. within the `bearingSnap` threshold).
+     * 当前方位角足够接近 0 度时（也就是说位于 `bearingSnap` 域内时），将其自动调整到 0 度（正北方）。 
      *
      * @memberof Map#
      * @param {AnimationOptions} [options]
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -280,19 +280,19 @@ class Camera extends Evented {
     }
 
     /**
-     * Returns the map's current pitch (tilt).
+     * 返回地图当前的倾斜度pitch（tilt）。
      *
      * @memberof Map#
-     * @returns {number} The map's current pitch, measured in degrees away from the plane of the screen.
+     * @returns {number} 地图当前的倾斜度，按照偏离屏幕水平面的度数计算。
      */
     getPitch() { return this.transform.pitch; }
 
     /**
-     * Sets the map's pitch (tilt). Equivalent to `jumpTo({pitch: pitch})`.
+     * 设置地图的倾斜度。同 `jumpTo({pitch: pitch})`。
      *
      * @memberof Map#
-     * @param {number} pitch The pitch to set, measured in degrees away from the plane of the screen (0-60).
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {number} pitch 需要设置的倾斜度，按照偏离屏幕水平面的度数计算（0-60）。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires pitchstart
      * @fires movestart
      * @fires moveend
@@ -305,21 +305,21 @@ class Camera extends Evented {
 
 
     /**
-     * Pans and zooms the map to contain its visible area within the specified geographical bounds.
-     * This function will also reset the map's bearing to 0 if bearing is nonzero.
+     * 在指定的地理边界内平移和缩放地图，以包含其可见区域。
+     * 当地图方位角不为 0 的时候，该函数会将方位角重置为 0。
      *
      * @memberof Map#
-     * @param {LngLatBoundsLike} bounds Center these bounds in the viewport and use the highest
-     *      zoom level up to and including `Map#getMaxZoom()` that fits them in the viewport.
+     * @param {LngLatBoundsLike} bounds 将这些边界设在视口中心，使用最大的缩放级别和
+     *      `Map#getMaxZoom()` 使其适应该视口。
      * @param {AnimationOptions | CameraOptions } [options]
-     * @param {number | PaddingOptions} [options.padding] The amount of padding in pixels to add to the given bounds.
-     * @param {boolean} [options.linear=false] If `true`, the map transitions using
-     *     {@link Map#easeTo}. If `false`, the map transitions using {@link Map#flyTo}. See
-     *     those functions and {@link AnimationOptions} for information about options available.
-     * @param {Function} [options.easing] An easing function for the animated transition. See {@link AnimationOptions}.
-     * @param {PointLike} [options.offset=[0, 0]] The center of the given bounds relative to the map's center, measured in pixels.
-     * @param {number} [options.maxZoom] The maximum zoom level to allow when the map view transitions to the specified bounds.
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {number | PaddingOptions} [options.padding] 以给定边界添加的以像素为单位的填充量。
+     * @param {boolean} [options.linear=false] 如果为 `true`，地图将使用
+     *     {@link Map#easeTo}. 如果为 `false`，地图将使用 {@link Map#flyTo}进行转换。
+     *     查看这些函数及 {@link AnimationOptions} ，了解可用的选项信息。
+     * @param {Function} [options.easing] 动态转换的缓冲函数。点击查看  {@link AnimationOptions}。
+     * @param {PointLike} [options.offset=[0, 0]] 给定边界中心到地图中心的偏移距离，以像素为单位。
+     * @param {number} [options.maxZoom] 地图视图转换到指定边界时允许的最大缩放级别。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires moveend
      * @returns {Map} `this`
@@ -328,7 +328,7 @@ class Camera extends Evented {
      * map.fitBounds(bbox, {
      *   padding: {top: 10, bottom:25, left: 15, right: 5}
      * });
-     * @see [Fit a map to a bounding box](https://www.mapbox.com/mapbox-gl-js/example/fitbounds/)
+     * @see [让地图适应限位框](https://www.mapbox.com/mapbox-gl-js/example/fitbounds/)
      */
     fitBounds(bounds, options, eventData) {
 
@@ -395,13 +395,13 @@ class Camera extends Evented {
     }
 
     /**
-     * Changes any combination of center, zoom, bearing, and pitch, without
-     * an animated transition. The map will retain its current values for any
-     * details not specified in `options`.
+     * 不用动态转换的情况下改变中心点、
+     * 缩放级别、方位角和倾斜度的任意组合。
+     * 地图将保留 `options` 中没有指定的当前值。
      *
      * @memberof Map#
      * @param {CameraOptions} options
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires pitchstart
@@ -464,14 +464,14 @@ class Camera extends Evented {
     }
 
     /**
-     * Changes any combination of center, zoom, bearing, and pitch, with an animated transition
-     * between old and new values. The map will retain its current values for any
-     * details not specified in `options`.
+     * 使用动态转换，将中心点、缩放级别、方位角和倾斜度组合的原有数值改为新数值。
+     * 地图将保留 
+     * `options`中没有指定的当前值。
      *
      * @memberof Map#
-     * @param {Object} options Options describing the destination and animation of the transition.
-    *            Accepts {@link CameraOptions} and {@link AnimationOptions}.
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} options 描述转换目标和动态效果的选项。接受
+    *            {@link CameraOptions} 和 {@link AnimationOptions}.
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires pitchstart
@@ -483,7 +483,7 @@ class Camera extends Evented {
      * @fires zoomend
      * @fires pitchend
      * @returns {Map} `this`
-     * @see [Navigate the map with game-like controls](https://www.mapbox.com/mapbox-gl-js/example/game-controls/)
+     * @see [用类似游戏的控件控制地图](https://www.mapbox.com/mapbox-gl-js/example/game-controls/)
      */
     easeTo(options, eventData) {
         this.stop();
@@ -614,30 +614,30 @@ class Camera extends Evented {
     }
 
     /**
-     * Changes any combination of center, zoom, bearing, and pitch, animating the transition along a curve that
-     * evokes flight. The animation seamlessly incorporates zooming and panning to help
-     * the user maintain her bearings even after traversing a great distance.
+     * 对地图中心、缩放级别、方位角和倾斜度做任意组合改变，
+     * 使其沿着一条曲线动态地变化并引发飞行效果。
+     * 该动态转换能够无缝引入缩放和平移，使用户即使在穿越了很长的距离后也能保持方位角不变
      *
      * @memberof Map#
-     * @param {Object} options Options describing the destination and animation of the transition.
-     *     Accepts {@link CameraOptions}, {@link AnimationOptions},
-     *     and the following additional options.
-     * @param {number} [options.curve=1.42] The zooming "curve" that will occur along the
-     *     flight path. A high value maximizes zooming for an exaggerated animation, while a low
-     *     value minimizes zooming for an effect closer to {@link Map#easeTo}. 1.42 is the average
-     *     value selected by participants in the user study discussed in
-     *     [van Wijk (2003)](https://www.win.tue.nl/~vanwijk/zoompan.pdf). A value of
-     *     `Math.pow(6, 0.25)` would be equivalent to the root mean squared average velocity. A
-     *     value of 1 would produce a circular motion.
-     * @param {number} [options.minZoom] The zero-based zoom level at the peak of the flight path. If
-     *     `options.curve` is specified, this option is ignored.
-     * @param {number} [options.speed=1.2] The average speed of the animation defined in relation to
-     *     `options.curve`. A speed of 1.2 means that the map appears to move along the flight path
-     *     by 1.2 times `options.curve` screenfuls every second. A _screenful_ is the map's visible span.
-     *     It does not correspond to a fixed physical distance, but varies by zoom level.
-     * @param {number} [options.screenSpeed] The average speed of the animation measured in screenfuls
-     *     per second, assuming a linear timing curve. If `options.speed` is specified, this option is ignored.
-     * @param {Object} [eventData] Additional properties to be added to event objects of events triggered by this method.
+     * @param {Object} options 描述转换目标和动态效果的选项。接受
+     *     {@link CameraOptions}和 {@link AnimationOptions}。
+     *      , 以及以下选项。
+     * @param {number} [options.curve=1.42] 随着飞行路径出现的缩放“曲线”。要获得类似 {@link Map#easeTo} 的效果，
+     *     大幅度移动时会出现较高的缩放值，较小移动时有较低的缩放值。
+     *     [van Wijk (2003)](https://www.win.tue.nl/~vanwijk/zoompan.pdf)
+     *     进行的用户调查中
+     *     显示用户选择的平均值为 1.42。
+     *     `Math.pow(6, 0.25)` 的值与均方根平均速率相同。
+     *     值为 1 时会出现圆周运动。
+     * @param {number} [options.minZoom] 位于飞行路径顶点的以 0 为起点的缩放级别。如果指定了
+     *     `options.curve`，可忽略这一选项。
+     * @param {number} [options.speed=1.2] 与`options.curve`相关的动态转换的平均速率。
+     *     速率为 1.2 指，地图每秒以 1.2 倍于
+     *     `options.curve` 可见整屏（screenful）的速度随着飞行路径移动。
+     *     screenful 指地图的可见屏幕跨度区域。它不对应固定的物理距离，而是随缩放级别变化。
+     * @param {number} [options.screenSpeed] 线性时间曲线情况下，动态转换的平均速率，按照每秒的移动的 screenful 数量计算。
+     *     如果指定了 `options.speed` ，则忽略该选项。
+     * @param {Object} [eventData] 该方法触发的事件对象需要添加的其它属性。
      * @fires movestart
      * @fires zoomstart
      * @fires pitchstart
@@ -662,9 +662,9 @@ class Camera extends Evented {
      *     return t;
      *   }
      * });
-     * @see [Fly to a location](https://www.mapbox.com/mapbox-gl-js/example/flyto/)
-     * @see [Slowly fly to a location](https://www.mapbox.com/mapbox-gl-js/example/flyto-options/)
-     * @see [Fly to a location based on scroll position](https://www.mapbox.com/mapbox-gl-js/example/scroll-fly-to/)
+     * @see [飞到某个位置](https://www.mapbox.com/mapbox-gl-js/example/flyto/)
+     * @see [缓慢飞到某个位置](https://www.mapbox.com/mapbox-gl-js/example/flyto-options/)
+     * @see [根据滚动位置飞行到某个位置](https://www.mapbox.com/mapbox-gl-js/example/scroll-fly-to/)
      */
     flyTo(options, eventData) {
         // This method implements an “optimal path” animation, as detailed in:
@@ -810,17 +810,17 @@ class Camera extends Evented {
     }
 
     /**
-     * Returns a Boolean indicating whether the camera is moving.
+     * 返回一个表示相机是否移动的布尔值。
      *
      * @memberof Map#
-     * @returns {boolean} A Boolean indicating whether the camera is moving.
+     * @returns {boolean} 表示相机是否移动的布尔值。
      */
     isMoving() {
         return this.moving;
     }
 
     /**
-     * Stops any animated transition underway.
+     * 停止所有进行中的动态转换。
      *
      * @memberof Map#
      * @returns {Map} `this`
@@ -900,8 +900,8 @@ class Camera extends Evented {
 }
 
 /**
- * Fired whenever the map's pitch (tilt) begins a change as
- * the result of either user interaction or methods such as {@link Map#flyTo} .
+ * 在用户交互或 {@link Map#flyTo} 
+ * 等方法使地图倾斜角开始改变的时候触发。
  *
  * @event pitchstart
  * @memberof Map
@@ -910,8 +910,8 @@ class Camera extends Evented {
  */
 
 /**
- * Fired whenever the map's pitch (tilt) changes as.
- * the result of either user interaction or methods such as {@link Map#flyTo}.
+ * 在用户交互或{@link Map#flyTo}。
+ * 等方法使地图倾斜角改变的时候触发。 
  *
  * @event pitch
  * @memberof Map
@@ -920,8 +920,8 @@ class Camera extends Evented {
  */
 
 /**
- * Fired immediately after the map's pitch (tilt) finishes changing as
- * the result of either user interaction or methods such as {@link Map#flyTo}.
+ * 在用户交互或 {@link Map#flyTo}
+ * 等方法使地图的倾斜角改变结束之后立即触发。
  *
  * @event pitchend
  * @memberof Map

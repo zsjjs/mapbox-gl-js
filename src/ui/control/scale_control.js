@@ -4,12 +4,12 @@ const DOM = require('../../util/dom');
 const util = require('../../util/util');
 
 /**
- * A `ScaleControl` control displays the ratio of a distance on the map to the corresponding distance on the ground.
+ * `ScaleControl` 控件会显示出图上距离与其对应的实际距离的比值（比例尺）。
  *
  * @implements {IControl}
  * @param {Object} [options]
- * @param {number} [options.maxWidth='150'] The maximum length of the scale control in pixels.
- * @param {string} [options.unit='metric'] Unit of the distance (`'imperial'` or `'metric'`).
+ * @param {number} [options.maxWidth='150'] 比例尺控件的最大长度，以像素为单位。
+ * @param {string} [options.unit='metric'] 距离单位 (`'imperial'` or `'metric'`).
  * @example
  * map.addControl(new mapboxgl.ScaleControl({
  *     maxWidth: 80,

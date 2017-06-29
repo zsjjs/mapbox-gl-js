@@ -12,10 +12,10 @@ const inertiaLinearity = 0.15,
     significantRotateThreshold = 4;
 
 /**
- * The `TouchZoomRotateHandler` allows the user to zoom and rotate the map by
- * pinching on a touchscreen.
+ * `TouchZoomRotateHandler` 使用户可以通过捏合触屏
+ * 缩放和旋转地图。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class TouchZoomRotateHandler {
     constructor(map) {
@@ -30,19 +30,19 @@ class TouchZoomRotateHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "pinch to rotate and zoom" interaction is enabled.
+     * 返回一个指示“捏合（pintch）旋转和缩放”交互功能是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "pinch to rotate and zoom" interaction is enabled.
+     * @returns {boolean} 如果“捏合旋转和缩放”交互功能已激活，为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Enables the "pinch to rotate and zoom" interaction.
+     * 激活“捏合旋转和缩放”交互功能。
      *
      * @param {Object} [options]
-     * @param {string} [options.around] If "center" is passed, map will zoom around the center
+     * @param {string} [options.around] 如果传递了“center”，将围绕地图中心缩放。
      *
      * @example
      *   map.touchZoomRotate.enable();
@@ -58,7 +58,7 @@ class TouchZoomRotateHandler {
     }
 
     /**
-     * Disables the "pinch to rotate and zoom" interaction.
+     * 禁用“捏合旋转和缩放”交互功能。
      *
      * @example
      *   map.touchZoomRotate.disable();
@@ -71,7 +71,7 @@ class TouchZoomRotateHandler {
     }
 
     /**
-     * Disables the "pinch to rotate" interaction, leaving the "pinch to zoom"
+     * 禁用“捏合旋转”交互，启用“捏合缩放”交互。
      * interaction enabled.
      *
      * @example
@@ -82,7 +82,7 @@ class TouchZoomRotateHandler {
     }
 
     /**
-     * Enables the "pinch to rotate" interaction.
+     * 启用“捏合旋转”交互。
      *
      * @example
      *   map.touchZoomRotate.enable();

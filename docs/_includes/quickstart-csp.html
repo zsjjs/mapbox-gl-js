@@ -1,17 +1,15 @@
 <h2 class='strong' id='csp-directives'>CSP Directives</h2>
 
-<p>As a mitigation for Cross-Site Scripting and other types of web security vulnerabilities, you may use a
-    <a href='https://developer.mozilla.org/en-US/docs/Web/Security/CSP'>Content Security Policy (CSP)</a>
-    to specify security policies for your website. If you do, Mapbox GL JS requires the following CSP
-    directives:</p>
+<p>作为跨站脚本和其他类型的Web安全漏洞的缓解，您可以使用
+    <a href='https://developer.mozilla.org/en-US/docs/Web/Security/CSP'>内容安全策略（CSP）</a>
+    为您的网站指定安全策略。 如果您这样做，Mapbox GL JS需要以下CSP指令：</p>
 <pre>
 <code>child-src blob: ;
 img-src data: blob: ;
 script-src 'unsafe-eval' ;</code>
 </pre>
 
-<p>Requesting styles from Mapbox or other services will require additional
-    directives. For Mapbox, you can use this <code>connect-src</code> directive:</p>
+<p>来自Mapbox或其他服务的请求样式将需要其他指令。 对于Mapbox，您可以使用此 <code>connect-src</code> 指令：</p>
 <pre>
 <code>connect-src https://*.tiles.mapbox.com https://api.mapbox.com</code>
 </pre>

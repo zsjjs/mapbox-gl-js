@@ -14,25 +14,25 @@ const defaultOptions = {
 };
 
 /**
- * A popup component.
+ * 弹窗组件。
  *
  * @param {Object} [options]
- * @param {boolean} [options.closeButton=true] If `true`, a close button will appear in the
- *   top right corner of the popup.
- * @param {boolean} [options.closeOnClick=true] If `true`, the popup will closed when the
- *   map is clicked.
- * @param {string} [options.anchor] - A string indicating the popup's location relative to
- *   the coordinate set via {@link Popup#setLngLat}.
- *   Options are `'top'`, `'bottom'`, `'left'`, `'right'`, `'top-left'`,
- *   `'top-right'`, `'bottom-left'`, and `'bottom-right'`. If unset the anchor will be
- *   dynamically set to ensure the popup falls within the map container with a preference
- *   for `'bottom'`.
+ * @param {boolean} [options.closeButton=true] 如果为 `true`，弹窗右上角将会
+ *   出现一个关闭按键。
+ * @param {boolean} [options.closeOnClick=true] 如果为 `true`， 点击地图时
+ *   弹窗将关闭。
+ * @param {string} [options.anchor] - 表示弹窗位置的字符串，
+ *   通过 {@link Popup#setLngLat}与坐标集关联。
+ *   选项有 `'top'`, `'bottom'`, `'left'`, `'right'`, `'top-left'`,
+ *   `'top-right'`, `'bottom-left'`, 以及 `'bottom-right'`。如未设置，
+ *   将对锚点进行动态设置，保证弹窗落入地图容器内，
+ *   并偏向 `'bottom'`。
  * @param {number|PointLike|Object} [options.offset] -
- *  A pixel offset applied to the popup's location specified as:
- *   - a single number specifying a distance from the popup's location
- *   - a {@link PointLike} specifying a constant offset
- *   - an object of {@link Point}s specifing an offset for each anchor position
- *  Negative offsets indicate left and up.
+ *  对应用到弹窗位置的像素偏移具体为：
+ *   - 表示离弹窗位置距离的一个数字
+ *   - 表示常数偏移的 {@link PointLike} 
+ *   - 表示每个锚点位置偏移程度的 {@link Point}对象 
+ *  负偏移表示向左和向上。
  * @example
  * var markerHeight = 50, markerRadius = 10, linearOffset = 25;
  * var popupOffsets = {
@@ -64,9 +64,9 @@ class Popup extends Evented {
     }
 
     /**
-     * Adds the popup to a map.
+     * 往地图中添加弹窗。
      *
-     * @param {Map} map The Mapbox GL JS map to add the popup to.
+     * @param {Map} map  需要添加弹窗的 Mapbox GL JS 地图。
      * @returns {Popup} `this`
      */
     addTo(map) {
@@ -80,14 +80,14 @@ class Popup extends Evented {
     }
 
     /**
-     * @returns {boolean} `true` if the popup is open, `false` if it is closed.
+     * @returns {boolean} 弹窗打开时，`true` 弹窗关闭时， `false`。
      */
     isOpen() {
         return !!this._map;
     }
 
     /**
-     * Removes the popup from the map it has been added to.
+     * 从地图中移除先前添加的弹窗。
      *
      * @example
      * var popup = new mapboxgl.Popup().addTo(map);
@@ -125,22 +125,22 @@ class Popup extends Evented {
     }
 
     /**
-     * Returns the geographical location of the popup's anchor.
+     * 返回弹窗锚点（anchor）的地理位置。
      *
      * The longitude of the result may differ by a multiple of 360 degrees from the longitude previously
      * set by `setLngLat` because `Popup` wraps the anchor longitude across copies of the world to keep
      * the popup on screen.
      *
-     * @returns {LngLat} The geographical location of the popup's anchor.
+     * @returns {LngLat} 弹窗锚点的地理位置。
      */
     getLngLat() {
         return this._lngLat;
     }
 
     /**
-     * Sets the geographical location of the popup's anchor, and moves the popup to it.
+     * 设置弹窗锚点的地理位置，并将弹窗移到该处。
      *
-     * @param {LngLatLike} lnglat The geographical location to set as the popup's anchor.
+     * @param {LngLatLike} lnglat 设置为弹窗锚点的地理位置。
      * @returns {Popup} `this`
      */
     setLngLat(lnglat) {
@@ -151,13 +151,13 @@ class Popup extends Evented {
     }
 
     /**
-     * Sets the popup's content to a string of text.
+     * 将弹窗内容设置为文本字符串。
      *
-     * This function creates a [Text](https://developer.mozilla.org/en-US/docs/Web/API/Text) node in the DOM,
-     * so it cannot insert raw HTML. Use this method for security against XSS
-     * if the popup content is user-provided.
+     * 该函数会在 DOM 中创建一个 [Text](https://developer.mozilla.org/en-US/docs/Web/API/Text) 节点，
+     * 因此不能插入原始 HTML。当由用户提供弹窗内容时，
+     * 为了安全起见，可使用该方法来抵抗 XSS 攻击。
      *
-     * @param {string} text Textual content for the popup.
+     * @param {string} text 弹窗的文本内容。
      * @returns {Popup} `this`
      * @example
      * var popup = new mapboxgl.Popup()
@@ -170,13 +170,13 @@ class Popup extends Evented {
     }
 
     /**
-     * Sets the popup's content to the HTML provided as a string.
+     * 将弹窗内容输入以字符串方式提供的 HTML 中。
      *
-     * This method does not perform HTML filtering or sanitization, and must be
-     * used only with trusted content. Consider {@link Popup#setText} if
-     * the content is an untrusted text string.
+     * 该方法不会进行 HTML 过滤或清理，
+     * 因此必须使用可信的文本内容。如果要输入不信任的文本字符串，
+     * 应考虑使用 {@link Popup#setText}。
      *
-     * @param {string} html A string representing HTML content for the popup.
+     * @param {string} html 代表弹窗 HTML 内容的字符串。
      * @returns {Popup} `this`
      */
     setHTML(html) {
@@ -194,9 +194,9 @@ class Popup extends Evented {
     }
 
     /**
-     * Sets the popup's content to the element provided as a DOM node.
+     * 将弹窗内容设为 DOM 节点元素。
      *
-     * @param {Node} htmlNode A DOM node to be used as content for the popup.
+     * @param {Node} htmlNode 用作弹窗内容的 DOM 节点。
      * @returns {Popup} `this`
      * @example
      * // create an element with the popup content

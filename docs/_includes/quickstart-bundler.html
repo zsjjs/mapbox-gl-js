@@ -1,14 +1,14 @@
-<p>Install the npm package.</p>
+<p>安装 npm 包。</p>
 {% highlight bash %}
 npm install --save mapbox-gl
 {% endhighlight bash %}
 
-<p>Include the CSS file in the <code>&lt;head&gt;</code> of your HTML file.</p>
+<p>在 HTML 文件中的 <code>&lt;head&gt;</code> 中加入 CSS 文件。</p>
 {% copyable %}{% highlight html %}
 <link href='{{site.tileApi}}/mapbox-gl-js/v{{site.data.package.version}}/mapbox-gl.css' rel='stylesheet' />
 {% endhighlight html %}{% endcopyable %}
 
-<p>Include the following code in the <code>&lt;body&gt;</code> of your HTML file.</p>
+<p>在 HTML 文件中的 <code>&lt;body&gt;</code> 中填入以下代码。</p>
 <div class='js-replace-token'>
 {% copyable %}{% highlight javascript %}
 import mapboxgl from 'mapbox-gl';

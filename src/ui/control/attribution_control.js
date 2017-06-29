@@ -4,11 +4,11 @@ const DOM = require('../../util/dom');
 const util = require('../../util/util');
 
 /**
- * An `AttributionControl` control presents the map's [attribution information](https://www.mapbox.com/help/attribution/).
+ * 一个 `AttributionControl` 控件展示地图的 [归属（attribution ）信息](https://www.mapbox.com/help/attribution/)。
  *
  * @implements {IControl}
  * @param {Object} [options]
- * @param {boolean} [options.compact] If `true` force a compact attribution that shows the full attribution on mouse hover, or if `false` force the full attribution control. The default is a responsive attribution that collapses when the map is less than 640 pixels wide.
+ * @param {boolean} [options.compact] 如果为 `true` ，鼠标悬停时将强制显示一个简洁版的归属声明，如果设为 `false` ，将强制显示完整归属控件。默认为一个响应式归属控件，当地图宽度低于 640 像素的时候该控件会折叠起来。
  * @example
  * var map = new mapboxgl.Map({attributionControl: false})
  *     .addControl(new mapboxgl.AttributionControl({

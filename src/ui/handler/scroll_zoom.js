@@ -10,9 +10,9 @@ const ua = window.navigator.userAgent.toLowerCase(),
     safari = ua.indexOf('safari') !== -1 && ua.indexOf('chrom') === -1;
 
 /**
- * The `ScrollZoomHandler` allows the user to zoom the map by scrolling.
+ * `ScrollZoomHandler` 让用户能够通过滚轮来缩放地图。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class ScrollZoomHandler {
     constructor(map) {
@@ -26,19 +26,19 @@ class ScrollZoomHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "scroll to zoom" interaction is enabled.
+     * 返回一个指示“滚动缩放”交互是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "scroll to zoom" interaction is enabled.
+     * @returns {boolean} 如果“滚动缩放”交互已激活，为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Enables the "scroll to zoom" interaction.
+     * 激活“滚动缩放”交互功能。
      *
      * @param {Object} [options]
-     * @param {string} [options.around] If "center" is passed, map will zoom around center of map
+     * @param {string} [options.around] 如果传递了“center”，将在地图中心周围缩放。
      *
      * @example
      *   map.scrollZoom.enable();
@@ -54,7 +54,7 @@ class ScrollZoomHandler {
     }
 
     /**
-     * Disables the "scroll to zoom" interaction.
+     * 禁用“滚动缩放”交互功能。
      *
      * @example
      *   map.scrollZoom.disable();
@@ -153,8 +153,8 @@ class ScrollZoomHandler {
 module.exports = ScrollZoomHandler;
 
 /**
- * Fired just before the map begins a transition from one zoom level to another,
- * as the result of either user interaction or methods such as {@link Map#flyTo}.
+ * 在用户交互或 {@link Map#flyTo}
+ * 等方法引发缩放级别动态转换时重复触发。
  *
  * @event zoomstart
  * @memberof Map
@@ -163,19 +163,19 @@ module.exports = ScrollZoomHandler;
  */
 
 /**
- * Fired repeatedly during an animated transition from one zoom level to another,
- * as the result of either user interaction or methods such as {@link Map#flyTo}.
+ * 在用户交互或 {@link Map#flyTo}
+ * 等方法引发缩放级别转换之前触发。
  *
  * @event zoom
  * @memberof Map
  * @instance
  * @property {MapMouseEvent | MapTouchEvent} data
- * @see [Update a choropleth layer by zoom level](https://www.mapbox.com/mapbox-gl-js/example/updating-choropleth/)
+ * @see [通过缩放级别更新等值线图层](https://www.mapbox.com/mapbox-gl-js/example/updating-choropleth/)
  */
 
 /**
- * Fired just after the map completes a transition from one zoom level to another,
- * as the result of either user interaction or methods such as {@link Map#flyTo}.
+ * 在用户交互或 {@link Map#flyTo}
+ * 等方法使地图完成缩放级别转换之后触发。
  *
  * @event zoomend
  * @memberof Map

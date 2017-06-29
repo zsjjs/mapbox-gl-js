@@ -6,8 +6,8 @@ const window = require('../util/window');
 const EXTENT = require('../data/extent');
 
 /**
- * A source containing GeoJSON.
- * (See the [Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-geojson) for detailed documentation of options.)
+ * 包含 GeoJSON 的数据源。
+ * （点击 [样式规范Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-geojson) 查看更详细的选项文档。）
  *
  * @interface GeoJSONSource
  * @example
@@ -48,9 +48,9 @@ const EXTENT = require('../data/extent');
  *       }
  *   }]
  * });
- * @see [Draw GeoJSON points](https://www.mapbox.com/mapbox-gl-js/example/geojson-markers/)
- * @see [Add a GeoJSON line](https://www.mapbox.com/mapbox-gl-js/example/geojson-line/)
- * @see [Create a heatmap from points](https://www.mapbox.com/mapbox-gl-js/example/heatmap/)
+ * @see [绘制 GeoJSON 点](https://www.mapbox.com/mapbox-gl-js/example/geojson-markers/)
+ * @see [添加 GeoJSON 线（line）](https://www.mapbox.com/mapbox-gl-js/example/geojson-line/)
+ * @see [用地图上的点创建热度图（heatmap）](https://www.mapbox.com/mapbox-gl-js/example/heatmap/)
  */
 class GeoJSONSource extends Evented {
 

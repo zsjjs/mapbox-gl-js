@@ -4,8 +4,8 @@ const ajax = require('../util/ajax');
 const ImageSource = require('./image_source');
 
 /**
- * A data source containing video.
- * (See the [Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-video) for detailed documentation of options.)
+ * 包含视频的数据源。
+ * （点击 [样式规范Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-video) 查看更详细的选项文档。）
  * @interface VideoSource
  * @example
  * // add to map
@@ -33,7 +33,7 @@ const ImageSource = require('./image_source');
  * ]);
  *
  * map.removeSource('some id');  // remove
- * @see [Add a video](https://www.mapbox.com/mapbox-gl-js/example/video-on-a-map/)
+ * @see [添加视频](https://www.mapbox.com/mapbox-gl-js/example/video-on-a-map/)
  */
 class VideoSource extends ImageSource {
 
@@ -76,9 +76,9 @@ class VideoSource extends ImageSource {
     }
 
     /**
-     * Returns the HTML `video` element.
+     * 返回一个 HTML `video` 元素。
      *
-     * @returns {HTMLVideoElement} The HTML `video` element.
+     * @returns {HTMLVideoElement} HTML `video` 元素。
      */
     getVideo() {
         return this.video;
@@ -95,13 +95,13 @@ class VideoSource extends ImageSource {
     }
 
     /**
-     * Sets the video's coordinates and re-renders the map.
+     * 设置视频坐标并重新渲染地图。
      *
      * @method setCoordinates
-     * @param {Array<Array<number>>} coordinates Four geographical coordinates,
-     *   represented as arrays of longitude and latitude numbers, which define the corners of the video.
-     *   The coordinates start at the top left corner of the video and proceed in clockwise order.
-     *   They do not have to represent a rectangle.
+     * @param {Array<Array<number>>} coordinates 以经纬度数组表示的四个地理坐标，
+     *   用于定义视频的四角。
+     *   四个坐标从左上角开始，顺时针进行。
+     *   不一定代表矩形。
      * @returns {VideoSource} this
      */
     // setCoordinates inherited from ImageSource

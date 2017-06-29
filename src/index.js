@@ -34,15 +34,15 @@ const rtlTextPlugin = require('./source/rtl_text_plugin');
 mapboxgl.setRTLTextPlugin = rtlTextPlugin.setRTLTextPlugin;
 
  /**
-  * Sets the map's [RTL text plugin](https://www.mapbox.com/mapbox-gl-js/plugins/#mapbox-gl-rtl-text).
-  * Necessary for supporting languages like Arabic and Hebrew that are written right-to-left.
+  * 设置地图的 [RTL text plugin](https://www.mapbox.com/mapbox-gl-js/plugins/#mapbox-gl-rtl-text)。
+  * 对支持从右向左书写的语言（如阿拉伯语和希伯来语）来说是必要的。
   *
   * @function setRTLTextPlugin
-  * @param {string} pluginURL URL pointing to the Mapbox RTL text plugin source.
-  * @param {Function} callback Called with an error argument if there is an error.
+  * @param {string} pluginURL URL 链接 Mapbox RTL 文本插件数据源的 URL。
+  * @param {Function} callback 出现错误时使用错误参数（argument）调用。
   * @example
   * mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
-  * @see [Add support for right-to-left scripts](https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/)
+  * @see [添加从右向左书写支持](https://www.mapbox.com/mapbox-gl-js/example/mapbox-gl-rtl-text/)
   */
 
 Object.defineProperty(mapboxgl, 'accessToken', {
@@ -51,31 +51,31 @@ Object.defineProperty(mapboxgl, 'accessToken', {
 });
 
 /**
- * Gets and sets the map's [access token](https://www.mapbox.com/help/define-access-token/).
+ * 获得并设置地图的 [access token](https://www.mapbox.com/help/define-access-token/)。
  *
  * @var {string} accessToken
  * @example
  * mapboxgl.accessToken = myAccessToken;
- * @see [Display a map](https://www.mapbox.com/mapbox-gl-js/examples/)
+ * @see [显示地图](https://www.mapbox.com/mapbox-gl-js/examples/)
  */
 
 /**
- * The version of Mapbox GL JS in use as specified in `package.json`,
- * `CHANGELOG.md`, and the GitHub release.
+ * 当前使用的 Mapbox GL JS 的版本在 `package.json`,
+ * `CHANGELOG.md`, 以及 the GitHub release中有详细说明。
  *
  * @var {string} version
  */
 
 /**
- * Returns a Boolean indicating whether the browser [supports Mapbox GL JS](https://www.mapbox.com/help/mapbox-browser-support/#mapbox-gl-js).
+ * 返回一个布尔值，用以只是浏览器是否 [支持 Mapbox GL JS](https://www.mapbox.com/help/mapbox-browser-support/#mapbox-gl-js)。
  *
  * @function supported
  * @param {Object} options
- * @param {boolean} [options.failIfMajorPerformanceCaveat=false] If `true`,
+ * @param {boolean} [options.failIfMajorPerformanceCaveat=false] 如果为 `true`,
  *   the function will return `false` if the performance of Mapbox GL JS would
  *   be dramatically worse than expected (i.e. a software renderer would be used).
  * @return {boolean}
  * @example
  * mapboxgl.supported() // = true
- * @see [Check for browser support](https://www.mapbox.com/mapbox-gl-js/example/check-for-support/)
+ * @see [点击查看支持的浏览器](https://www.mapbox.com/mapbox-gl-js/example/check-for-support/)
  */

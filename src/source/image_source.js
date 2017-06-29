@@ -13,8 +13,8 @@ const Buffer = require('../data/buffer');
 const VertexArrayObject = require('../render/vertex_array_object');
 
 /**
- * A data source containing an image.
- * (See the [Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-image) for detailed documentation of options.)
+ * 包含图像的数据源。
+ * （点击 [样式规范Style Specification](https://www.mapbox.com/mapbox-gl-style-spec/#sources-image) 查看更详细的选项文档。）
  *
  * @interface ImageSource
  * @example
@@ -40,7 +40,7 @@ const VertexArrayObject = require('../render/vertex_array_object');
  * ]);
  *
  * map.removeSource('some id');  // remove
- * @see [Add an image](https://www.mapbox.com/mapbox-gl-js/example/image-on-a-map/)
+ * @see [添加图像](https://www.mapbox.com/mapbox-gl-js/example/image-on-a-map/)
  */
 class ImageSource extends Evented {
 
@@ -90,12 +90,12 @@ class ImageSource extends Evented {
     }
 
     /**
-     * Sets the image's coordinates and re-renders the map.
+     * 设置图像坐标并重新渲染地图。
      *
-     * @param {Array<Array<number>>} coordinates Four geographical coordinates,
-     *   represented as arrays of longitude and latitude numbers, which define the corners of the image.
-     *   The coordinates start at the top left corner of the image and proceed in clockwise order.
-     *   They do not have to represent a rectangle.
+     * @param {Array<Array<number>>} coordinates 以经纬度数组表示的四个地理坐标，用
+     *   于定义图像的四角。
+     *   四个坐标从图像左上角开始，顺时针进行。
+     *   不一定代表矩形。
      * @returns {ImageSource} this
      */
     setCoordinates(coordinates) {

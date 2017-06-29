@@ -161,26 +161,26 @@ module.exports = function bindHandlers(map, options) {
 
 /**
  * @typedef {Object} MapMouseEvent
- * @property {string} type The event type.
- * @property {Map} target The `Map` object that fired the event.
+ * @property {string} type 事件类型。
+ * @property {Map} target 触发事件的 `Map` 对象。
  * @property {MouseEvent} originalEvent
- * @property {Point} point The pixel coordinates of the mouse event target, relative to the map
- *   and measured from the top left corner.
- * @property {LngLat} lngLat The geographic location on the map of the mouse event target.
+ * @property {Point} point 鼠标事件的目标像素坐标，
+ *   对地图而言，从左上角开始测量。
+ * @property {LngLat} lngLat 地图上鼠标事件的目标地理位置。
  */
 
 /**
  * @typedef {Object} MapTouchEvent
- * @property {string} type The event type.
- * @property {Map} target The `Map` object that fired the event.
+ * @property {string} type 事件类型。
+ * @property {Map} target 触发事件的 `Map` 对象。
  * @property {TouchEvent} originalEvent
- * @property {Point} point The pixel coordinates of the center of the touch event points, relative to the map
- *   and measured from the top left corner.
- * @property {LngLat} lngLat The geographic location on the map of the center of the touch event points.
- * @property {Array<Point>} points The array of pixel coordinates corresponding to
- *   a [touch event's `touches`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/touches)
- *   property.
- * @property {Array<LngLat>} lngLats The geographical locations on the map corresponding to
- *   a [touch event's `touches`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/touches)
- *   property.
+ * @property {Point} point 触摸事件（touch event）点中心的像素坐标，
+ *   对地图而言，从左上角开始测量。
+ * @property {LngLat} lngLat 地图上触摸事件点中心的地理位置。
+ * @property {Array<Point>} points 对应
+ *   [touch event's `touches`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/touches)
+ *   属性的像素坐标数组。
+ * @property {Array<LngLat>} lngLats 地图上对应
+ *   [touch event's `touches`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/touches)
+ *   属性的地理位置。
  */

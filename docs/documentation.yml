@@ -7,8 +7,8 @@ toc:
   - AnimationOptions
   - name: Geography & Geometry
     description: |
-      `LngLat` and `LngLatBounds` represent points and rectanges in geographic
-      coordinates. `Point` represents points in screen coordinates.
+      `LngLat` 和 `LngLatBounds` 代表地理坐标中的点和矩形。
+      `Point` 代表屏幕坐标中的点。
   - CameraOptions
   - LngLat
   - LngLatLike
@@ -18,7 +18,7 @@ toc:
   - PointLike
   - name: User Interface
     description: |
-      Controls, markers, and popups add new user interface elements to the map.
+      控件、标记和弹窗为地图添加新的用户界面元素。
   - IControl
   - NavigationControl
   - GeolocateControl
@@ -29,9 +29,9 @@ toc:
   - Marker
   - name: User Interaction Handlers
     description: |
-      Handlers add different kinds of interactivity to the map -
-      mouse interactivity, touch interactions, and other
-      gestures.
+      处理程序（handlers）为地图添加各种交互 - 
+      鼠标交互、触摸交互以及其它
+      手势。
   - BoxZoomHandler
   - ScrollZoomHandler
   - DragPanHandler
@@ -41,16 +41,16 @@ toc:
   - TouchZoomRotateHandler
   - name: Sources
     description: |
-      Sources specify the geographic features to be rendered on the map. Source
-      objects may be obtained from `Map#getSource`.
+      图层数据源（sources）指定地图中需要渲染的地理要素。
+      可能从 `Map#getSource` 获得的数据源对象。
   - GeoJSONSource
   - VideoSource
   - ImageSource
   - CanvasSource
   - name: Events
     description: |
-      `Evented` is Mapbox GL JS's event system. It is sometimes extended when
-      implementing [IControls](#IControl) and other extensions.
+      `Evented` 是 Mapbox GL JS 的事件系统。
+      执行 [IControls](#IControl) 和其他扩展项的时候有时会被扩展。
   - Evented
   - MapMouseEvent
   - MapTouchEvent

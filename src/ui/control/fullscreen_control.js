@@ -5,12 +5,12 @@ const util = require('../../util/util');
 const window = require('../../util/window');
 
 /**
- * A `FullscreenControl` control contains a button for toggling the map in and out of fullscreen mode.
+ * `FullscreenControl` 控件包含控制地图进入和退出全屏模式的按钮。
  *
  * @implements {IControl}
  * @example
  * map.addControl(new mapboxgl.FullscreenControl());
- * @see [View a fullscreen map](https://www.mapbox.com/mapbox-gl-js/example/fullscreen/)
+ * @see [全屏查看地图](https://www.mapbox.com/mapbox-gl-js/example/fullscreen/)
  */
 
 class FullscreenControl {

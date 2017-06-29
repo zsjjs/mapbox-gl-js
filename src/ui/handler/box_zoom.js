@@ -6,10 +6,10 @@ const util = require('../../util/util');
 const window = require('../../util/window');
 
 /**
- * The `BoxZoomHandler` allows the user to zoom the map to fit within a bounding box.
- * The bounding box is defined by clicking and holding `shift` while dragging the cursor.
+ * `BoxZoomHandler` 让用户能够将地图缩放到适合限位框的大小。
+ * 拖动光标时点击并按 `shift` 即可定义限位框。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class BoxZoomHandler {
 
@@ -27,25 +27,25 @@ class BoxZoomHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "box zoom" interaction is enabled.
+     * 返回一个指示“缩放框”交互是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "box zoom" interaction is enabled.
+     * @returns {boolean} 如果“缩放框”已启用，显示为`true`。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Returns a Boolean indicating whether the "box zoom" interaction is active, i.e. currently being used.
+     * 返回一个显示“缩放框”交互是否正在运行（也就是说用户是否正在使用）的布尔值。
      *
-     * @returns {boolean} `true` if the "box zoom" interaction is active.
+     * @returns {boolean} 如果“缩放框”正在使用，为`true`。
      */
     isActive() {
         return !!this._active;
     }
 
     /**
-     * Enables the "box zoom" interaction.
+     * 激活“缩放框”交互功能。
      *
      * @example
      *   map.boxZoom.enable();
@@ -64,7 +64,7 @@ class BoxZoomHandler {
     }
 
     /**
-     * Disables the "box zoom" interaction.
+     * 禁用“缩放框”交互功能。
      *
      * @example
      *   map.boxZoom.disable();
@@ -162,12 +162,12 @@ module.exports = BoxZoomHandler;
 /**
  * @typedef {Object} MapBoxZoomEvent
  * @property {MouseEvent} originalEvent
- * @property {LngLatBounds} boxZoomBounds The bounding box of the "box zoom" interaction.
- *   This property is only provided for `boxzoomend` events.
+ * @property {LngLatBounds} boxZoomBounds “缩放框”交互的限位框。
+ *   该属性仅为  `boxzoomend` 事件提供。
  */
 
 /**
- * Fired when a "box zoom" interaction starts. See {@link BoxZoomHandler}.
+ * “缩放框”交互发生时触发。请查看 {@link BoxZoomHandler}。
  *
  * @event boxzoomstart
  * @memberof Map
@@ -176,7 +176,7 @@ module.exports = BoxZoomHandler;
  */
 
 /**
- * Fired when a "box zoom" interaction ends.  See {@link BoxZoomHandler}.
+ * “缩放框”交互结束时触发。请查看 {@link BoxZoomHandler}。
  *
  * @event boxzoomend
  * @memberof Map
@@ -186,8 +186,8 @@ module.exports = BoxZoomHandler;
  */
 
 /**
- * Fired when the user cancels a "box zoom" interaction, or when the bounding box does not meet the minimum size threshold.
- * See {@link BoxZoomHandler}.
+ * 用户取消“缩放框”操作或限位框未达到最小缩放阈值时触发。
+ * 请查看 {@link BoxZoomHandler}。
  *
  * @event boxzoomcancel
  * @memberof Map

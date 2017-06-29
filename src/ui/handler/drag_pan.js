@@ -10,10 +10,10 @@ const inertiaLinearity = 0.3,
     inertiaDeceleration = 2500; // px/s^2
 
 /**
- * The `DragPanHandler` allows the user to pan the map by clicking and dragging
- * the cursor.
+ * `DragPanHandler` 让用户可以通过
+ * 点击拖动光标平移地图。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class DragPanHandler {
     constructor(map) {
@@ -30,25 +30,25 @@ class DragPanHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "drag to pan" interaction is enabled.
+     * 返回一个指示“拖动平移”交互功能是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "drag to pan" interaction is enabled.
+     * @returns {boolean} 如果“拖动平移”交互已激活，显示为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Returns a Boolean indicating whether the "drag to pan" interaction is active, i.e. currently being used.
+     * 返回一个指示“拖动平移”交互是否正在运行（也就是说用户是否正在使用）的布尔值。
      *
-     * @returns {boolean} `true` if the "drag to pan" interaction is active.
+     * @returns {boolean} 如果“拖动平移”交互正在运行，显示为`true`。
      */
     isActive() {
         return !!this._active;
     }
 
     /**
-     * Enables the "drag to pan" interaction.
+     * 激活“拖动平移”交互功能。
      *
      * @example
      * map.dragPan.enable();
@@ -62,7 +62,7 @@ class DragPanHandler {
     }
 
     /**
-     * Disables the "drag to pan" interaction.
+     * 禁用“拖动平移”交互功能。
      *
      * @example
      * map.dragPan.disable();
@@ -214,7 +214,7 @@ class DragPanHandler {
 module.exports = DragPanHandler;
 
 /**
- * Fired when a "drag to pan" interaction starts. See {@link DragPanHandler}.
+ * “拖动平移”操作开始时触发。请查看 {@link DragPanHandler}。
  *
  * @event dragstart
  * @memberof Map
@@ -223,7 +223,7 @@ module.exports = DragPanHandler;
  */
 
 /**
- * Fired repeatedly during a "drag to pan" interaction. See {@link DragPanHandler}.
+ * “拖动平移”期间重复触发。请查看 {@link DragPanHandler}。
  *
  * @event drag
  * @memberof Map
@@ -232,7 +232,7 @@ module.exports = DragPanHandler;
  */
 
 /**
- * Fired when a "drag to pan" interaction ends. See {@link DragPanHandler}.
+ * “拖动平移”结束时触发。请查看 {@link DragPanHandler}。
  *
  * @event dragend
  * @memberof Map

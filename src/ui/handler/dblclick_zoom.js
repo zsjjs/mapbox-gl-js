@@ -1,10 +1,10 @@
 'use strict';
 
 /**
- * The `DoubleClickZoomHandler` allows the user to zoom the map at a point by
- * double clicking.
+ * `DoubleClickZoomHandler` 允许用户通过双击
+ * 缩放地图。
  *
- * @param {Map} map The Mapbox GL JS map to add the handler to.
+ * @param {Map} map 需要添加处理程序（handler）的 Mapbox GL JS 地图。
  */
 class DoubleClickZoomHandler {
     constructor(map) {
@@ -13,16 +13,16 @@ class DoubleClickZoomHandler {
     }
 
     /**
-     * Returns a Boolean indicating whether the "double click to zoom" interaction is enabled.
+     * 返回一个用以指示“双击缩放”交互功能是否激活的布尔值。
      *
-     * @returns {boolean} `true` if the "double click to zoom" interaction is enabled.
+     * @returns {boolean} 如果“双击缩放”交互功能已激活，为`true` 。
      */
     isEnabled() {
         return !!this._enabled;
     }
 
     /**
-     * Enables the "double click to zoom" interaction.
+     * 激活“双击缩放”交互功能。
      *
      * @example
      * map.doubleClickZoom.enable();
@@ -34,7 +34,7 @@ class DoubleClickZoomHandler {
     }
 
     /**
-     * Disables the "double click to zoom" interaction.
+     * 禁用“双击缩放”交互功能。
      *
      * @example
      * map.doubleClickZoom.disable();

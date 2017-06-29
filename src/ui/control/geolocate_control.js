@@ -31,19 +31,19 @@ function checkGeolocationSupport(callback) {
 }
 
 /**
- * A `GeolocateControl` control provides a button that uses the browser's geolocation
- * API to locate the user on the map.
+ * `GeolocateControl` 控件提供一个按钮，该按钮使用浏览器的地理定位（geolocation） 
+ * API 可在地图上定位用户当前位置。
  *
- * Not all browsers support geolocation,
- * and some users may disable the feature. Geolocation support for modern
- * browsers including Chrome requires sites to be served over HTTPS. If
- * geolocation support is not available, the GeolocateControl will not
- * be visible.
+ * 但不是所有的浏览器都支持地理定位，
+ * 并且有的用户会选择禁用该功能。
+ * 现代浏览器（包括 Chrome）的地理定位功能需要网站使用 HTTPS。
+ * 如果地理定位功能不可用，
+ * GeolocateControl 将隐藏。
  *
  * @implements {IControl}
  * @param {Object} [options]
- * @param {Object} [options.positionOptions={enableHighAccuracy: false, timeout: 6000}] A [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) object.
- * @param {Object} [options.watchPosition=false] If `true` the map will reposition each time the position of the device changes and the control becomes a toggle.
+ * @param {Object} [options.positionOptions={enableHighAccuracy: false, timeout: 6000}] 一个 [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions) 对象。
+ * @param {Object} [options.watchPosition=false] 如果为 `true` ，每次设备位置变动地图都会重新定位，控件变为了开关控件（toggle）。
  * @example
  * map.addControl(new mapboxgl.GeolocateControl({
  *     positionOptions: {
@@ -144,21 +144,21 @@ class GeolocateControl extends Evented {
 module.exports = GeolocateControl;
 
 /**
- * geolocate event.
+ * geolocate 事件。
  *
  * @event geolocate
  * @memberof GeolocateControl
  * @instance
- * @property {Position} data The returned [Position](https://developer.mozilla.org/en-US/docs/Web/API/Position) object from the callback in [Geolocation.getCurrentPosition()](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition).
+ * @property {Position} data [Geolocation.getCurrentPosition()](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition) 中回调函数（callback）返回的[Position](https://developer.mozilla.org/en-US/docs/Web/API/Position) 对象。
  *
  */
 
 /**
- * error event.
+ * error 事件。
  *
  * @event error
  * @memberof GeolocateControl
  * @instance
- * @property {PositionError} data The returned [PositionError](https://developer.mozilla.org/en-US/docs/Web/API/PositionError) object from the callback in [Geolocation.getCurrentPosition()](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition).
+ * @property {PositionError} data [Geolocation.getCurrentPosition()](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition) 中回调函数返回的[PositionError](https://developer.mozilla.org/en-US/docs/Web/API/PositionError) 对象。
  *
  */
