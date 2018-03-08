@@ -5,11 +5,36 @@
             "width": 128,
             "height": 128,
             "queryGeometry": [
-                79,
+                94,
                 64
             ],
             "queryOptions": {
-            }
+            },
+            "operations": [
+                [
+                    "addImage",
+                    "oblong",
+                    "./image/oblong.png"
+                ],
+                [
+                    "addLayer",
+                    {
+                        "id": "rotate",
+                        "type": "symbol",
+                        "source": "source",
+                        "layout": {
+                          "icon-image": "oblong",
+                          "icon-rotate": 45,
+                          "icon-allow-overlap": true,
+                          "icon-ignore-placement": true
+                        }
+                    },
+                    "offset"
+                ],
+                [
+                    "wait"
+                ]
+            ]
         }
     },
     "zoom": 0,
@@ -39,12 +64,14 @@
           }
         },
         {
-          "id": "iconlayer",
+          "id": "offset",
           "type": "symbol",
           "source": "source",
           "layout": {
             "icon-image": "building-12",
-            "icon-offset": [15, 0]
+            "icon-offset": [30, 0],
+            "icon-allow-overlap": true,
+            "icon-ignore-placement": true
           }
         }
     ]
