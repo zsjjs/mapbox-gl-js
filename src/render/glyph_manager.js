@@ -162,7 +162,9 @@ class GlyphManager {
                 height: 24,
                 left: 0,
                 top: -8,
-                advance: 24
+                advance: 24,
+                ascender: 0.0,
+                descender: 0.0
             }
         };
     }

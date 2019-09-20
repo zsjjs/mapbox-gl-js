@@ -455,7 +455,8 @@ function shapeLines(shaping: Shaping,
                     allowVerticalPlacement: boolean) {
 
     let x = 0;
-    let y = shaping.yOffset;
+    let y = 0;
+    // let y = shaping.yOffset;
 
     let maxLineLength = 0;
     const positionedGlyphs = shaping.positionedGlyphs;
@@ -479,14 +480,18 @@ function shapeLines(shaping: Shaping,
             const section = line.getSection(i);
             const sectionIndex = line.getSectionIndex(i);
             const codePoint = line.getCharCode(i);
-            // We don't know the baseline, but since we're laying out
-            // at 24 points, we can calculate how much it will move when
-            // we scale up or down.
-            const baselineOffset = (lineMaxScale - section.scale) * 24;
+
             const positions = glyphMap[section.fontStack];
             const glyph = positions && positions[codePoint];
 
             if (!glyph) continue;
+            // Each glyph's baseline is starting from its acsender, which is the vertical distance
+            // from the horizontal baseline to the highest ‘character’ coordinate in a font face.
+            // Since we're laying out at 24 points, we need also calculate how much it will move
+            // when we scale up or down.
+            const hasBaselineOffset = glyph.metrics.ascender !== 0 && glyph.metrics.descender !== 0;
+            const baselineOffset = (hasBaselineOffset ? (-glyph.metrics.ascender * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
+            // const baselineOffset = (lineMaxScale - section.scale) * 24;
 
             if (writingMode === WritingMode.horizontal ||
                 // Don't verticalize glyphs that have no upright orientation if vertical placement is disabled.
@@ -518,7 +523,7 @@ function shapeLines(shaping: Shaping,
     align(positionedGlyphs, justify, horizontalAlign, verticalAlign, maxLineLength, lineHeight, lines.length);
 
     // Calculate the bounding box
-    const height = y - shaping.yOffset;
+    const height = y;
 
     shaping.top += -verticalAlign * height;
     shaping.bottom = shaping.top + height;
