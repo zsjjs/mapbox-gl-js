@@ -456,7 +456,6 @@ function shapeLines(shaping: Shaping,
 
     let x = 0;
     let y = 0;
-    // let y = shaping.yOffset;
 
     let maxLineLength = 0;
     const positionedGlyphs = shaping.positionedGlyphs;
@@ -465,6 +464,21 @@ function shapeLines(shaping: Shaping,
         textJustify === 'right' ? 1 :
         textJustify === 'left' ? 0 : 0.5;
 
+    let hasBaseline = false;
+    for (const line of lines) {
+        line.trim();
+        for (let i = 0; i < line.length(); i++) {
+            const section = line.getSection(i);
+            const codePoint = line.getCharCode(i);
+
+            const positions = glyphMap[section.fontStack];
+            const glyph = positions && positions[codePoint];
+            if (!glyph) continue;
+            hasBaseline = glyph.metrics.ascender !== 0 && glyph.metrics.descender !== 0;
+            if (!hasBaseline) break;
+        }
+        if (!hasBaseline) break;
+    }
     for (const line of lines) {
         line.trim();
 
@@ -483,15 +497,18 @@ function shapeLines(shaping: Shaping,
 
             const positions = glyphMap[section.fontStack];
             const glyph = positions && positions[codePoint];
-
             if (!glyph) continue;
+
+            // The rects have an addditional buffer that is not included in their size.
+            const glyphPadding = 1.0;
+            const rectBuffer = 3 + glyphPadding;
             // Each glyph's baseline is starting from its acsender, which is the vertical distance
             // from the horizontal baseline to the highest ‘character’ coordinate in a font face.
+            // If ascender is applied, the shaping rect buffer needs to be counted.
+            // If ascender is not applicable, fall back to use a default baseline yOffset.
             // Since we're laying out at 24 points, we need also calculate how much it will move
             // when we scale up or down.
-            const hasBaselineOffset = glyph.metrics.ascender !== 0 && glyph.metrics.descender !== 0;
-            const baselineOffset = (hasBaselineOffset ? (-glyph.metrics.ascender * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
-            // const baselineOffset = (lineMaxScale - section.scale) * 24;
+            const baselineOffset = (hasBaseline ? ((-glyph.metrics.ascender + rectBuffer * 2) * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
 
             if (writingMode === WritingMode.horizontal ||
                 // Don't verticalize glyphs that have no upright orientation if vertical placement is disabled.
