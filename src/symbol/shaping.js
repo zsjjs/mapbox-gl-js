@@ -44,6 +44,7 @@ export type Shaping = {
     lineCount: number,
     text: string,
     yOffset: number,
+    hasBaseline: Boolean,
 };
 
 export type SymbolAnchor = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -210,7 +211,8 @@ function shapeText(text: Formatted,
         right: translate[0],
         writingMode,
         lineCount: lines.length,
-        yOffset: -17 // the y offset *should* be part of the font metadata
+        yOffset: -17, // the y offset *should* be part of the font metadata
+        hasBaseline: false
     };
 
     shapeLines(shaping, glyphs, lines, lineHeight, textAnchor, textJustify, writingMode, spacing, allowVerticalPlacement);
@@ -499,16 +501,14 @@ function shapeLines(shaping: Shaping,
             const glyph = positions && positions[codePoint];
             if (!glyph) continue;
 
-            // The rects have an addditional buffer that is not included in their size.
-            const glyphPadding = 1.0;
-            const rectBuffer = 3 + glyphPadding;
-            // Each glyph's baseline is starting from its acsender, which is the vertical distance
-            // from the horizontal baseline to the highest ‘character’ coordinate in a font face.
-            // If ascender is applied, the shaping rect buffer needs to be counted.
-            // If ascender is not applicable, fall back to use a default baseline yOffset.
-            // Since we're laying out at 24 points, we need also calculate how much it will move
-            // when we scale up or down.
-            const baselineOffset = (hasBaseline ? ((-glyph.metrics.ascender + rectBuffer * 2) * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
+            // In order to make different fonts aligned, they must share a general baseline that starts from the midline
+            // of each font face.  Baseline offset is the vertical distance from font face's baseline to its top most
+            // position, which is the half size of the sum (ascender + descender). Since glyph's position is counted
+            // from the top left corner, the negative shift is needed. So different fonts shares the same baseline but
+            // with different offset shift. If font's baseline is not applicable, fall back to use a default baseline
+            // offset, see shaping.yOffset. Since we're laying out at 24 points, we need also calculate how much it will
+            // move when we scale up or down.
+            const baselineOffset = (hasBaseline ? ((-glyph.metrics.ascender + glyph.metrics.descender) / 2 * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
 
             if (writingMode === WritingMode.horizontal ||
                 // Don't verticalize glyphs that have no upright orientation if vertical placement is disabled.
@@ -546,6 +546,7 @@ function shapeLines(shaping: Shaping,
     shaping.bottom = shaping.top + height;
     shaping.left += -horizontalAlign * maxLineLength;
     shaping.right = shaping.left + maxLineLength;
+    shaping.hasBaseline = hasBaseline;
 }
 
 // justify right = 1, left = 0, center = 0.5

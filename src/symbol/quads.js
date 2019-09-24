@@ -116,7 +116,7 @@ export function getGlyphQuads(anchor: Anchor,
         const rect = glyph.rect;
         if (!rect) continue;
 
-        // The rects have an addditional buffer that is not included in their size.
+        // The rects have an additional buffer that is not included in their size.
         const glyphPadding = 1.0;
         const rectBuffer = GLYPH_PBF_BORDER + glyphPadding;
 
@@ -152,21 +152,23 @@ export function getGlyphQuads(anchor: Anchor,
 
         if (rotateVerticalGlyph) {
             // Vertical-supporting glyphs are laid out in 24x24 point boxes (1 square em)
-            // In horizontal orientation, the y values for glyphs are below the midline
-            // and we use a "yOffset" of -17 to pull them up to the middle.
+            // In horizontal orientation, the y values for glyphs are below the midline.
+            // If the glyph's baseline is applicable, we take the value of the baseline offset.
+            // Otherwise, we use a "yOffset" of -17 to pull them up to the middle.
             // By rotating counter-clockwise around the point at the center of the left
             // edge of a 24x24 layout box centered below the midline, we align the center
             // of the glyphs with the horizontal midline, so the yOffset is no longer
             // necessary, but we also pull the glyph to the left along the x axis.
             // The y coordinate includes baseline yOffset, thus needs to be accounted
             // for when glyph is rotated and translated.
-            const center = new Point(-halfAdvance, halfAdvance - shaping.yOffset);
+            const yShift = shaping.hasBaseline ? (-glyph.metrics.ascender + glyph.metrics.descender) / 2 : shaping.yOffset;
+            const center = new Point(-halfAdvance, halfAdvance - yShift);
             const verticalRotation = -Math.PI / 2;
 
             // xHalfWidhtOffsetcorrection is a difference between full-width and half-width
             // advance, should be 0 for full-width glyphs and will pull up half-width glyphs.
             const xHalfWidhtOffsetcorrection = ONE_EM / 2 - halfAdvance;
-            const xOffsetCorrection = new Point(5 - shaping.yOffset - xHalfWidhtOffsetcorrection, 0);
+            const xOffsetCorrection = new Point(5 - yShift - xHalfWidhtOffsetcorrection, 0);
             const verticalOffsetCorrection = new Point(...verticalizedLabelOffset);
             tl._rotateAround(verticalRotation, center)._add(xOffsetCorrection)._add(verticalOffsetCorrection);
             tr._rotateAround(verticalRotation, center)._add(xOffsetCorrection)._add(verticalOffsetCorrection);
