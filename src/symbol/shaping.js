@@ -44,7 +44,7 @@ export type Shaping = {
     lineCount: number,
     text: string,
     yOffset: number,
-    hasBaseline: Boolean,
+    hasBaseline: boolean,
 };
 
 export type SymbolAnchor = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';

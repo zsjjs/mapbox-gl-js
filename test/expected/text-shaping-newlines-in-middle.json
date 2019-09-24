@@ -94,6 +94,7 @@
   "text": "abcde\n\nabcde",
   "top": -36,
   "bottom": 36,
+  "hasBaseline": false,
   "left": -32.5,
   "right": 32.5,
   "writingMode": 1,
