@@ -8,7 +8,7 @@ import type Anchor from './anchor';
 import type {PositionedIcon, Shaping} from './shaping';
 import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import type {Feature} from '../style-spec/expression';
-import type {GlyphPosition} from '../render/glyph_atlas';
+import type {GlyphPositionData} from '../render/glyph_atlas';
 import ONE_EM from './one_em';
 
 /**
@@ -99,7 +99,7 @@ export function getGlyphQuads(anchor: Anchor,
                        layer: SymbolStyleLayer,
                        alongLine: boolean,
                        feature: Feature,
-                       positions: {[string]: {[number]: GlyphPosition}},
+                       positions: {[string]: GlyphPositionData},
                        allowVerticalPlacement: boolean): Array<SymbolQuad> {
 
     const textRotate = layer.layout.get('text-rotate').evaluate(feature, {}) * Math.PI / 180;
@@ -110,7 +110,7 @@ export function getGlyphQuads(anchor: Anchor,
     for (let k = 0; k < positionedGlyphs.length; k++) {
         const positionedGlyph = positionedGlyphs[k];
         const glyphPositions = positions[positionedGlyph.fontStack];
-        const glyph = glyphPositions && glyphPositions[positionedGlyph.glyph];
+        const glyph = glyphPositions && glyphPositions.glyphPositionMap[positionedGlyph.glyph];
         if (!glyph) continue;
 
         const rect = glyph.rect;
@@ -161,7 +161,7 @@ export function getGlyphQuads(anchor: Anchor,
             // necessary, but we also pull the glyph to the left along the x axis.
             // The y coordinate includes baseline yOffset, thus needs to be accounted
             // for when glyph is rotated and translated.
-            const yShift = shaping.hasBaseline ? (-glyph.metrics.ascender + glyph.metrics.descender) / 2 : shaping.yOffset;
+            const yShift = shaping.hasBaseline ? (-glyphPositions.ascender + glyphPositions.descender) / 2 : shaping.yOffset;
             const center = new Point(-halfAdvance, halfAdvance - yShift);
             const verticalRotation = -Math.PI / 2;
 

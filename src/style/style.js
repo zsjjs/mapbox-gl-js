@@ -1252,7 +1252,7 @@ class Style extends Evented {
         this.imageManager.getImages(params.icons, callback);
     }
 
-    getGlyphs(mapId: string, params: {stacks: {[string]: Array<number>}}, callback: Callback<{[string]: {[number]: ?StyleGlyph}}>) {
+    getGlyphs(mapId: string, params: {stacks: {[string]: Array<number>}}, callback: Callback<{[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}>) {
         this.glyphManager.getGlyphs(params.stacks, callback);
     }
 

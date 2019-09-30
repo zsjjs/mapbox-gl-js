@@ -20,22 +20,31 @@ export type GlyphPosition = {
     metrics: GlyphMetrics
 };
 
-export type GlyphPositions = { [string]: { [number]: GlyphPosition } }
+export type GlyphPositionData = {
+    glyphPositionMap: { [number]: GlyphPosition },
+    ascender: number,
+    descender: number
+};
+
+export type GlyphPositions = { [string]: GlyphPositionData };
 
 export default class GlyphAtlas {
     image: AlphaImage;
     positions: GlyphPositions;
 
-    constructor(stacks: { [string]: { [number]: ?StyleGlyph } }) {
+    constructor(stacks: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}) {
         const positions = {};
         const bins = [];
 
         for (const stack in stacks) {
-            const glyphs = stacks[stack];
+            const glyphData = stacks[stack];
             const stackPositions = positions[stack] = {};
+            stackPositions.glyphPositionMap = {};
+            stackPositions.ascender = glyphData.ascender;
+            stackPositions.descender = glyphData.descender;
 
-            for (const id in glyphs) {
-                const src = glyphs[+id];
+            for (const id in glyphData.glyphs) {
+                const src = glyphData.glyphs[+id];
                 if (!src || src.bitmap.width === 0 || src.bitmap.height === 0) continue;
 
                 const bin = {
@@ -45,7 +54,7 @@ export default class GlyphAtlas {
                     h: src.bitmap.height + 2 * padding
                 };
                 bins.push(bin);
-                stackPositions[id] = {rect: bin, metrics: src.metrics};
+                stackPositions.glyphPositionMap[id] = {rect: bin, metrics: src.metrics};
             }
         }
 
@@ -53,12 +62,12 @@ export default class GlyphAtlas {
         const image = new AlphaImage({width: w || 1, height: h || 1});
 
         for (const stack in stacks) {
-            const glyphs = stacks[stack];
+            const glyphData = stacks[stack];
 
-            for (const id in glyphs) {
-                const src = glyphs[+id];
+            for (const id in glyphData.glyphs) {
+                const src = glyphData.glyphs[+id];
                 if (!src || src.bitmap.width === 0 || src.bitmap.height === 0) continue;
-                const bin = positions[stack][id].rect;
+                const bin = positions[stack].glyphPositionMap[id].rect;
                 AlphaImage.copy(src.bitmap, image, {x: 0, y: 0}, {x: bin.x + padding, y: bin.y + padding}, src.bitmap);
             }
         }

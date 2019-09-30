@@ -85,6 +85,10 @@ class TaggedString {
         return this.sections[this.sectionIndex[index]];
     }
 
+    getSections(): Array<{ scale: number, fontStack: string }> {
+        return this.sections;
+    }
+
     getSectionIndex(index: number): number {
         return this.sectionIndex[index];
     }
@@ -147,7 +151,7 @@ function breakLines(input: TaggedString, lineBreakPoints: Array<number>): Array<
 }
 
 function shapeText(text: Formatted,
-                   glyphs: {[string]: {[number]: ?StyleGlyph}},
+                   glyphMaps: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
                    defaultFontStack: string,
                    maxWidth: number,
                    lineHeight: number,
@@ -172,7 +176,7 @@ function shapeText(text: Formatted,
         lines = [];
         const untaggedLines =
             processBidirectionalText(logicalInput.toString(),
-                                     determineLineBreaks(logicalInput, spacing, maxWidth, glyphs, symbolPlacement));
+                                     determineLineBreaks(logicalInput, spacing, maxWidth, glyphMaps, symbolPlacement));
         for (const line of untaggedLines) {
             const taggedLine = new TaggedString();
             taggedLine.text = line;
@@ -189,7 +193,7 @@ function shapeText(text: Formatted,
         const processedLines =
             processStyledBidirectionalText(logicalInput.text,
                                            logicalInput.sectionIndex,
-                                           determineLineBreaks(logicalInput, spacing, maxWidth, glyphs, symbolPlacement));
+                                           determineLineBreaks(logicalInput, spacing, maxWidth, glyphMaps, symbolPlacement));
         for (const line of processedLines) {
             const taggedLine = new TaggedString();
             taggedLine.text = line[0];
@@ -198,7 +202,7 @@ function shapeText(text: Formatted,
             lines.push(taggedLine);
         }
     } else {
-        lines = breakLines(logicalInput, determineLineBreaks(logicalInput, spacing, maxWidth, glyphs, symbolPlacement));
+        lines = breakLines(logicalInput, determineLineBreaks(logicalInput, spacing, maxWidth, glyphMaps, symbolPlacement));
     }
 
     const positionedGlyphs = [];
@@ -215,7 +219,7 @@ function shapeText(text: Formatted,
         hasBaseline: false
     };
 
-    shapeLines(shaping, glyphs, lines, lineHeight, textAnchor, textJustify, writingMode, spacing, allowVerticalPlacement);
+    shapeLines(shaping, glyphMaps, lines, lineHeight, textAnchor, textJustify, writingMode, spacing, allowVerticalPlacement);
     if (!positionedGlyphs.length) return false;
 
     return shaping;
@@ -256,13 +260,13 @@ const breakable: {[number]: boolean} = {
 function determineAverageLineWidth(logicalInput: TaggedString,
                                    spacing: number,
                                    maxWidth: number,
-                                   glyphMap: {[string]: {[number]: ?StyleGlyph}}) {
+                                   glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}) {
     let totalWidth = 0;
 
     for (let index = 0; index < logicalInput.length(); index++) {
         const section = logicalInput.getSection(index);
         const positions = glyphMap[section.fontStack];
-        const glyph = positions && positions[logicalInput.getCharCode(index)];
+        const glyph = positions && positions.glyphs[logicalInput.getCharCode(index)];
         if (!glyph)
             continue;
         totalWidth += glyph.metrics.advance * section.scale + spacing;
@@ -362,7 +366,7 @@ function leastBadBreaks(lastLineBreak: ?Break): Array<number> {
 function determineLineBreaks(logicalInput: TaggedString,
                              spacing: number,
                              maxWidth: number,
-                             glyphMap: {[string]: {[number]: ?StyleGlyph}},
+                             glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
                              symbolPlacement: string): Array<number> {
     if (symbolPlacement !== 'point')
         return [];
@@ -381,7 +385,7 @@ function determineLineBreaks(logicalInput: TaggedString,
         const section = logicalInput.getSection(i);
         const codePoint = logicalInput.getCharCode(i);
         const positions = glyphMap[section.fontStack];
-        const glyph = positions && positions[codePoint];
+        const glyph = positions && positions.glyphs[codePoint];
 
         if (glyph && !whitespace[codePoint])
             currentX += glyph.metrics.advance * section.scale + spacing;
@@ -447,7 +451,7 @@ function getAnchorAlignment(anchor: SymbolAnchor) {
 }
 
 function shapeLines(shaping: Shaping,
-                    glyphMap: {[string]: {[number]: ?StyleGlyph}},
+                    glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
                     lines: Array<TaggedString>,
                     lineHeight: number,
                     textAnchor: SymbolAnchor,
@@ -468,19 +472,16 @@ function shapeLines(shaping: Shaping,
 
     let hasBaseline = false;
     for (const line of lines) {
-        line.trim();
-        for (let i = 0; i < line.length(); i++) {
-            const section = line.getSection(i);
-            const codePoint = line.getCharCode(i);
-
+        const sections = line.getSections();
+        for (const section of sections) {
             const positions = glyphMap[section.fontStack];
-            const glyph = positions && positions[codePoint];
-            if (!glyph) continue;
-            hasBaseline = glyph.metrics.ascender !== 0 && glyph.metrics.descender !== 0;
+            if (!positions) continue;
+            hasBaseline = positions.ascender !== 0 && positions.descender !== 0;
             if (!hasBaseline) break;
         }
         if (!hasBaseline) break;
     }
+
     for (const line of lines) {
         line.trim();
 
@@ -498,17 +499,17 @@ function shapeLines(shaping: Shaping,
             const codePoint = line.getCharCode(i);
 
             const positions = glyphMap[section.fontStack];
-            const glyph = positions && positions[codePoint];
+            const glyph = positions && positions.glyphs[codePoint];
             if (!glyph) continue;
 
             // In order to make different fonts aligned, they must share a general baseline that starts from the midline
             // of each font face.  Baseline offset is the vertical distance from font face's baseline to its top most
             // position, which is the half size of the sum (ascender + descender). Since glyph's position is counted
-            // from the top left corner, the negative shift is needed. So different fonts shares the same baseline but
+            // from the top left corner, the negative shift is needed. So different fonts share the same baseline but
             // with different offset shift. If font's baseline is not applicable, fall back to use a default baseline
             // offset, see shaping.yOffset. Since we're laying out at 24 points, we need also calculate how much it will
             // move when we scale up or down.
-            const baselineOffset = (hasBaseline ? ((-glyph.metrics.ascender + glyph.metrics.descender) / 2 * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
+            const baselineOffset = (hasBaseline ? ((-positions.ascender + positions.descender) / 2 * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
 
             if (writingMode === WritingMode.horizontal ||
                 // Don't verticalize glyphs that have no upright orientation if vertical placement is disabled.
@@ -551,7 +552,7 @@ function shapeLines(shaping: Shaping,
 
 // justify right = 1, left = 0, center = 0.5
 function justifyLine(positionedGlyphs: Array<PositionedGlyph>,
-                     glyphMap: {[string]: {[number]: ?StyleGlyph}},
+                     glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
                      start: number,
                      end: number,
                      justify: 1 | 0 | 0.5) {
@@ -560,7 +561,7 @@ function justifyLine(positionedGlyphs: Array<PositionedGlyph>,
 
     const lastPositionedGlyph = positionedGlyphs[end];
     const positions = glyphMap[lastPositionedGlyph.fontStack];
-    const glyph = positions && positions[lastPositionedGlyph.glyph];
+    const glyph = positions && positions.glyphs[lastPositionedGlyph.glyph];
     if (glyph) {
         const lastAdvance = glyph.metrics.advance * lastPositionedGlyph.scale;
         const lineIndent = (positionedGlyphs[end].x + lastAdvance) * justify;

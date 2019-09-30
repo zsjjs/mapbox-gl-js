@@ -27,7 +27,7 @@ import type {StyleImage} from '../style/style_image';
 import type {StyleGlyph} from '../style/style_glyph';
 import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import type {ImagePosition} from '../render/image_atlas';
-import type {GlyphPosition} from '../render/glyph_atlas';
+import type {GlyphPositionData} from '../render/glyph_atlas';
 import type {PossiblyEvaluatedPropertyValue} from '../style/properties';
 
 import Point from '@mapbox/point-geometry';
@@ -148,8 +148,8 @@ export function evaluateVariableOffset(anchor: TextAnchor, offset: [number, numb
 }
 
 export function performSymbolLayout(bucket: SymbolBucket,
-                             glyphMap: {[string]: {[number]: ?StyleGlyph}},
-                             glyphPositions: {[string]: {[number]: GlyphPosition}},
+                             glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
+                             glyphPositions: {[string]: GlyphPositionData},
                              imageMap: {[string]: StyleImage},
                              imagePositions: {[string]: ImagePosition},
                              showCollisionBoxes: boolean) {
@@ -345,7 +345,7 @@ function addFeature(bucket: SymbolBucket,
                     feature: SymbolFeature,
                     shapedTextOrientations: any,
                     shapedIcon: PositionedIcon | void,
-                    glyphPositionMap: {[string]: {[number]: GlyphPosition}},
+                    glyphPositionMap: {[string]: GlyphPositionData},
                     sizes: Sizes,
                     textOffset: [number, number]) {
     const layoutTextSize = sizes.layoutTextSize.evaluate(feature, {});
@@ -471,7 +471,7 @@ function addTextVertices(bucket: SymbolBucket,
                          writingMode: number,
                          placementTypes: Array<'vertical' | 'center' | 'left' | 'right'>,
                          placedTextSymbolIndices: {[string]: number},
-                         glyphPositionMap: {[string]: {[number]: GlyphPosition}},
+                         glyphPositionMap: {[string]: GlyphPositionData},
                          placedIconIndex: number,
                          sizes: Sizes) {
     const glyphQuads = getGlyphQuads(anchor, shapedText, textOffset,
@@ -552,7 +552,7 @@ function addSymbol(bucket: SymbolBucket,
                    iconAlongLine: boolean,
                    iconOffset: [number, number],
                    feature: SymbolFeature,
-                   glyphPositionMap: {[string]: {[number]: GlyphPosition}},
+                   glyphPositionMap: {[string]: GlyphPositionData},
                    sizes: Sizes) {
     const lineArray = bucket.addToLineVertexArray(anchor, line);
 

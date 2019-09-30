@@ -44,7 +44,7 @@ export type WorkerTileResult = {
     rawTileData?: ArrayBuffer,
     resourceTiming?: Array<PerformanceResourceTiming>,
     // Only used for benchmarking:
-    glyphMap?: {[string]: {[number]: ?StyleGlyph}} | null,
+    glyphMap?: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}} | null,
     iconMap?: {[string]: StyleImage} | null,
     glyphPositions?: GlyphPositions | null
 };

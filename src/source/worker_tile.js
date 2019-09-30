@@ -126,7 +126,7 @@ class WorkerTile {
         }
 
         let error: ?Error;
-        let glyphMap: ?{[string]: {[number]: ?StyleGlyph}};
+        let glyphMap: ?{[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}};
         let iconMap: ?{[string]: StyleImage};
         let patternMap: ?{[string]: StyleImage};
 

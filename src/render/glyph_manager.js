@@ -14,8 +14,10 @@ import type {Callback} from '../types/callback';
 type Entry = {
     // null means we've requested the range, but the glyph wasn't included in the result.
     glyphs: {[id: number]: StyleGlyph | null},
-    requests: {[range: number]: Array<Callback<{[number]: StyleGlyph | null}>>},
-    tinySDF?: TinySDF
+    requests: {[range: number]: Array<Callback<{glyphs: {[number]: StyleGlyph | null}, ascender: number, descender: number}>>},
+    tinySDF?: TinySDF,
+    ascender: number,
+    descender: number
 };
 
 class GlyphManager {
@@ -38,7 +40,7 @@ class GlyphManager {
         this.url = url;
     }
 
-    getGlyphs(glyphs: {[stack: string]: Array<number>}, callback: Callback<{[stack: string]: {[id: number]: ?StyleGlyph}}>) {
+    getGlyphs(glyphs: {[stack: string]: Array<number>}, callback: Callback<{[stack: string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}>) {
         const all = [];
 
         for (const stack in glyphs) {
@@ -52,7 +54,9 @@ class GlyphManager {
             if (!entry) {
                 entry = this.entries[stack] = {
                     glyphs: {},
-                    requests: {}
+                    requests: {},
+                    ascender: 0,
+                    descender: 0
                 };
             }
 
@@ -79,11 +83,13 @@ class GlyphManager {
             if (!requests) {
                 requests = entry.requests[range] = [];
                 GlyphManager.loadGlyphRange(stack, range, (this.url: any), this.requestManager,
-                    (err, response: ?{[number]: StyleGlyph | null}) => {
+                    (err, response: ?{glyphs: {[number]: StyleGlyph | null}, ascender: number, descender: number}) => {
                         if (response) {
-                            for (const id in response) {
+                            entry.ascender = response.ascender;
+                            entry.descender = response.descender;
+                            for (const id in response.glyphs) {
                                 if (!this._doesCharSupportLocalGlyph(+id)) {
-                                    entry.glyphs[+id] = response[+id];
+                                    entry.glyphs[+id] = response.glyphs[+id];
                                 }
                             }
                         }
@@ -94,11 +100,11 @@ class GlyphManager {
                     });
             }
 
-            requests.push((err, result: ?{[number]: StyleGlyph | null}) => {
+            requests.push((err, result: ?{glyphs: {[number]: StyleGlyph | null}, ascender: number, descender: number}) => {
                 if (err) {
                     callback(err);
                 } else if (result) {
-                    callback(null, {stack, id, glyph: result[id] || null});
+                    callback(null, {stack, id, glyph: result.glyphs[id] || null});
                 }
             });
         }, (err, glyphs: ?Array<{stack: string, id: number, glyph: ?StyleGlyph}>) => {
@@ -109,11 +115,15 @@ class GlyphManager {
 
                 for (const {stack, id, glyph} of glyphs) {
                     // Clone the glyph so that our own copy of its ArrayBuffer doesn't get transferred.
-                    (result[stack] || (result[stack] = {}))[id] = glyph && {
+                    if (result[stack] === undefined) result[stack] = {};
+                    if (result[stack].glyphs === undefined) result[stack].glyphs = {};
+                    result[stack].glyphs[id] = glyph && {
                         id: glyph.id,
                         bitmap: glyph.bitmap.clone(),
                         metrics: glyph.metrics
                     };
+                    result[stack].ascender = this.entries[stack].ascender;
+                    result[stack].descender = this.entries[stack].descender;
                 }
 
                 callback(null, result);
@@ -162,9 +172,7 @@ class GlyphManager {
                 height: 24,
                 left: 0,
                 top: -8,
-                advance: 24,
-                ascender: 0.0,
-                descender: 0.0
+                advance: 24
             }
         };
     }

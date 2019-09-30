@@ -8,17 +8,12 @@ import {CollisionBoxArray} from '../../../src/data/array_types';
 import SymbolStyleLayer from '../../../src/style/style_layer/symbol_style_layer';
 import featureFilter from '../../../src/style-spec/feature_filter';
 import {performSymbolLayout} from '../../../src/symbol/symbol_layout';
-import {Placement} from '../../../src/symbol/placement';
 import Transform from '../../../src/geo/transform';
-import {OverscaledTileID} from '../../../src/source/tile_id';
-import Tile from '../../../src/source/tile';
-import CrossTileSymbolIndex from '../../../src/symbol/cross_tile_symbol_index';
-import FeatureIndex from '../../../src/data/feature_index';
 
 // Load a point feature from fixture tile.
 const vt = new VectorTile(new Protobuf(fs.readFileSync(path.join(__dirname, '/../../fixtures/mbsv5-6-18-23.vector.pbf'))));
 const feature = vt.layers.place_label.feature(10);
-const glyphs = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/fontstack-glyphs.json')));
+const glyphData = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/fontstack-glyphs.json')));
 
 /*eslint new-cap: 0*/
 const collisionBoxArray = new CollisionBoxArray();
@@ -27,7 +22,7 @@ transform.width = 100;
 transform.height = 100;
 transform.cameraToCenterDistance = 100;
 
-const stacks = {'Test': glyphs};
+const stacks = {'Test': glyphData};
 
 function bucketSetup() {
     const layer = new SymbolStyleLayer({
@@ -92,7 +87,7 @@ test('SymbolBucket integer overflow', (t) => {
 
     bucket.populate([{feature}], options);
     const fakeGlyph = {rect: {w: 10, h: 10}, metrics: {left: 10, top: 10, advance: 10}};
-    performSymbolLayout(bucket, stacks, {'Test': {97: fakeGlyph, 98: fakeGlyph, 99: fakeGlyph, 100: fakeGlyph, 101: fakeGlyph, 102: fakeGlyph}});
+    performSymbolLayout(bucket, stacks, {'Test': {glyphPositionMap: {97: fakeGlyph, 98: fakeGlyph, 99: fakeGlyph, 100: fakeGlyph, 101: fakeGlyph, 102: fakeGlyph}, ascender: 0, descender: 0}});
 
     t.ok(console.warn.calledOnce);
     t.ok(console.warn.getCall(0).calledWithMatch(/Too many glyphs being rendered in a tile./));
