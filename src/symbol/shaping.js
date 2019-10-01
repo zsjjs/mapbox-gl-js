@@ -493,6 +493,7 @@ function shapeLines(shaping: Shaping,
         }
 
         const lineStartIndex = positionedGlyphs.length;
+        let biggestHeight = 0, baselineOffset = 0;
         for (let i = 0; i < line.length(); i++) {
             const section = line.getSection(i);
             const sectionIndex = line.getSectionIndex(i);
@@ -502,14 +503,28 @@ function shapeLines(shaping: Shaping,
             const glyph = positions && positions.glyphs[codePoint];
             if (!glyph) continue;
 
-            // In order to make different fonts aligned, they must share a general baseline that starts from the midline
-            // of each font face.  Baseline offset is the vertical distance from font face's baseline to its top most
-            // position, which is the half size of the sum (ascender + descender). Since glyph's position is counted
-            // from the top left corner, the negative shift is needed. So different fonts share the same baseline but
-            // with different offset shift. If font's baseline is not applicable, fall back to use a default baseline
-            // offset, see shaping.yOffset. Since we're laying out at 24 points, we need also calculate how much it will
-            // move when we scale up or down.
-            const baselineOffset = (hasBaseline ? ((-positions.ascender + positions.descender) / 2 * section.scale) : shaping.yOffset) + (lineMaxScale - section.scale) * 24;
+            let ascender = 0, descender = 0, glyphOffset = 0;
+            // In order to make different fonts aligned, they must share a general baseline that aligns with every
+            // font's real baseline. Glyph's position is counted from the top left corner, where is the ascender line
+            // starts. Since ascender is above the baseline, the glyphOffset is the negative shift. In order to make all
+            // the glyphs aligned with shaping box, for each line, we lock the highest glyph (with scale) locating
+            // at the middle of the line, which will lead to a baseline shift. Then adjust the whole line with the
+            // baseline offset we calculated from the shift.
+            if (hasBaseline) {
+                ascender = Math.abs(positions.ascender);
+                descender = Math.abs(positions.descender);
+                const value = (ascender + descender) * section.scale;
+                if (biggestHeight < value) {
+                    biggestHeight = value;
+                    baselineOffset = (ascender - descender) / 2 * section.scale;
+                }
+                glyphOffset = -ascender * section.scale;
+            } else {
+                // If font's baseline is not applicable, fall back to use a default baseline
+                // offset, see shaping.yOffset. Since we're laying out at 24 points, we need also calculate how much it
+                // will move when we scale up or down.
+                glyphOffset = shaping.yOffset + (lineMaxScale - section.scale) * ONE_EM;
+            }
 
             if (writingMode === WritingMode.horizontal ||
                 // Don't verticalize glyphs that have no upright orientation if vertical placement is disabled.
@@ -517,10 +532,10 @@ function shapeLines(shaping: Shaping,
                 // If vertical placement is ebabled, don't verticalize glyphs that
                 // are from complex text layout script, or whitespaces.
                 (allowVerticalPlacement && (whitespace[codePoint] || charInComplexShapingScript(codePoint)))) {
-                positionedGlyphs.push({glyph: codePoint, x, y: y + baselineOffset, vertical: false, scale: section.scale, fontStack: section.fontStack, sectionIndex});
+                positionedGlyphs.push({glyph: codePoint, x, y: y + glyphOffset, vertical: false, scale: section.scale, fontStack: section.fontStack, sectionIndex});
                 x += glyph.metrics.advance * section.scale + spacing;
             } else {
-                positionedGlyphs.push({glyph: codePoint, x, y: y + baselineOffset, vertical: true, scale: section.scale, fontStack: section.fontStack, sectionIndex});
+                positionedGlyphs.push({glyph: codePoint, x, y: y + glyphOffset, vertical: true, scale: section.scale, fontStack: section.fontStack, sectionIndex});
                 x += ONE_EM * section.scale + spacing;
             }
         }
@@ -530,7 +545,7 @@ function shapeLines(shaping: Shaping,
             const lineLength = x - spacing;
             maxLineLength = Math.max(lineLength, maxLineLength);
 
-            justifyLine(positionedGlyphs, glyphMap, lineStartIndex, positionedGlyphs.length - 1, justify);
+            justifyLine(positionedGlyphs, glyphMap, lineStartIndex, positionedGlyphs.length - 1, justify, baselineOffset);
         }
 
         x = 0;
@@ -555,8 +570,9 @@ function justifyLine(positionedGlyphs: Array<PositionedGlyph>,
                      glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
                      start: number,
                      end: number,
-                     justify: 1 | 0 | 0.5) {
-    if (!justify)
+                     justify: 1 | 0 | 0.5,
+                     baselineOffset: number) {
+    if (!justify && !baselineOffset)
         return;
 
     const lastPositionedGlyph = positionedGlyphs[end];
@@ -568,6 +584,7 @@ function justifyLine(positionedGlyphs: Array<PositionedGlyph>,
 
         for (let j = start; j <= end; j++) {
             positionedGlyphs[j].x -= lineIndent;
+            positionedGlyphs[j].y += baselineOffset;
         }
     }
 }

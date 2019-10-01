@@ -153,7 +153,7 @@ export function getGlyphQuads(anchor: Anchor,
         if (rotateVerticalGlyph) {
             // Vertical-supporting glyphs are laid out in 24x24 point boxes (1 square em)
             // In horizontal orientation, the y values for glyphs are below the midline.
-            // If the glyph's baseline is applicable, we take the value of the baseline offset.
+            // If the glyph's baseline is applicable, we take the y value of the glyph.
             // Otherwise, we use a "yOffset" of -17 to pull them up to the middle.
             // By rotating counter-clockwise around the point at the center of the left
             // edge of a 24x24 layout box centered below the midline, we align the center
@@ -161,7 +161,7 @@ export function getGlyphQuads(anchor: Anchor,
             // necessary, but we also pull the glyph to the left along the x axis.
             // The y coordinate includes baseline yOffset, thus needs to be accounted
             // for when glyph is rotated and translated.
-            const yShift = shaping.hasBaseline ? (-glyphPositions.ascender + glyphPositions.descender) / 2 : shaping.yOffset;
+            const yShift = shaping.hasBaseline ? positionedGlyph.y : shaping.yOffset;
             const center = new Point(-halfAdvance, halfAdvance - yShift);
             const verticalRotation = -Math.PI / 2;
 
