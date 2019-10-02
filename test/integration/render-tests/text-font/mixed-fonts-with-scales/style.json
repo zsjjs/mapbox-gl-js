@@ -3,8 +3,8 @@
   "metadata": {
     "test": {
       "collisionDebug": true,
-      "height": 80,
-      "width": 130
+      "height": 120,
+      "width": 120
     }
   },
   "center": [
@@ -20,7 +20,7 @@
         "properties": {},
         "geometry": {
           "type": "Point",
-          "coordinates": [0, 2]
+          "coordinates": [0, 1.5]
         }
       }
     }
