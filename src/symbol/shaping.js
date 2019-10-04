@@ -479,7 +479,7 @@ function shapeLines(shaping: Shaping,
         }
         if (!hasBaseline) break;
     }
-    hasBaseline = false;
+
     let lineIndex = 0;
     for (const line of lines) {
         line.trim();
