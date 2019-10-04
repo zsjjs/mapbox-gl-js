@@ -35,7 +35,7 @@ export type PositionedGlyph = {
 
 // A collection of positioned glyphs and some metadata
 export type Shaping = {
-    positionedGlyphs: Array<PositionedGlyph>,
+    positionedGlyphs: {[number]: Array<PositionedGlyph>},
     top: number,
     bottom: number,
     left: number,
@@ -205,7 +205,7 @@ function shapeText(text: Formatted,
         lines = breakLines(logicalInput, determineLineBreaks(logicalInput, spacing, maxWidth, glyphMaps, symbolPlacement));
     }
 
-    const positionedGlyphs = [];
+    const positionedGlyphs = {};
     const shaping = {
         positionedGlyphs,
         text: logicalInput.toString(),
@@ -220,8 +220,7 @@ function shapeText(text: Formatted,
     };
 
     shapeLines(shaping, glyphMaps, lines, lineHeight, textAnchor, textJustify, writingMode, spacing, allowVerticalPlacement);
-    if (!positionedGlyphs.length) return false;
-
+    if (!Object.keys(positionedGlyphs).length) return false;
     return shaping;
 }
 
@@ -464,7 +463,6 @@ function shapeLines(shaping: Shaping,
     let y = 0;
 
     let maxLineLength = 0;
-    const positionedGlyphs = shaping.positionedGlyphs;
 
     const justify =
         textJustify === 'right' ? 1 :
@@ -481,7 +479,8 @@ function shapeLines(shaping: Shaping,
         }
         if (!hasBaseline) break;
     }
-
+    hasBaseline = false;
+    let lineIndex = 0;
     for (const line of lines) {
         line.trim();
 
@@ -489,11 +488,13 @@ function shapeLines(shaping: Shaping,
 
         if (!line.length()) {
             y += lineHeight; // Still need a line feed after empty line
+            ++lineIndex;
             continue;
         }
 
-        const lineStartIndex = positionedGlyphs.length;
         let biggestHeight = 0, baselineOffset = 0;
+        shaping.positionedGlyphs[lineIndex] = [];
+        const positionedGlyphs = shaping.positionedGlyphs[lineIndex];
         for (let i = 0; i < line.length(); i++) {
             const section = line.getSection(i);
             const sectionIndex = line.getSectionIndex(i);
@@ -541,19 +542,22 @@ function shapeLines(shaping: Shaping,
         }
 
         // Only justify if we placed at least one glyph
-        if (positionedGlyphs.length !== lineStartIndex) {
+        if (positionedGlyphs.length !== 0) {
             const lineLength = x - spacing;
             maxLineLength = Math.max(lineLength, maxLineLength);
 
-            justifyLine(positionedGlyphs, glyphMap, lineStartIndex, positionedGlyphs.length - 1, justify, baselineOffset);
+            justifyLine(positionedGlyphs, glyphMap, 0, positionedGlyphs.length - 1, justify, baselineOffset);
+        } else {
+            delete shaping.positionedGlyphs[lineIndex];
         }
 
         x = 0;
         y += lineHeight * lineMaxScale;
+        ++lineIndex;
     }
 
     const {horizontalAlign, verticalAlign} = getAnchorAlignment(textAnchor);
-    align(positionedGlyphs, justify, horizontalAlign, verticalAlign, maxLineLength, lineHeight, lines.length);
+    align(shaping.positionedGlyphs, justify, horizontalAlign, verticalAlign, maxLineLength, lineHeight, lines.length);
 
     // Calculate the bounding box
     const height = y;
@@ -589,7 +593,7 @@ function justifyLine(positionedGlyphs: Array<PositionedGlyph>,
     }
 }
 
-function align(positionedGlyphs: Array<PositionedGlyph>,
+function align(positionedGlyphs: {[number]: Array<PositionedGlyph>},
                justify: number,
                horizontalAlign: number,
                verticalAlign: number,
@@ -599,10 +603,18 @@ function align(positionedGlyphs: Array<PositionedGlyph>,
     const shiftX = (justify - horizontalAlign) * maxLineLength;
     const shiftY = (-verticalAlign * lineCount + 0.5) * lineHeight;
 
-    for (let j = 0; j < positionedGlyphs.length; j++) {
-        positionedGlyphs[j].x += shiftX;
-        positionedGlyphs[j].y += shiftY;
+    // for (const positionedGlyph in positionedGlyphs.value()) {
+    //         positionedGlyph.x += shiftX;
+    //         positionedGlyph.y += shiftY;
+    // }
+
+    for (const index of Object.keys(positionedGlyphs).map(Number)) {
+        for (const positionedGlyph of positionedGlyphs[index]) {
+            positionedGlyph.x += shiftX;
+            positionedGlyph.y += shiftY;
+        }
     }
+
 }
 
 export type PositionedIcon = {

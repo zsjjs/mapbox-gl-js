@@ -69,6 +69,7 @@ test('shaping', (t) => {
     t.equal(false, shaped);
 
     shaped = shaping.shapeText(Formatted.fromString(String.fromCharCode(0)), glyphs, fontStack, 15 * oneEm, oneEm, 'center', 'center', 0 * oneEm, [0, 0], WritingMode.horizontal, false, 'point');
+    console.log(shaped);
     t.equal(false, shaped);
 
     // https://github.com/mapbox/mapbox-gl-js/issues/3254

@@ -1,58 +1,60 @@
 {
-  "positionedGlyphs": [
-    {
-      "glyph": 97,
-      "x": -38.5,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    },
-    {
-      "glyph": 98,
-      "x": -22.5,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    },
-    {
-      "glyph": 99,
-      "x": -5.5,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    },
-    {
-      "glyph": 100,
-      "x": 8.5,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    },
-    {
-      "glyph": 101,
-      "x": 25.5,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    }
-  ],
+  "positionedGlyphs": {
+    "0": [
+      {
+        "glyph": 97,
+        "x": -38.5,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      },
+      {
+        "glyph": 98,
+        "x": -22.5,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      },
+      {
+        "glyph": 99,
+        "x": -5.5,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      },
+      {
+        "glyph": 100,
+        "x": 8.5,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      },
+      {
+        "glyph": 101,
+        "x": 25.5,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      }
+    ]
+  },
   "text": "abcde",
   "top": -12,
   "bottom": 12,
-  "hasBaseline": false,
   "left": -38.5,
   "right": 38.5,
   "writingMode": 1,
+  "lineCount": 1,
   "yOffset": -17,
-  "lineCount": 1
+  "hasBaseline": false
 }

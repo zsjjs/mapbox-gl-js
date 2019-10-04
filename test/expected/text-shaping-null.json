@@ -1,31 +1,33 @@
 {
-  "positionedGlyphs": [
-    {
-      "glyph": 104,
-      "x": -10,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    },
-    {
-      "glyph": 105,
-      "x": 4,
-      "y": -17,
-      "vertical": false,
-      "scale": 1,
-      "fontStack": "Test",
-      "sectionIndex": 0
-    }
-  ],
+  "positionedGlyphs": {
+    "0": [
+      {
+        "glyph": 104,
+        "x": -10,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      },
+      {
+        "glyph": 105,
+        "x": 4,
+        "y": -17,
+        "vertical": false,
+        "scale": 1,
+        "fontStack": "Test",
+        "sectionIndex": 0
+      }
+    ]
+  },
   "text": "hi\u0000",
   "top": -12,
   "bottom": 12,
-  "hasBaseline": false,
   "left": -10,
   "right": 10,
   "writingMode": 1,
+  "lineCount": 1,
   "yOffset": -17,
-  "lineCount": 1
+  "hasBaseline": false
 }
