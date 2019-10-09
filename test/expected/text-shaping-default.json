@@ -1,6 +1,6 @@
 {
-  "positionedGlyphs": {
-    "0": [
+  "positionedGlyphs": [
+    [
       {
         "glyph": 97,
         "x": -32.5,
@@ -47,7 +47,7 @@
         "sectionIndex": 0
       }
     ]
-  },
+  ],
   "text": "abcde",
   "top": -12,
   "bottom": 12,
@@ -55,6 +55,5 @@
   "right": 32.5,
   "writingMode": 1,
   "lineCount": 1,
-  "yOffset": -17,
   "hasBaseline": false
 }

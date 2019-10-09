@@ -15,3 +15,9 @@ export type StyleGlyph = {
     bitmap: AlphaImage,
     metrics: GlyphMetrics
 };
+
+export type StyleGlyphMap = {
+    glyphs: {[number]: ?StyleGlyph},
+    ascender: number,
+    descender: number
+};

@@ -46,7 +46,7 @@ const emitValidationErrors = (evented: Evented, errors: ?$ReadOnlyArray<{message
 import type Map from '../ui/map';
 import type Transform from '../geo/transform';
 import type {StyleImage} from './style_image';
-import type {StyleGlyph} from './style_glyph';
+import type {StyleGlyphMap} from './style_glyph';
 import type {Callback} from '../types/callback';
 import type EvaluationParameters from './evaluation_parameters';
 import type {Placement} from '../symbol/placement';
@@ -1252,7 +1252,7 @@ class Style extends Evented {
         this.imageManager.getImages(params.icons, callback);
     }
 
-    getGlyphs(mapId: string, params: {stacks: {[string]: Array<number>}}, callback: Callback<{[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}>) {
+    getGlyphs(mapId: string, params: {stacks: {[string]: Array<number>}}, callback: Callback<{[string]: StyleGlyphMap}>) {
         this.glyphManager.getGlyphs(params.stacks, callback);
     }
 

@@ -10,6 +10,7 @@ import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import type {Feature} from '../style-spec/expression';
 import type {GlyphPositionData} from '../render/glyph_atlas';
 import ONE_EM from './one_em';
+import SHAPING_DEFAULT_OFFSET from './shaping';
 
 /**
  * A textured quad for rendering a single icon or glyph.
@@ -108,8 +109,14 @@ export function getGlyphQuads(anchor: Anchor,
     const quads = [];
 
     if (shaping.lineCount === 0) return quads;
-    const lineHeight = (Math.abs(shaping.top) + Math.abs(shaping.bottom)) / shaping.lineCount;
-    for (const lineIndex of Object.keys(positionedGlyphs).map(Number)) {
+    let lineHeight = 0;
+    if ((shaping.top > 0 && shaping.bottom > 0) || (shaping.top < 0 && shaping.bottom < 0)) {
+        lineHeight = (Math.abs(shaping.top + shaping.bottom)) / shaping.lineCount;
+    } else {
+        lineHeight = (Math.abs(shaping.top - shaping.bottom)) / shaping.lineCount;
+    }
+    const arrayLength = positionedGlyphs.length;
+    for (let lineIndex = 0; lineIndex < arrayLength; ++lineIndex) {
         const currentHeight = lineHeight * lineIndex;
         for (const positionedGlyph of positionedGlyphs[lineIndex]) {
             const glyphPositions = positions[positionedGlyph.fontStack];
@@ -158,14 +165,15 @@ export function getGlyphQuads(anchor: Anchor,
             // In horizontal orientation, the y values for glyphs are below the midline.
             // If the glyph's baseline is applicable, we take the relative y offset of the
             // glyph, which needs to erase out current line height that added to the glyph.
-            // Otherwise, we use a "yOffset" of -17 to pull them up to the middle.
+            // Otherwise, we use a "yOffset" of SHAPING_DEFAULT_OFFSET to pull them up to
+            // the middle.
             // By rotating counter-clockwise around the point at the center of the left
             // edge of a 24x24 layout box centered below the midline, we align the center
             // of the glyphs with the horizontal midline, so the yOffset is no longer
             // necessary, but we also pull the glyph to the left along the x axis.
             // The y coordinate includes baseline yOffset, thus needs to be accounted
             // for when glyph is rotated and translated.
-                const yShift = shaping.hasBaseline ? (positionedGlyph.y - currentHeight) : shaping.yOffset;
+                const yShift = shaping.hasBaseline ? (positionedGlyph.y - currentHeight) : SHAPING_DEFAULT_OFFSET;
                 const center = new Point(-halfAdvance, halfAdvance - yShift);
                 const verticalRotation = -Math.PI / 2;
 

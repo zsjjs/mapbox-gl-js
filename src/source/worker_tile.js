@@ -21,7 +21,7 @@ import type Actor from '../util/actor';
 import type StyleLayer from '../style/style_layer';
 import type StyleLayerIndex from '../style/style_layer_index';
 import type {StyleImage} from '../style/style_image';
-import type {StyleGlyph} from '../style/style_glyph';
+import type {StyleGlyphMap} from '../style/style_glyph';
 import type {
     WorkerTileParameters,
     WorkerTileCallback,
@@ -126,7 +126,7 @@ class WorkerTile {
         }
 
         let error: ?Error;
-        let glyphMap: ?{[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}};
+        let glyphMap: ?{[string]: StyleGlyphMap};
         let iconMap: ?{[string]: StyleImage};
         let patternMap: ?{[string]: StyleImage};
 

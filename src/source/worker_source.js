@@ -9,7 +9,7 @@ import type {Bucket} from '../data/bucket';
 import type FeatureIndex from '../data/feature_index';
 import type {CollisionBoxArray} from '../data/array_types';
 import type DEMData from '../data/dem_data';
-import type {StyleGlyph} from '../style/style_glyph';
+import type {StyleGlyphMap} from '../style/style_glyph';
 import type {StyleImage} from '../style/style_image';
 
 export type TileParameters = {
@@ -44,7 +44,7 @@ export type WorkerTileResult = {
     rawTileData?: ArrayBuffer,
     resourceTiming?: Array<PerformanceResourceTiming>,
     // Only used for benchmarking:
-    glyphMap?: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}} | null,
+    glyphMap?: {[string]: StyleGlyphMap} | null,
     iconMap?: {[string]: StyleImage} | null,
     glyphPositions?: GlyphPositions | null
 };

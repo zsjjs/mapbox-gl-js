@@ -7,7 +7,7 @@ import isChar from '../util/is_char_in_unicode_block';
 import {asyncAll} from '../util/util';
 import {AlphaImage} from '../util/image';
 
-import type {StyleGlyph} from '../style/style_glyph';
+import type {StyleGlyph, StyleGlyphMap} from '../style/style_glyph';
 import type {RequestManager} from '../util/mapbox';
 import type {Callback} from '../types/callback';
 
@@ -40,7 +40,7 @@ class GlyphManager {
         this.url = url;
     }
 
-    getGlyphs(glyphs: {[stack: string]: Array<number>}, callback: Callback<{[stack: string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}>) {
+    getGlyphs(glyphs: {[stack: string]: Array<number>}, callback: Callback<{[stack: string]: StyleGlyphMap}>) {
         const all = [];
 
         for (const stack in glyphs) {
@@ -115,8 +115,7 @@ class GlyphManager {
 
                 for (const {stack, id, glyph} of glyphs) {
                     // Clone the glyph so that our own copy of its ArrayBuffer doesn't get transferred.
-                    if (result[stack] === undefined) result[stack] = {};
-                    if (result[stack].glyphs === undefined) result[stack].glyphs = {};
+                    if (result[stack] === undefined) result[stack] = {glyphs: {}};
                     result[stack].glyphs[id] = glyph && {
                         id: glyph.id,
                         bitmap: glyph.bitmap.clone(),

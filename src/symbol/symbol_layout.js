@@ -24,7 +24,7 @@ import type {Shaping, PositionedIcon, TextJustify} from './shaping';
 import type {CollisionBoxArray} from '../data/array_types';
 import type {SymbolFeature} from '../data/bucket/symbol_bucket';
 import type {StyleImage} from '../style/style_image';
-import type {StyleGlyph} from '../style/style_glyph';
+import type {StyleGlyphMap} from '../style/style_glyph';
 import type SymbolStyleLayer from '../style/style_layer/symbol_style_layer';
 import type {ImagePosition} from '../render/image_atlas';
 import type {GlyphPositionData} from '../render/glyph_atlas';
@@ -148,7 +148,7 @@ export function evaluateVariableOffset(anchor: TextAnchor, offset: [number, numb
 }
 
 export function performSymbolLayout(bucket: SymbolBucket,
-                             glyphMap: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}},
+                             glyphMap: {[string]: StyleGlyphMap},
                              glyphPositions: {[string]: GlyphPositionData},
                              imageMap: {[string]: StyleImage},
                              imagePositions: {[string]: ImagePosition},

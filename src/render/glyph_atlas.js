@@ -4,7 +4,7 @@ import {AlphaImage} from '../util/image';
 import {register} from '../util/web_worker_transfer';
 import potpack from 'potpack';
 
-import type {GlyphMetrics, StyleGlyph} from '../style/style_glyph';
+import type {GlyphMetrics, StyleGlyphMap} from '../style/style_glyph';
 
 const padding = 1;
 
@@ -32,16 +32,17 @@ export default class GlyphAtlas {
     image: AlphaImage;
     positions: GlyphPositions;
 
-    constructor(stacks: {[string]: {glyphs: {[number]: ?StyleGlyph}, ascender: number, descender: number}}) {
+    constructor(stacks: {[string]: StyleGlyphMap}) {
         const positions = {};
         const bins = [];
 
         for (const stack in stacks) {
             const glyphData = stacks[stack];
-            const stackPositions = positions[stack] = {};
-            stackPositions.glyphPositionMap = {};
-            stackPositions.ascender = glyphData.ascender;
-            stackPositions.descender = glyphData.descender;
+            const stackPositions = positions[stack] = {
+                glyphPositionMap: {},
+                ascender: glyphData.ascender,
+                descender: glyphData.descender
+            };
 
             for (const id in glyphData.glyphs) {
                 const src = glyphData.glyphs[+id];

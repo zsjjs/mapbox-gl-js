@@ -1,6 +1,6 @@
 {
-  "positionedGlyphs": {
-    "0": [
+  "positionedGlyphs": [
+    [
       {
         "glyph": 19977,
         "x": -63,
@@ -56,7 +56,7 @@
         "sectionIndex": 0
       }
     ],
-    "1": [
+    [
       {
         "glyph": 19977,
         "x": -63,
@@ -112,7 +112,7 @@
         "sectionIndex": 0
       }
     ],
-    "2": [
+    [
       {
         "glyph": 19977,
         "x": -21,
@@ -132,7 +132,7 @@
         "sectionIndex": 0
       }
     ]
-  },
+  ],
   "text": "三三​三三​三三​三三三三三三​三三",
   "top": -36,
   "bottom": 36,
@@ -140,6 +140,5 @@
   "right": 63,
   "writingMode": 1,
   "lineCount": 3,
-  "yOffset": -17,
   "hasBaseline": false
 }
