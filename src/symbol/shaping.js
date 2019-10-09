@@ -151,8 +151,15 @@ function breakLines(input: TaggedString, lineBreakPoints: Array<number>): Array<
     }
     return lines;
 }
-function isEmpty(array) {
-    return Array.isArray(array) && (array.length === 0 || array.every(isEmpty));
+
+function isEmpty(positionedGlyphs: Array<Array<PositionedGlyph>>) {
+    const lineLength = positionedGlyphs.length;
+    for (let index = 0; index < lineLength; ++index) {
+        if (positionedGlyphs[index].length !== 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function shapeText(text: Formatted,
