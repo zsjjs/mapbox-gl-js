@@ -109,12 +109,7 @@ export function getGlyphQuads(anchor: Anchor,
     const quads = [];
 
     if (shaping.lineCount === 0) return quads;
-    let lineHeight = 0;
-    if ((shaping.top > 0 && shaping.bottom > 0) || (shaping.top < 0 && shaping.bottom < 0)) {
-        lineHeight = (Math.abs(shaping.top + shaping.bottom)) / shaping.lineCount;
-    } else {
-        lineHeight = (Math.abs(shaping.top - shaping.bottom)) / shaping.lineCount;
-    }
+    const lineHeight =  (shaping.bottom - shaping.top) / shaping.lineCount;
     const arrayLength = positionedGlyphs.length;
     for (let lineIndex = 0; lineIndex < arrayLength; ++lineIndex) {
         const currentHeight = lineHeight * lineIndex;
