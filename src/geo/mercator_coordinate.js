@@ -3,6 +3,12 @@
 import LngLat from '../geo/lng_lat';
 import type {LngLatLike} from '../geo/lng_lat';
 
+export const mercatorProjection = {
+    projectX: (lng) => mercatorXfromLng(lng),
+    projectY: (lng, lat) => mercatorYfromLat(lat),
+    unproject: (x, y) => new MercatorCoordinate(x, y).toLngLat()
+}
+
 /*
  * The circumference of the world in meters at the equator.
  */

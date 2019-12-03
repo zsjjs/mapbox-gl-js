@@ -2,7 +2,7 @@
 
 import LngLat from './lng_lat';
 import LngLatBounds from './lng_lat_bounds';
-import MercatorCoordinate, {mercatorXfromLng, mercatorYfromLat, mercatorZfromAltitude} from './mercator_coordinate';
+import MercatorCoordinate, {mercatorProjection, mercatorZfromAltitude} from './mercator_coordinate';
 import Point from '@mapbox/point-geometry';
 import {wrap, clamp} from '../util/util';
 import {number as interpolate} from '../style-spec/util/interpolate';
@@ -12,6 +12,23 @@ import EXTENT from '../data/extent';
 import {vec4, mat4, mat2} from 'gl-matrix';
 
 import type {OverscaledTileID, CanonicalTileID} from '../source/tile_id';
+
+const sinusoidal = {
+    projectX: (lng, lat) => 0.5 + lng * Math.cos(lat / 180 * Math.PI) / 360 * 2,
+    projectY: (lng, lat) => 0.5 - lat / 360 * 2,
+    unproject: (x, y) => {
+        const lat = (0.5 - y) / 2 * 360;
+        const lng = (x - 0.5) / Math.cos(lat / 180 * Math.PI) / 2 * 360;
+        return new LngLat(lng, lat);
+    }
+};
+
+const wgs84 = {
+    projectX: (lng) => 0.5 + lng / 360,
+    projectY: (lng, lat) => 0.5 - lat / 360,
+    unproject: () => {
+    }
+};
 
 /**
  * A single transform, generally used for a single tile to be
@@ -76,6 +93,9 @@ class Transform {
         this._unmodified = true;
         this._posMatrixCache = {};
         this._alignedPosMatrixCache = {};
+        //this.projection = mercatorProjection;
+        //this.projection = wgs84;
+        this.projection = sinusoidal;
     }
 
     clone(): Transform {
@@ -285,7 +305,10 @@ class Transform {
             this.pointCoordinate(new Point(this.width, this.height)),
             this.pointCoordinate(new Point(0, this.height))
         ];
-        return tileCover(z, cornerCoords, options.reparseOverscaled ? actualZ : z, this._renderWorldCopies)
+        const toMercator = (c) => {
+            return MercatorCoordinate.fromLngLat(this.coordinateLocation(c));
+        };
+        return tileCover(z, cornerCoords.map(toMercator), options.reparseOverscaled ? actualZ : z, this._renderWorldCopies)
             .sort((a, b) => centerPoint.dist(a.canonical) - centerPoint.dist(b.canonical));
     }
 
@@ -306,12 +329,12 @@ class Transform {
     project(lnglat: LngLat) {
         const lat = clamp(lnglat.lat, -this.maxValidLatitude, this.maxValidLatitude);
         return new Point(
-                mercatorXfromLng(lnglat.lng) * this.worldSize,
-                mercatorYfromLat(lat) * this.worldSize);
+                this.projection.projectX(lnglat.lng, lat) * this.worldSize,
+                this.projection.projectY(lnglat.lng, lat) * this.worldSize);
     }
 
     unproject(point: Point): LngLat {
-        return new MercatorCoordinate(point.x / this.worldSize, point.y / this.worldSize).toLngLat();
+        return this.projection.unproject(point.x / this.worldSize, point.y / this.worldSize);
     }
 
     get point(): Point { return this.project(this.center); }
@@ -354,7 +377,9 @@ class Transform {
      * @returns {Coordinate}
      */
     locationCoordinate(lnglat: LngLat) {
-        return MercatorCoordinate.fromLngLat(lnglat);
+        return new MercatorCoordinate(
+            this.projection.projectX(lnglat.lng, lnglat.lat),
+            this.projection.projectY(lnglat.lng, lnglat.lat));
     }
 
     /**
@@ -363,7 +388,7 @@ class Transform {
      * @returns {LngLat} lnglat
      */
     coordinateLocation(coord: MercatorCoordinate) {
-        return coord.toLngLat();
+        return this.projection.unproject(coord.x, coord.y);
     }
 
     pointCoordinate(p: Point) {
@@ -492,15 +517,15 @@ class Transform {
 
         if (this.latRange) {
             const latRange = this.latRange;
-            minY = mercatorYfromLat(latRange[1]) * this.worldSize;
-            maxY = mercatorYfromLat(latRange[0]) * this.worldSize;
+            minY = this.projection.projectY(0, latRange[1]) * this.worldSize;
+            maxY = this.projection.projectY(0, latRange[0]) * this.worldSize;
             sy = maxY - minY < size.y ? size.y / (maxY - minY) : 0;
         }
 
         if (this.lngRange) {
             const lngRange = this.lngRange;
-            minX = mercatorXfromLng(lngRange[0]) * this.worldSize;
-            maxX = mercatorXfromLng(lngRange[1]) * this.worldSize;
+            minX = this.projection.projectX(lngRange[0], 0) * this.worldSize;
+            maxX = this.projection.projectX(lngRange[1], 0) * this.worldSize;
             sx = maxX - minX < size.x ? size.x / (maxX - minX) : 0;
         }
 

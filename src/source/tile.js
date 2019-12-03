@@ -447,7 +447,7 @@ class Tile {
         return false;
     }
 
-    makeRasterBoundsArray(context) {
+    makeRasterBoundsArray(context, transform) {
         if (this.rasterBoundsBuffer) return;
         const s = Math.pow(2, -this.tileID.canonical.z);
         const x1 = (this.tileID.canonical.x) * s;
@@ -457,22 +457,12 @@ class Tile {
         const m = Math.pow(2, 14);
         const rasterBoundsArray = new RasterBoundsArray();
         const quadTriangleIndices = new TriangleIndexArray();
-        const projectwgs84 = l => {
-            return {
-                x: 0.5 + l.lng / 360,
-                y: 0.5 - l.lat / 360
-            };
-        };
-        const projectsin = l => {
-            return {
-                x: 0.5 + l.lng * Math.cos(l.lat / 180 * Math.PI) / 360 * 2,
-                y: 0.5 - l.lat / 360 * 2
-            };
-        };
         const emplace = (x, y, a, b) => {
             const l = new MercatorCoordinate(x, y).toLngLat();
-            const p = projectsin(l);
-            rasterBoundsArray.emplaceBack(p.x * m, p.y * m, a, b);
+            rasterBoundsArray.emplaceBack(
+                transform.projection.projectX(l.lng, l.lat) * m,
+                transform.projection.projectY(l.lng, l.lat) * m,
+                a, b);
         };
         const n = 32;
         const increment = s / n;
