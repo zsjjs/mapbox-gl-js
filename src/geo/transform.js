@@ -441,6 +441,14 @@ class Transform {
         }
     }
 
+    calculateRasterMatrix() {
+        const posMatrix = mat4.identity(new Float64Array(16));
+        const s = Math.pow(2, 14);
+        mat4.scale(posMatrix, posMatrix, [1 / s, 1 / s, 1]);
+        mat4.multiply(posMatrix, this.mercatorMatrix, posMatrix);
+        return new Float32Array(posMatrix);
+    }
+
     /**
      * Calculate the posMatrix that, given a tile coordinate, would be used to display the tile on a map.
      * @param {UnwrappedTileID} unwrappedTileID;

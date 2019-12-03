@@ -41,7 +41,8 @@ function drawRaster(painter: Painter, sourceCache: SourceCache, layer: RasterSty
             layer.paint.get('raster-opacity') === 1 ? DepthMode.ReadWrite : DepthMode.ReadOnly, gl.LESS);
 
         const tile = sourceCache.getTile(coord);
-        const posMatrix = painter.transform.calculatePosMatrix(coord.toUnwrapped(), align);
+        //const posMatrix = painter.transform.calculatePosMatrix(coord.toUnwrapped(), align);
+        const posMatrix = painter.transform.calculateRasterMatrix(coord.toUnwrapped(), align);
 
         tile.registerFadeDuration(layer.paint.get('raster-fade-duration'));
 

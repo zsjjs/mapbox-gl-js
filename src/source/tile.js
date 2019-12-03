@@ -448,11 +448,16 @@ class Tile {
 
     makeRasterBoundsArray(context) {
         if (this.rasterBoundsBuffer) return;
+        const s = Math.pow(2, 14 - this.tileID.canonical.z);
+        const x1 = (this.tileID.canonical.x) * s;
+        const x2 = (this.tileID.canonical.x + 1) * s;
+        const y1 = (this.tileID.canonical.y) * s;
+        const y2 = (this.tileID.canonical.y + 1) * s;
         const rasterBoundsArray = new RasterBoundsArray();
-        rasterBoundsArray.emplaceBack(0, 0, 0, 0);
-        rasterBoundsArray.emplaceBack(EXTENT, 0, EXTENT, 0);
-        rasterBoundsArray.emplaceBack(0, EXTENT, 0, EXTENT);
-        rasterBoundsArray.emplaceBack(EXTENT, EXTENT, EXTENT, EXTENT);
+        rasterBoundsArray.emplaceBack(x1, y1, 0, 0);
+        rasterBoundsArray.emplaceBack(x2, y1, EXTENT, 0);
+        rasterBoundsArray.emplaceBack(x1, y2, 0, EXTENT);
+        rasterBoundsArray.emplaceBack(x2, y2, EXTENT, EXTENT);
         this.rasterBoundsBuffer = context.createVertexBuffer(rasterBoundsArray, rasterBoundsAttributes.members);
         this.rasterBoundsSegments = SegmentVector.simpleSegment(0, 0, 4, 2);
 
