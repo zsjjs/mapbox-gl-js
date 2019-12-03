@@ -11,6 +11,10 @@ import Texture from '../render/texture';
 import browser from '../util/browser';
 import EvaluationParameters from '../style/evaluation_parameters';
 import SourceFeatureState from '../source/source_state';
+import {RasterBoundsArray, TriangleIndexArray} from '../data/array_types';
+import rasterBoundsAttributes from '../data/raster_bounds_attributes';
+import EXTENT from '../data/extent';
+import SegmentVector from '../data/segment';
 
 const CLOCK_SKEW_RETRY_TIMEOUT = 30000;
 
@@ -440,6 +444,22 @@ class Tile {
             }
         }
         return false;
+    }
+
+    makeRasterBoundsArray(context) {
+        if (this.rasterBoundsBuffer) return;
+        const rasterBoundsArray = new RasterBoundsArray();
+        rasterBoundsArray.emplaceBack(0, 0, 0, 0);
+        rasterBoundsArray.emplaceBack(EXTENT, 0, EXTENT, 0);
+        rasterBoundsArray.emplaceBack(0, EXTENT, 0, EXTENT);
+        rasterBoundsArray.emplaceBack(EXTENT, EXTENT, EXTENT, EXTENT);
+        this.rasterBoundsBuffer = context.createVertexBuffer(rasterBoundsArray, rasterBoundsAttributes.members);
+        this.rasterBoundsSegments = SegmentVector.simpleSegment(0, 0, 4, 2);
+
+        const quadTriangleIndices = new TriangleIndexArray();
+        quadTriangleIndices.emplaceBack(0, 1, 2);
+        quadTriangleIndices.emplaceBack(2, 1, 3);
+        this.rasterBoundsIndexBuffer = context.createIndexBuffer(quadTriangleIndices);
     }
 }
 
