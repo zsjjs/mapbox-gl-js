@@ -457,17 +457,21 @@ class Tile {
         const m = Math.pow(2, 14);
         const rasterBoundsArray = new RasterBoundsArray();
         const quadTriangleIndices = new TriangleIndexArray();
-        const project = l => {
-            //return MercatorCoordinate.fromLngLat(l);
-
+        const projectwgs84 = l => {
             return {
                 x: 0.5 + l.lng / 360,
                 y: 0.5 - l.lat / 360
             };
         };
+        const projectsin = l => {
+            return {
+                x: 0.5 + l.lng * Math.cos(l.lat / 180 * Math.PI) / 360 * 2,
+                y: 0.5 - l.lat / 360 * 2
+            };
+        };
         const emplace = (x, y, a, b) => {
             const l = new MercatorCoordinate(x, y).toLngLat();
-            const p = project(l);
+            const p = projectsin(l);
             rasterBoundsArray.emplaceBack(p.x * m, p.y * m, a, b);
         };
         const n = 32;

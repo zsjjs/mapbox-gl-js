@@ -26,6 +26,10 @@ var map = window.map = new mapboxgl.Map({
     hash: true
 });
 
+
+map.on('style.load', () => {
+    map.setPaintProperty('background', 'background-color', '#ddd');
+});
 </script>
 </body>
 </html>
