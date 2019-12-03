@@ -209,7 +209,7 @@ export class Placement {
         const scale = Math.pow(2, this.transform.zoom - tile.tileID.overscaledZ);
         const textPixelRatio = tile.tileSize / EXTENT;
 
-        const posMatrix = this.transform.calculatePosMatrix(tile.tileID.toUnwrapped());
+        const posMatrix = this.transform.calculateRasterMatrix(tile.tileID.toUnwrapped());
 
         const textLabelPlaneMatrix = projection.getLabelPlaneMatrix(posMatrix,
                 layout.get('text-pitch-alignment') === 'map',

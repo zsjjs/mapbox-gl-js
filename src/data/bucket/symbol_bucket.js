@@ -319,6 +319,7 @@ class SymbolBucket implements Bucket {
     constructor(options: BucketParameters<SymbolStyleLayer>) {
         this.collisionBoxArray = options.collisionBoxArray;
         this.zoom = options.zoom;
+        this.canonical = options.canonical;
         this.overscaling = options.overscaling;
         this.layers = options.layers;
         this.layerIds = this.layers.map(layer => layer.id);
@@ -462,7 +463,7 @@ class SymbolBucket implements Bucket {
                 icon,
                 index,
                 sourceLayerIndex,
-                geometry: loadGeometry(feature),
+                geometry: loadGeometry(feature, this.canonical),
                 properties: feature.properties,
                 type: vectorTileFeatureTypes[feature.type],
                 sortKey

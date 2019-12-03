@@ -29,6 +29,30 @@ var map = window.map = new mapboxgl.Map({
 
 map.on('style.load', () => {
     map.setPaintProperty('background', 'background-color', '#ddd');
+    map.addSource('streets', {"url":"mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7","type":"vector"});
+    map.addLayer({
+        id: 'water',
+        type: 'fill',
+        'source-layer': 'water',
+        'source': 'streets',
+        paint: {
+            'fill-color': 'blue'
+        }
+    });
+
+    map.addLayer({
+        id: 'symbol',
+        type: 'symbol',
+        'source-layer': 'country_label',
+        'source': 'streets',
+        paint: {
+            "text-color": "white",
+            "text-halo-color": "black"
+        },
+        layout: {
+            "text-field": ["get", "name_en"]
+        }
+    });
 });
 </script>
 </body>

@@ -117,6 +117,7 @@ class WorkerTile {
                     index: featureIndex.bucketLayerIDs.length,
                     layers: family,
                     zoom: this.zoom,
+                    canonical: this.tileID.canonical,
                     pixelRatio: this.pixelRatio,
                     overscaling: this.overscaling,
                     collisionBoxArray: this.collisionBoxArray,

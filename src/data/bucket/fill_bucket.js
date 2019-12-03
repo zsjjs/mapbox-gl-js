@@ -63,6 +63,7 @@ class FillBucket implements Bucket {
         this.index = options.index;
         this.hasPattern = false;
         this.patternFeatures = [];
+        this.canonical = options.canonical;
 
         this.layoutVertexArray = new FillLayoutArray();
         this.indexArray = new TriangleIndexArray();
@@ -81,7 +82,7 @@ class FillBucket implements Bucket {
         for (const {feature, id, index, sourceLayerIndex} of features) {
             if (!this.layers[0]._featureFilter(new EvaluationParameters(this.zoom), feature)) continue;
 
-            const geometry = loadGeometry(feature);
+            const geometry = loadGeometry(feature, this.canonical);
             const sortKey = fillSortKey ?
                 fillSortKey.evaluate(feature, {}, options.availableImages) :
                 undefined;

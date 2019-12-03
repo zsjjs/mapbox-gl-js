@@ -1,6 +1,7 @@
 // @flow
 
 import Color from '../style-spec/util/color';
+import StencilMode from '../gl/stencil_mode';
 import DepthMode from '../gl/depth_mode';
 import CullFaceMode from '../gl/cull_face_mode';
 import {
@@ -98,7 +99,8 @@ function drawFillTiles(painter, sourceCache, layer, coords, depthMode, colorMode
             if (posTo && posFrom) programConfiguration.setConstantPatternPositions(posTo, posFrom);
         }
 
-        const tileMatrix = painter.translatePosMatrix(coord.posMatrix, tile,
+        const posMatrix = painter.transform.calculateRasterMatrix(coord);
+        const tileMatrix = painter.translatePosMatrix(posMatrix, tile,
             layer.paint.get('fill-translate'), layer.paint.get('fill-translate-anchor'));
 
         if (!isOutline) {
@@ -117,7 +119,7 @@ function drawFillTiles(painter, sourceCache, layer, coords, depthMode, colorMode
         }
 
         program.draw(painter.context, drawMode, depthMode,
-            painter.stencilModeForClipping(coord), colorMode, CullFaceMode.disabled, uniformValues,
+            StencilMode.disabled || painter.stencilModeForClipping(coord), colorMode, CullFaceMode.disabled, uniformValues,
             layer.id, bucket.layoutVertexBuffer, indexBuffer, segments,
             layer.paint, painter.transform.zoom, programConfiguration);
     }

@@ -14,12 +14,13 @@ import assert from 'assert';
 
 import type {OverscaledTileID, CanonicalTileID} from '../source/tile_id';
 
+const f = 1;
 const sinusoidal = {
-    projectX: (lng, lat) => 0.5 + lng * Math.cos(lat / 180 * Math.PI) / 360 * 2,
-    projectY: (lng, lat) => 0.5 - lat / 360 * 2,
+    projectX: (lng, lat) => 0.5 + lng * Math.cos(lat / 180 * Math.PI) / 360 * f,
+    projectY: (lng, lat) => 0.5 - lat / 360 * f,
     unproject: (x, y) => {
-        const lat = (0.5 - y) / 2 * 360;
-        const lng = (x - 0.5) / Math.cos(lat / 180 * Math.PI) / 2 * 360;
+        const lat = (0.5 - y) / f * 360;
+        const lng = (x - 0.5) / Math.cos(lat / 180 * Math.PI) / f * 360;
         return new LngLat(lng, lat);
     },
     tileTransform: (id) => {
@@ -487,11 +488,10 @@ class Transform {
 
     calculateRasterMatrix(id) {
         const posMatrix = mat4.identity(new Float64Array(16));
-        const s = Math.pow(2, 14);
         const cs = this.projection.tileTransform(id.canonical);
         mat4.scale(posMatrix, posMatrix, [1 /  cs.scale, 1 /  cs.scale, 1]);
         mat4.translate(posMatrix, posMatrix, [cs.x, cs.y, 0]);
-        mat4.scale(posMatrix, posMatrix, [1 / s, 1 / s, 1]);
+        mat4.scale(posMatrix, posMatrix, [1 / EXTENT, 1 / EXTENT, 1]);
         mat4.multiply(posMatrix, this.mercatorMatrix, posMatrix);
         return new Float32Array(posMatrix);
     }
@@ -501,6 +501,7 @@ class Transform {
      * @param {UnwrappedTileID} unwrappedTileID;
      */
     calculatePosMatrix(unwrappedTileID: UnwrappedTileID, aligned: boolean = false): Float32Array {
+        return this.calculateRasterMatrix(unwrappedTileID);
         const posMatrixKey = unwrappedTileID.key;
         const cache = aligned ? this._alignedPosMatrixCache : this._posMatrixCache;
         if (cache[posMatrixKey]) {
