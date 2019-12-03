@@ -552,7 +552,6 @@ class Transform {
     }
 
     _constrain() {
-        return;
         if (!this.center || !this.width || !this.height || this._constraining) return;
 
         this._constraining = true;
