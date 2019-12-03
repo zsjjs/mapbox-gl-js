@@ -43,6 +43,31 @@ const sinusoidal = {
     }
 };
 
+const albers = {
+    project: (lng, lat) => {
+        const p1 = 0 / 180 * Math.PI;
+        const p2 = 60 / 180 * Math.PI;
+        const n = 0.5 * (Math.sin(p1) + Math.sin(p2));
+        const theta = n * ((lng + 77) / 180 * Math.PI);
+        const c = Math.pow(Math.cos(p1), 2) + 2 * n * Math.sin(p1);
+        const r = 0.5;
+        const a = r / n * Math.sqrt(c - 2 * n * Math.sin(lat / 180 * Math.PI));
+        const b = r / n * Math.sqrt(c - 2 * n * Math.sin(0 / 180 * Math.PI));
+        const x = a * Math.sin(theta);
+        const y = b - a * Math.cos(theta);
+        return {x, y: -y};
+    },
+    projectX: (lng, lat) => albers.project(lng, lat).x + 0.5,
+    projectY: (lng, lat) => albers.project(lng, lat).y + 0.5,
+    unproject: (x, y) => mercatorProjection.unproject(x, y),
+    tileTransform: (id) => {
+        const scale = 1;
+        const x = 0;
+        const y = 0;
+        return { scale, x, y };
+    }
+};
+
 const wgs84 = {
     projectX: (lng) => 0.5 + lng / 360,
     projectY: (lng, lat) => 0.5 - lat / 360,
@@ -115,6 +140,7 @@ class Transform {
         this._alignedPosMatrixCache = {};
         this.projection = wgs84;
         this.projection = mercatorProjection;
+        this.projection = albers;
         this.projection = sinusoidal;
     }
 
@@ -526,6 +552,7 @@ class Transform {
     }
 
     _constrain() {
+        return;
         if (!this.center || !this.width || !this.height || this._constraining) return;
 
         this._constraining = true;

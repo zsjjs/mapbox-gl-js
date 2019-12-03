@@ -101,6 +101,7 @@ class LineBucket implements Bucket {
 
     constructor(options: BucketParameters<LineStyleLayer>) {
         this.zoom = options.zoom;
+        this.canonical = options.canonical;
         this.overscaling = options.overscaling;
         this.layers = options.layers;
         this.layerIds = this.layers.map(layer => layer.id);
@@ -124,7 +125,7 @@ class LineBucket implements Bucket {
         for (const {feature, index, sourceLayerIndex} of features) {
             if (!this.layers[0]._featureFilter(new EvaluationParameters(this.zoom), feature)) continue;
 
-            const geometry = loadGeometry(feature);
+            const geometry = loadGeometry(feature, this.canonical);
             const sortKey = lineSortKey ?
                 lineSortKey.evaluate(feature, {}) :
                 undefined;

@@ -20,7 +20,7 @@
 
 var map = window.map = new mapboxgl.Map({
     container: 'map',
-    zoom: 0.1,
+    zoom: 2,
     center: [-77.01866, 38.888],
     style: 'mapbox://styles/mapbox/satellite-v9',
     hash: true
@@ -29,6 +29,7 @@ var map = window.map = new mapboxgl.Map({
 
 map.on('style.load', () => {
     map.setPaintProperty('background', 'background-color', '#ddd');
+    return;
     map.addSource('streets', {"url":"mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7","type":"vector"});
     map.addLayer({
         id: 'water',
