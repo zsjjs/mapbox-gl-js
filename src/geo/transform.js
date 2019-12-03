@@ -10,6 +10,7 @@ import tileCover from '../util/tile_cover';
 import {UnwrappedTileID} from '../source/tile_id';
 import EXTENT from '../data/extent';
 import {vec4, mat4, mat2} from 'gl-matrix';
+import assert from 'assert';
 
 import type {OverscaledTileID, CanonicalTileID} from '../source/tile_id';
 
@@ -20,6 +21,24 @@ const sinusoidal = {
         const lat = (0.5 - y) / 2 * 360;
         const lng = (x - 0.5) / Math.cos(lat / 180 * Math.PI) / 2 * 360;
         return new LngLat(lng, lat);
+    },
+    tileTransform: (id) => {
+        let scale = Math.pow(2, id.z);
+        const tl = mercatorProjection.unproject(id.x / scale, id.y / scale);
+        const bl = mercatorProjection.unproject(id.x / scale, (id.y + 1) / scale);
+        const tr = mercatorProjection.unproject((id.x + 1) / scale, (id.y + 0) / scale);
+        const br = mercatorProjection.unproject((id.x + 1) / scale, (id.y + 1) / scale);
+        const pX = sinusoidal.projectX;
+        const pY = sinusoidal.projectY;
+        const minX = Math.min(pX(tl.lng, tl.lat), pX(bl.lng, bl.lat), pX(tr.lng, tr.lat), pX(br.lng, br.lat));
+        const maxX = Math.max(pX(tl.lng, tl.lat), pX(bl.lng, bl.lat), pX(tr.lng, tr.lat), pX(br.lng, br.lat));
+        const minY = Math.min(pY(tl.lng, tl.lat), pY(bl.lng, bl.lat), pY(tr.lng, tr.lat), pY(br.lng, br.lat));
+        const maxY = Math.max(pY(tl.lng, tl.lat), pY(bl.lng, bl.lat), pY(tr.lng, tr.lat), pY(br.lng, br.lat));
+        const size = Math.max(maxX - minX, maxY - minY);
+        const realScale = 1 / Math.pow(2, Math.ceil(Math.log(size) / Math.LN2));
+        const x = Math.floor(minX * realScale);
+        const y = Math.floor(minY * realScale);
+        return { scale: realScale, x, y };
     }
 };
 
@@ -93,8 +112,8 @@ class Transform {
         this._unmodified = true;
         this._posMatrixCache = {};
         this._alignedPosMatrixCache = {};
-        //this.projection = mercatorProjection;
-        //this.projection = wgs84;
+        this.projection = wgs84;
+        this.projection = mercatorProjection;
         this.projection = sinusoidal;
     }
 
@@ -466,9 +485,12 @@ class Transform {
         }
     }
 
-    calculateRasterMatrix() {
+    calculateRasterMatrix(id) {
         const posMatrix = mat4.identity(new Float64Array(16));
         const s = Math.pow(2, 14);
+        const cs = this.projection.tileTransform(id.canonical);
+        mat4.scale(posMatrix, posMatrix, [1 /  cs.scale, 1 /  cs.scale, 1]);
+        mat4.translate(posMatrix, posMatrix, [cs.x, cs.y, 0]);
         mat4.scale(posMatrix, posMatrix, [1 / s, 1 / s, 1]);
         mat4.multiply(posMatrix, this.mercatorMatrix, posMatrix);
         return new Float32Array(posMatrix);

@@ -6,7 +6,15 @@ import type {LngLatLike} from '../geo/lng_lat';
 export const mercatorProjection = {
     projectX: (lng) => mercatorXfromLng(lng),
     projectY: (lng, lat) => mercatorYfromLat(lat),
-    unproject: (x, y) => new MercatorCoordinate(x, y).toLngLat()
+    unproject: (x, y) => new MercatorCoordinate(x, y).toLngLat(),
+    tileTransform: (id) => {
+        const scale = Math.pow(2, id.z);
+        return {
+            x: id.x,
+            y: id.y,
+            scale
+        };
+    }
 }
 
 /*

@@ -40,19 +40,16 @@ register('StructArrayLayout2i4', StructArrayLayout2i4);
 
 /**
  * Implementation of the StructArray layout:
- * [0]: Float32[2]
- * [8]: Int16[2]
+ * [0]: Int16[4]
  *
  * @private
  */
-class StructArrayLayout2f2i12 extends StructArray {
+class StructArrayLayout4i8 extends StructArray {
     uint8: Uint8Array;
-    float32: Float32Array;
     int16: Int16Array;
 
     _refreshViews() {
         this.uint8 = new Uint8Array(this.arrayBuffer);
-        this.float32 = new Float32Array(this.arrayBuffer);
         this.int16 = new Int16Array(this.arrayBuffer);
     }
 
@@ -63,18 +60,17 @@ class StructArrayLayout2f2i12 extends StructArray {
     }
 
     emplace(i: number, v0: number, v1: number, v2: number, v3: number) {
-        const o4 = i * 3;
-        const o2 = i * 6;
-        this.float32[o4 + 0] = v0;
-        this.float32[o4 + 1] = v1;
-        this.int16[o2 + 4] = v2;
-        this.int16[o2 + 5] = v3;
+        const o2 = i * 4;
+        this.int16[o2 + 0] = v0;
+        this.int16[o2 + 1] = v1;
+        this.int16[o2 + 2] = v2;
+        this.int16[o2 + 3] = v3;
         return i;
     }
 }
 
-StructArrayLayout2f2i12.prototype.bytesPerElement = 12;
-register('StructArrayLayout2f2i12', StructArrayLayout2f2i12);
+StructArrayLayout4i8.prototype.bytesPerElement = 8;
+register('StructArrayLayout4i8', StructArrayLayout4i8);
 
 /**
  * Implementation of the StructArray layout:
@@ -1148,7 +1144,7 @@ register('FeatureIndexArray', FeatureIndexArray);
 
 export {
     StructArrayLayout2i4,
-    StructArrayLayout2f2i12,
+    StructArrayLayout4i8,
     StructArrayLayout2i4i12,
     StructArrayLayout2i4ub8,
     StructArrayLayout8ui16,
@@ -1169,7 +1165,7 @@ export {
     StructArrayLayout2f8,
     StructArrayLayout4f16,
     StructArrayLayout2i4 as PosArray,
-    StructArrayLayout2f2i12 as RasterBoundsArray,
+    StructArrayLayout4i8 as RasterBoundsArray,
     StructArrayLayout2i4 as CircleLayoutArray,
     StructArrayLayout2i4 as FillLayoutArray,
     StructArrayLayout2i4i12 as FillExtrusionLayoutArray,
