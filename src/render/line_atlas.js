@@ -41,11 +41,11 @@ class LineAtlas {
      * @returns {Object} position of dash texture in { y, height, width }
      * @private
      */
-    getDash(dasharray: Array<number>, round: boolean) {
-        const key = dasharray.join(",") + String(round);
+    getDash(dasharray: Array<number>, lineCap: string) {
+        const key = dasharray.join(",") + lineCap;
 
         if (!this.dashEntry[key]) {
-            this.dashEntry[key] = this.addDash(dasharray, round);
+            this.dashEntry[key] = this.addDash(dasharray, lineCap);
         }
         return this.dashEntry[key];
     }
@@ -108,7 +108,7 @@ class LineAtlas {
         }
     }
 
-    addRegularDash(ranges: Object) {
+    addRegularDash(ranges: Object, capLength: number) {
 
         // Collapse any zero-length range
         // Collapse neighbouring same-type parts into a single part
@@ -144,13 +144,14 @@ class LineAtlas {
             const distRight = Math.abs(x - range.right);
 
             const minDist = Math.min(distLeft, distRight);
-            const signedDistance = range.isDash ? minDist : -minDist;
+            const signedDistance = (range.isDash ? minDist : -minDist) + capLength;
 
             this.data[index + x] = Math.max(0, Math.min(255, signedDistance + 128));
         }
     }
 
-    addDash(dasharray: Array<number>, round: boolean) {
+    addDash(dasharray: Array<number>, lineCap: string) {
+        const round = lineCap === 'round';
         const n = round ? 7 : 0;
         const height = 2 * n + 1;
 
@@ -169,7 +170,8 @@ class LineAtlas {
             if (round) {
                 this.addRoundDash(ranges, stretch, n);
             } else {
-                this.addRegularDash(ranges);
+                const capLength = lineCap === 'square' ? 0.5 * stretch : 0;
+                this.addRegularDash(ranges, capLength);
             }
         }
 

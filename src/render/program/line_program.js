@@ -163,10 +163,10 @@ const lineSDFUniformValues = (
     const lineAtlas = painter.lineAtlas;
     const tileRatio = calculateTileRatio(tile, transform);
 
-    const round = layer.layout.get('line-cap') === 'round';
+    const lineCap = layer.layout.get('line-cap');
 
-    const posA = lineAtlas.getDash(dasharray.from, round);
-    const posB = lineAtlas.getDash(dasharray.to, round);
+    const posA = lineAtlas.getDash(dasharray.from, lineCap);
+    const posB = lineAtlas.getDash(dasharray.to, lineCap);
 
     const widthA = posA.width * crossfade.fromScale;
     const widthB = posB.width * crossfade.toScale;
