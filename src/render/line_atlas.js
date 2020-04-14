@@ -37,7 +37,7 @@ class LineAtlas {
      * Get or create a dash line pattern.
      *
      * @param {Array<number>} dasharray
-     * @param {boolean} round whether to add circle caps in between dash segments
+     * @param {string} lineCap the type of line caps to be added to dashes
      * @returns {Object} position of dash texture in { y, height, width }
      * @private
      */
