@@ -440,7 +440,17 @@ class LineBucket implements Bucket {
 
             } else if (currentJoin === 'square') {
                 const offset = prevVertex ? 1 : -1; // closing or starting square cap
-                this.addCurrentVertex(currentVertex, joinNormal, offset, offset, segment);
+
+                if (!prevVertex) {
+                    this.addCurrentVertex(currentVertex, joinNormal, offset, offset, segment);
+                }
+
+                // make the cap it's own quad to avoid the cap affecting the line distance
+                this.addCurrentVertex(currentVertex, joinNormal, 0, 0, segment);
+
+                if (prevVertex) {
+                    this.addCurrentVertex(currentVertex, joinNormal, offset, offset, segment);
+                }
 
             } else if (currentJoin === 'round') {
 
