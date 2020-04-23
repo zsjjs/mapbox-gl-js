@@ -170,7 +170,14 @@ const exported = {
         clearTileCache(callback);
     },
 
-    workerUrl: ''
+    workerUrl: '',
+
+    /*
+    * @private
+    */
+    setColorRampTextureSize(v: Number) {
+        config.COLOR_RAMP_SIZE = v;
+    }
 };
 
 //This gets automatically stripped out in production builds.

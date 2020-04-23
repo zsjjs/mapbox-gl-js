@@ -6,7 +6,8 @@ type Config = {|
   FEEDBACK_URL: string,
   REQUIRE_ACCESS_TOKEN: boolean,
   ACCESS_TOKEN: ?string,
-  MAX_PARALLEL_IMAGE_REQUESTS: number
+  MAX_PARALLEL_IMAGE_REQUESTS: number,
+  COLOR_RAMP_SIZE: number
 |};
 
 const config: Config = {
@@ -24,7 +25,8 @@ const config: Config = {
     FEEDBACK_URL: 'https://apps.mapbox.com/feedback',
     REQUIRE_ACCESS_TOKEN: true,
     ACCESS_TOKEN: null,
-    MAX_PARALLEL_IMAGE_REQUESTS: 16
+    MAX_PARALLEL_IMAGE_REQUESTS: 16,
+    COLOR_RAMP_SIZE: 256
 };
 
 export default config;

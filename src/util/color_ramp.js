@@ -1,7 +1,7 @@
 // @flow
 
 import {RGBAImage} from './image';
-
+import config from './config';
 import type {StylePropertyExpression} from '../style-spec/expression/index';
 
 /**
@@ -11,10 +11,11 @@ import type {StylePropertyExpression} from '../style-spec/expression/index';
  * @private
  */
 export default function renderColorRamp(expression: StylePropertyExpression, colorRampEvaluationParameter: string): RGBAImage {
-    const colorRampData = new Uint8Array(256 * 4);
+    const txSize = config.COLOR_RAMP_SIZE;
+    const colorRampData = new Uint8Array(txSize * 4);
     const evaluationGlobals = {};
-    for (let i = 0, j = 0; i < 256; i++, j += 4) {
-        evaluationGlobals[colorRampEvaluationParameter] = i / 255;
+    for (let i = 0, j = 0; i < txSize; i++, j += 4) {
+        evaluationGlobals[colorRampEvaluationParameter] = i / (txSize - 1);
         const pxColor = expression.evaluate((evaluationGlobals: any));
         // the colors are being unpremultiplied because Color uses
         // premultiplied values, and the Texture class expects unpremultiplied ones
@@ -24,5 +25,5 @@ export default function renderColorRamp(expression: StylePropertyExpression, col
         colorRampData[j + 3] = Math.floor(pxColor.a * 255);
     }
 
-    return new RGBAImage({width: 256, height: 1}, colorRampData);
+    return new RGBAImage({width: txSize, height: 1}, colorRampData);
 }

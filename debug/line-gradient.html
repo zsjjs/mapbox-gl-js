@@ -17,6 +17,7 @@
     <script src='../dist/mapbox-gl-dev.js'></script>
     <script src='../debug/access_token_generated.js'></script>
     <script>
+    mapboxgl.colorRampTextureSize = 2048;
     var map = window.map = new mapboxgl.Map({
         container: 'map',
         zoom: 12.5,
@@ -46,6 +47,7 @@
             data: gj
         });
 
+        const routeCompleted = 0.3;
         map.addLayer({
             type: 'line',
             source: 'line',
@@ -54,15 +56,20 @@
                 'line-color': 'red',
                 'line-width': 14,
                 'line-gradient': [
-                    'interpolate',
-                    ['linear'],
+                    'step',
                     ['line-progress'],
-                    0, "rgba(0, 0, 255, 0)",
-                    0.1, "royalblue",
-                    0.3, "cyan",
-                    0.5, "lime",
+                    "rgba(0, 0, 255, 0.3)",
+                    routeCompleted - 0.001, "rgba(0, 0, 255, 0.3)",
+                    routeCompleted, "rgba(0, 0, 255, 1)",
+                    0.4, "red",
+                    0.43, "rgba(0, 0, 255, 1)",
+                    0.47, "rgba(0, 0, 255, 1)",
+                    0.5, "yellow",
+                    0.53, "rgba(0, 0, 255, 1)",
+                    0.67, "rgba(0, 0, 255, 1)",
                     0.7, "yellow",
-                    1, "red"
+                    0.73, "rgba(0, 0, 255, 1)",
+                    1, "rgba(0, 0, 255, 1)"
                 ]
             },
             layout: {
