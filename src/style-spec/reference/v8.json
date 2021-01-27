@@ -94,9 +94,9 @@
       "example": [
         {
           "id": "water",
+          "type": "fill",
           "source": "mapbox-streets",
           "source-layer": "water",
-          "type": "fill",
           "paint": {
             "fill-color": "#00ffff"
           }
