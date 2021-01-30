@@ -94,7 +94,7 @@ const defaultTestemConfig = {
 };
 
 const ciTestemConfig = {
-    "launch_in_ci": [ "Chrome" ],
+    "launch_in_ci": [ "Chrome" , "Firefox", "Safari"],
     "reporter": "xunit",
     "report_file": ciOutputFile,
     "xunit_intermediate_output": true,
