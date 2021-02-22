@@ -2,7 +2,8 @@
 
 import LngLat, {earthRadius} from '../geo/lng_lat';
 import type {LngLatLike} from '../geo/lng_lat';
-
+import window from '../util/window';
+import {clamp} from '../util/util';
 /*
  * The average circumference of the world in meters.
  */
@@ -20,12 +21,12 @@ export function mercatorXfromLng(lng: number) {
 }
 
 export function mercatorYfromLat(lat: number) {
-  switch (map && map._crs || window._crs) {
+    switch (window._crs) {
     case 'EPSG:4326':
-      return (90 - lat) / 360;
+        return (90 - lat) / 360;
     default:
-      return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
-  }
+        return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+    }
 }
 
 export function mercatorZfromAltitude(altitude: number, lat: number) {
@@ -37,14 +38,15 @@ export function lngFromMercatorX(x: number) {
 }
 
 export function latFromMercatorY(y: number) {
-  switch (map && map._crs || window._crs) {
+    switch (window._crs) {
     case 'EPSG:4326':
-      return Math.min(90, Math.max(-90, 90 - y * 360));
-    default:
-      const y2 = 180 - y * 360;
-      return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
-  }
-    
+        return clamp(90 - y * 360, -90, 90);
+    default: {
+        const y2 = 180 - y * 360;
+        return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+    }
+    }
+
 }
 
 export function altitudeFromMercatorZ(z: number, y: number) {
