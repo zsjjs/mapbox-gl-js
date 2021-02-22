@@ -288,6 +288,7 @@ class Map extends Camera {
     _sourcesDirty: ?boolean;
     _placementDirty: ?boolean;
     _loaded: boolean;
+    _crs: 'EPSG:3857' | 'EPSG:4326';
     // accounts for placement finishing as well
     _fullyLoaded: boolean;
     _trackResize: boolean;
@@ -400,7 +401,7 @@ class Map extends Camera {
         this._mapId = uniqueId();
         this._locale = extend({}, defaultLocale, options.locale);
         this._clickTolerance = options.clickTolerance;
-
+        window._crs = this._crs = options.crs || 'EPSG:3857';
         this._requestManager = new RequestManager(options.transformRequest, options.accessToken);
 
         if (typeof options.container === 'string') {

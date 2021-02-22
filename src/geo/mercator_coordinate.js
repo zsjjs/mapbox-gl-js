@@ -20,7 +20,12 @@ export function mercatorXfromLng(lng: number) {
 }
 
 export function mercatorYfromLat(lat: number) {
-    return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+  switch (map && map._crs || window._crs) {
+    case 'EPSG:4326':
+      return (90 - lat) / 360;
+    default:
+      return (180 - (180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)))) / 360;
+  }
 }
 
 export function mercatorZfromAltitude(altitude: number, lat: number) {
@@ -32,8 +37,14 @@ export function lngFromMercatorX(x: number) {
 }
 
 export function latFromMercatorY(y: number) {
-    const y2 = 180 - y * 360;
-    return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+  switch (map && map._crs || window._crs) {
+    case 'EPSG:4326':
+      return Math.min(90, Math.max(-90, 90 - y * 360));
+    default:
+      const y2 = 180 - y * 360;
+      return 360 / Math.PI * Math.atan(Math.exp(y2 * Math.PI / 180)) - 90;
+  }
+    
 }
 
 export function altitudeFromMercatorZ(z: number, y: number) {
@@ -99,7 +110,6 @@ class MercatorCoordinate {
      */
     static fromLngLat(lngLatLike: LngLatLike, altitude: number = 0) {
         const lngLat = LngLat.convert(lngLatLike);
-
         return new MercatorCoordinate(
                 mercatorXfromLng(lngLat.lng),
                 mercatorYfromLat(lngLat.lat),
